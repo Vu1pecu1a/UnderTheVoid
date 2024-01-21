@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2024-01-19T18:09:59.825Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.18 Chrome/120.0.6099.199 Electron/28.1.2 Safari/537.36" etag="EARPKDSdjto8gNFDsYA-" version="22.1.18" type="device" pages="8">
+<mxfile host="Electron" modified="2024-01-20T15:26:56.562Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.18 Chrome/120.0.6099.199 Electron/28.1.2 Safari/537.36" etag="I_NUK8rHl4KkNW6lao9d" version="22.1.18" type="device" pages="8">
   <diagram name="메인화면" id="o7VIeF1uwhqz3UxBuZCB">
     <mxGraphModel dx="2954" dy="1196" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
       <root>
@@ -1148,41 +1148,41 @@
     </mxGraphModel>
   </diagram>
   <diagram id="GZtRnq3hINkwTnw5uuWs" name="퀘스트">
-    <mxGraphModel dx="1688" dy="683" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="2954" dy="1196" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Lnyp4msVD1fJ1O2BGHmx-1" target="Lnyp4msVD1fJ1O2BGHmx-2">
+        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Lnyp4msVD1fJ1O2BGHmx-1" target="Lnyp4msVD1fJ1O2BGHmx-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-1" value="시작" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-1" value="시작" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="100" y="60" width="80" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Lnyp4msVD1fJ1O2BGHmx-2" target="Lnyp4msVD1fJ1O2BGHmx-4">
+        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Lnyp4msVD1fJ1O2BGHmx-2" target="Lnyp4msVD1fJ1O2BGHmx-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-2" value="전체 퀘스트 로딩" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-2" value="전체 퀘스트 로딩" style="whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
           <mxGeometry x="80" y="170" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Lnyp4msVD1fJ1O2BGHmx-4" target="Lnyp4msVD1fJ1O2BGHmx-6">
+        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Lnyp4msVD1fJ1O2BGHmx-4" target="Lnyp4msVD1fJ1O2BGHmx-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-4" value="게임 진행도 확인" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-4" value="게임 진행도 확인" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="80" y="310" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="f6m-xLnm__HxBlaBY3NR-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Lnyp4msVD1fJ1O2BGHmx-6" target="f6m-xLnm__HxBlaBY3NR-3">
+        <mxCell id="f6m-xLnm__HxBlaBY3NR-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Lnyp4msVD1fJ1O2BGHmx-6" target="f6m-xLnm__HxBlaBY3NR-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-6" value="게임 진행도 만큼의&lt;br&gt;&amp;nbsp;난이도를 가진&lt;br&gt;&amp;nbsp;퀘스트 생성" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Lnyp4msVD1fJ1O2BGHmx-6" value="게임 진행도 만큼의&lt;br&gt;&amp;nbsp;난이도를 가진&lt;br&gt;&amp;nbsp;퀘스트 생성" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="80" y="450" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="f6m-xLnm__HxBlaBY3NR-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="f6m-xLnm__HxBlaBY3NR-3" target="f6m-xLnm__HxBlaBY3NR-8">
+        <mxCell id="f6m-xLnm__HxBlaBY3NR-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="f6m-xLnm__HxBlaBY3NR-3" target="f6m-xLnm__HxBlaBY3NR-8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="f6m-xLnm__HxBlaBY3NR-3" value="받을 수 있는 퀘스트의 &lt;br&gt;최대치 까지 채웠는가?" style="rhombus;whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+        <mxCell id="f6m-xLnm__HxBlaBY3NR-3" value="받을 수 있는 퀘스트의 &lt;br&gt;최대치 까지 채웠는가?" style="rhombus;whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
           <mxGeometry x="50" y="580" width="180" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="f6m-xLnm__HxBlaBY3NR-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fillColor=#a20025;strokeColor=#6F0000;" edge="1" parent="1" source="f6m-xLnm__HxBlaBY3NR-3" target="f6m-xLnm__HxBlaBY3NR-3">
+        <mxCell id="f6m-xLnm__HxBlaBY3NR-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fillColor=#a20025;strokeColor=#6F0000;" parent="1" source="f6m-xLnm__HxBlaBY3NR-3" target="f6m-xLnm__HxBlaBY3NR-3" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="250" y="620" />
@@ -1191,19 +1191,19 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="f6m-xLnm__HxBlaBY3NR-7" value="NO" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="f6m-xLnm__HxBlaBY3NR-6">
+        <mxCell id="f6m-xLnm__HxBlaBY3NR-7" value="NO" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="f6m-xLnm__HxBlaBY3NR-6" vertex="1" connectable="0">
           <mxGeometry x="-0.3814" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="f6m-xLnm__HxBlaBY3NR-8" value="퀘스트 생성 종료" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
+        <mxCell id="f6m-xLnm__HxBlaBY3NR-8" value="퀘스트 생성 종료" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" parent="1" vertex="1">
           <mxGeometry x="80" y="690" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="vyf2hsDfCkzWh-qYu4Y7" name="마을 불러오기">
-    <mxGraphModel dx="2954" dy="1196" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="1688" dy="683" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1236,7 +1236,7 @@
         <mxCell id="3RWySg2lwEFTHKZosy4Q-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="3RWySg2lwEFTHKZosy4Q-5" target="3RWySg2lwEFTHKZosy4Q-11" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="3RWySg2lwEFTHKZosy4Q-5" value="건물 불러오기" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="3RWySg2lwEFTHKZosy4Q-5" value="마을 뼈대 불러오기" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="40" y="340" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="3RWySg2lwEFTHKZosy4Q-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="3RWySg2lwEFTHKZosy4Q-6" target="3RWySg2lwEFTHKZosy4Q-5" edge="1">
@@ -1258,7 +1258,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="PFsdit6fNVnqE5I66BYH" name="전투">
-    <mxGraphModel dx="2954" dy="1196" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1182" dy="478" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
