@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PathFinding : MonoBehaviour
 {
-    [SerializeField] Transform _seeker,_target;
+  //  [SerializeField] Transform _seeker,_target;
 
     Grided _grid;
     // Start is called before the first frame update
@@ -12,66 +13,75 @@ public class PathFinding : MonoBehaviour
     {
         _grid = GetComponent<Grided>();
     }
-
+    /*
     private void Update()
     {
         FindPath(_seeker.position, _target.position);
+    }*/
+
+    public void StartFindPath(Vector3 startPos,Vector3 targetPos)
+    {
+        StartCoroutine(FindPath(startPos, targetPos));
     }
 
-    void FindPath(Vector3 startPos,Vector3 goalPos)
+    IEnumerator FindPath(Vector3 startPos,Vector3 goalPos)
     {
+        Vector3[] wayPoints = new Vector3[0];
+        bool pathSuccess = false;
+
         Node startNode = _grid.NodeFormWoldPosition(startPos);
         Node goalNode = _grid.NodeFormWoldPosition(goalPos);
 
-        Heap<Node> openSet = new Heap<Node>(_grid._maxSize);
-        HashSet<Node> closeSet = new HashSet<Node>();//끝난길을 넣어두는곳
-        openSet.Add(startNode);
-
-        while(openSet._count >0)
+        if(startNode._walkable && goalNode._walkable)
         {
-            /*
-            Node node = openSet[0];
-            for(int n = 1; n< openSet.Count;n++)
+            Heap<Node> openSet = new Heap<Node>(_grid._maxSize);
+            HashSet<Node> closeSet = new HashSet<Node>();//끝난길을 넣어두는곳
+            openSet.Add(startNode);
+
+            while (openSet._count > 0)
             {
-                if(openSet[n]._fCost<node._fCost|| openSet[n]._fCost == node._fCost)
+                Node currntNod = openSet.RemoveFirst();
+                closeSet.Add(currntNod);
+
+                if(currntNod == goalNode)
                 {
-                    if (openSet[n]._hCost < node._hCost)
-                        node = openSet[n];
+                    pathSuccess = true;
+                    break;
                 }
-            }
-            openSet.Remove(node);
-            
-             */
-            Node node = openSet.RemoveFirst();
 
-            closeSet.Add(node);
+                int count = 0;
 
-            if(node == goalNode)//시작점과 골인지점이 같으면 걸러주는 용도
-            {
-                //패스 재설정
-                RetracePath(startNode,goalNode);
-                return;
-            }
-
-            foreach(Node neighbour in _grid.GetNeighbours(node))
-            {
-                if (!neighbour._walkable || closeSet.Contains(neighbour))
-                    continue;
-
-                int newCostToNeighbour = node._gCost + GetDistance(node, neighbour);
-
-                if(newCostToNeighbour<neighbour._gCost || !openSet.Contains(neighbour))
+                foreach (Node neighbour in _grid.GetNeighbours(currntNod))
                 {
-                    neighbour._gCost = newCostToNeighbour;
-                    neighbour._hCost = GetDistance(neighbour, goalNode);
-                    neighbour._parent = node;
-                    if (!openSet.Contains(neighbour))
-                        openSet.Add(neighbour);
+                    if (!neighbour._walkable || closeSet.Contains(neighbour))
+                        continue;
+                    count++;
+
+                    int newCostToNeighbour = currntNod._gCost + GetDistance(currntNod, neighbour);
+
+                    if (newCostToNeighbour < neighbour._gCost || !openSet.Contains(neighbour))
+                    {
+                        neighbour._gCost = newCostToNeighbour;
+                        neighbour._hCost = GetDistance(neighbour, goalNode);
+                        neighbour._parent = currntNod;
+                        if (!openSet.Contains(neighbour))
+                            openSet.Add(neighbour);
+                    }
                 }
+                Debug.Log("neughbour check count" + count.ToString());
             }
         }
+
+        yield return null;
+
+        if(pathSuccess)
+        {
+            wayPoints = RetracePath(startNode, goalNode);
+        }
+        PathRequestManager._instance.FinishedProcessingPath(wayPoints, pathSuccess);
+
     }
-    void RetracePath(Node startNode,Node endNode)
+    Vector3[] RetracePath(Node startNode,Node endNode)
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
@@ -80,9 +90,14 @@ public class PathFinding : MonoBehaviour
             path.Add(currentNode);//현재 노드 추가
             currentNode = currentNode._parent; //현재 노드는 노드의 부모노드
         }
-        path.Reverse();
+        // path.Reverse();
 
-        _grid._path = path;
+        // _grid._path = path;
+
+        Vector3[] wayPoints = SimplifyPath(path);
+        Array.Reverse(wayPoints);
+
+        return wayPoints;
     }
 
     int GetDistance(Node nodeA,Node nodeB)
@@ -94,4 +109,22 @@ public class PathFinding : MonoBehaviour
             return 14 * dstY + 10 * (dstX - dstY);
         return 14 * dstX + 10 * (dstY - dstX);
     }
+
+    Vector3[] SimplifyPath(List<Node> path)
+    {
+        List<Vector3> wayPoints = new List<Vector3>();
+        Vector2 direcstionOld = Vector2.zero;
+
+        wayPoints.Add(path[0]._wolrdPosition);
+        for(int n= 1;n<path.Count;n++)
+        {
+            Vector2 directionNew = new Vector2(path[n - 1]._gX - path[n]._gX, path[n - 1]._gY - path[n]._gY);
+
+            if (directionNew != direcstionOld)
+                wayPoints.Add(path[n]._wolrdPosition);
+            direcstionOld = directionNew;
+        }
+        return wayPoints.ToArray();
+    }
+
 }

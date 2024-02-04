@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SandBag : MonoBehaviour,HitModel
 {
+
     public void TakeDamege(DemageModel damageModel)
     {
         Debug.Log(damageModel.basedamage);

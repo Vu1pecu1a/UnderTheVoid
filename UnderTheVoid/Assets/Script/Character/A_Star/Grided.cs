@@ -63,32 +63,12 @@ public class Grided : MonoBehaviour
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(_gridWorldSize.x, 1, _gridWorldSize.y));
 
-        if(_onlyDisplayPathGizmos)
+        if (_grid != null && _onlyDisplayPathGizmos)
         {
-            if (_path != null)
+            foreach (Node node in _grid)
             {
-                foreach (Node node in _path)
-                {
-                        Gizmos.color = Color.black;
-                        Gizmos.DrawCube(node._wolrdPosition, Vector3.one * (_nodeDiameter - 0.1f));
-                }
-            }
-        }
-        else//그리드가 있을 때 만
-        {
-            if (_path != null)
-            {
-                foreach (Node node in _grid)
-                {
-                    Gizmos.color = node._walkable ? Color.white : Color.red;
-                    if (_path != null)
-                    {
-                        if (_path.Contains(node))
-                            Gizmos.color = Color.black;
-                    }
-
-                    Gizmos.DrawCube(node._wolrdPosition, Vector3.one * (_nodeDiameter - 0.1f));
-                }
+                Gizmos.color = (node._walkable) ? Color.white : Color.red;
+                Gizmos.DrawCube(node._wolrdPosition, Vector3.one * (_nodeDiameter - 0.1f));
             }
         }
     }

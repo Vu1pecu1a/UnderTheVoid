@@ -5,6 +5,11 @@ using static UnityEngine.GraphicsBuffer;
 
 public class MonsterBase : FSM<MonsterBase> ,HitModel
 {
+    public delegate void MoveAction();
+    public delegate void AttackAction();
+    public event MoveAction MoveEvent;
+    public event AttackAction AttackEvent;
+
     public DemageModel DM;
 
     NavMeshAgent agent { get; set; }
@@ -12,10 +17,14 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     [SerializeField]
     public Transform target;
     [SerializeField]
-    float attackRange = 0.8f;
+    float attackRange = 2.8f,attackSpeed = 0.5f;
     [SerializeField]
     int hp { get; set; }
     public int HP;
+    public int Pow = 1,Int = 3;
+   
+
+    public float AttackSpeed;
     private void Awake()
     {
        
@@ -29,9 +38,10 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         }
         _agent = agent;
         hp = HP;
+        AttackSpeed = attackSpeed;
         ResetState();
         InitState(this, IDEL.Instance);
-        DM = new DemageModel(1,DamageType.Slash);
+        DM = new DemageModel(1,DamageType.Freeze);
         StartCoroutine(StartFSM());
     }
 
@@ -76,11 +86,15 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         else
         ChageState(Attack.Instance);
     }
-    
-    
-    public void cal()
+    IEnumerator CountAttackSpeed()
     {
-        
+        yield return new WaitForSeconds(attackSpeed);
+        ChageState(IDEL.Instance);
+    }
+    
+    public void attackCoolTime()
+    {
+        StartCoroutine(CountAttackSpeed());
     }
 
     public void _Attack()
@@ -90,6 +104,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
     public void StopMove()
     {
+        MoveEvent();
         StopCoroutine(AttackRange());
     }
 
@@ -97,12 +112,17 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         if (Vector3.Distance(gameObject.transform.position, target.position) >= attackRange)
         {
+            Debug.Log(Vector3.Distance(gameObject.transform.position, target.position));
             return true;
         }
         else return false;
 
     }
-    
+
+    public void AttackToTarget()
+    {
+        AttackEvent();
+    }
 
     public void TakeDamege(DemageModel damageModel)
     {
@@ -155,11 +175,16 @@ class Attack : FSMSingleton<Attack>, InterfaceFsmState<MonsterBase>
     public void Enter(MonsterBase e)
     {
         Debug.Log("공격상태 진입");
+        DamageController.DealDamage(e.target.GetComponent<HitModel>(), e.DM,e.target);
+
+        //TextRendererParticleSystem.i.SpawnParticle(e.target.position+Vector3.up, e.DM.basedamage.ToString(), Color.red);
+        e.attackCoolTime();
+        e.AttackToTarget();
     }
 
     public void Execute(MonsterBase e)
     {
-        DamageController.DealDamage(e.target.GetComponent<HitModel>(), e.DM);
+       
     }
 
     public void Exit(MonsterBase e)

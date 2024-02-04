@@ -5,8 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Necromancy.UI
-{
+
     [Serializable]
     public struct SymbolsTextureData
     {
@@ -43,9 +42,14 @@ namespace Necromancy.UI
         }
     }
 
+
     [RequireComponent(typeof(ParticleSystem))]
     public class TextRendererParticleSystem  : MonoBehaviour
     {
+        
+
+        public static TextRendererParticleSystem i;
+
         public SymbolsTextureData textureData;        
 
         private ParticleSystemRenderer particleSystemRenderer;
@@ -56,18 +60,31 @@ namespace Necromancy.UI
         {
             SpawnParticle(transform.position, "gg", Color.red);
         }
-
-        public void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.Space))
+        
+        public Color colorSwitch(DamageType type)
+        {   
+            switch(type)
             {
-                SpawnParticle(Vector3.zero, "123456789123456789", Color.red);
+            case DamageType.Slash:
+                return Color.white;
+            case DamageType.Bash:
+                return Color.white;
+            case DamageType.Stab:
+                return Color.white;
+            case DamageType.Fire:
+                return Color.red;
+            case DamageType.Freeze:
+                return Color.cyan;
+            case DamageType.Ligthning:
+                return Color.blue;
+            default:
+                return Color.black;
             }
         }
-
+        
         public void Start()
         {
-            SpawnParticle(Vector3.one, "Fuck Russia!", Color.red);
+            i = this;
         }
 
         public void SpawnParticle(Vector3 position, float amount, Color color, float? startSize = null)
@@ -78,8 +95,56 @@ namespace Necromancy.UI
             if (amountInt > 0) str = "+" + str;
             SpawnParticle(position, str, color, startSize);
         }
+    public void SpawnParticle(Vector3 position, string message, DamageType type, float? startSize = null)
+    {
+        var texCords = new Vector2[24];
+        var messageLenght = Mathf.Min(23, message.Length);
+        texCords[texCords.Length - 1] = new Vector2(0, messageLenght);
+        for (int i = 0; i < texCords.Length; i++)
+        {
+            if (i >= messageLenght) break;
+            texCords[i] = textureData.GetTextureCoordinates(message[i]);
+        }
 
-        public void SpawnParticle(Vector3 position, string message, Color color, float? startSize = null)
+        var custom1Data = CreateCustomData(texCords);
+        var custom2Data = CreateCustomData(texCords, 12);
+
+        if (particleSystem == null) particleSystem = GetComponent<ParticleSystem>();
+
+        if (particleSystemRenderer == null)
+        {
+            particleSystemRenderer = particleSystem.GetComponent<ParticleSystemRenderer>();
+            var streams = new List<ParticleSystemVertexStream>();
+            particleSystemRenderer.GetActiveVertexStreams(streams);
+            if (!streams.Contains(ParticleSystemVertexStream.UV2)) streams.Add(ParticleSystemVertexStream.UV2);
+            if (!streams.Contains(ParticleSystemVertexStream.Custom1XYZW)) streams.Add(ParticleSystemVertexStream.Custom1XYZW);
+            if (!streams.Contains(ParticleSystemVertexStream.Custom2XYZW)) streams.Add(ParticleSystemVertexStream.Custom2XYZW);
+            particleSystemRenderer.SetActiveVertexStreams(streams);
+        }
+
+         
+       
+        var emitParams = new ParticleSystem.EmitParams
+        {
+            startColor = colorSwitch(type),
+            position = position,
+            applyShapeToPosition = true,
+            startSize3D = new Vector3(messageLenght, 1, 1)
+        };
+        if (startSize.HasValue) emitParams.startSize3D *= startSize.Value * particleSystem.main.startSizeMultiplier;
+        particleSystem.Emit(emitParams, 1);
+
+        var customData = new List<Vector4>();
+        particleSystem.GetCustomParticleData(customData, ParticleSystemCustomData.Custom1);
+        customData[customData.Count - 1] = custom1Data;
+        particleSystem.SetCustomParticleData(customData, ParticleSystemCustomData.Custom1);
+
+        particleSystem.GetCustomParticleData(customData, ParticleSystemCustomData.Custom2);
+        customData[customData.Count - 1] = custom2Data;
+        particleSystem.SetCustomParticleData(customData, ParticleSystemCustomData.Custom2);
+    }
+
+    public void SpawnParticle(Vector3 position, string message, Color color, float? startSize = null)
         {
             var texCords = new Vector2[24]; //массив из 24 элемент - 23 символа + длина сообщения
             var messageLenght = Mathf.Min(23, message.Length);
@@ -179,4 +244,3 @@ namespace Necromancy.UI
             return data;
         }
     }
-}

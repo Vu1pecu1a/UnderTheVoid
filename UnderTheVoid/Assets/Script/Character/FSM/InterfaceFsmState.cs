@@ -33,10 +33,4 @@ public enum DamageType
     Freeze,
     Ligthning
 }
-public class DamageController
-{
-    public static void DealDamage(HitModel damageable, DemageModel damageModel)
-    {
-        damageable.TakeDamege(damageModel);
-    }
-}
+

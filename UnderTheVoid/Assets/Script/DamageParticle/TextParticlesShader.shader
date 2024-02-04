@@ -45,16 +45,12 @@ Shader "Custom/TextParticles"
             uniform uint _Cols;
             uniform uint _Rows;
             
-            v2f vert (appdata v)
+            v2f vert (appdata v) // 텍스트 길이
             {
                 v2f o;
-                //Почему длина сообщения передается именно в последних разрядах w-координаты вектора?
-                //Так проще всего получить эту длину внутри шейдера.
-                //Достаточно получить остаток от деления на 100.
                 float textLength = ceil(fmod(v.customData2.w, 100));
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                //Получаем размер UV текстуры, исходя из кол-ва строк и столбцов
                 o.uv.xy = v.uv.xy * fixed2(textLength / _Cols, 1.0 / _Rows);
                 o.uv.zw = v.uv.zw;
                 o.color = v.color;                
@@ -63,8 +59,10 @@ Shader "Custom/TextParticles"
                 return o;
             }
             
+
             fixed4 frag (v2f v) : SV_Target
             {
+
                 fixed2 uv = v.uv.xy;
                 //Индекс символа в сообщении
                 uint ind = floor(uv.x * _Cols);
