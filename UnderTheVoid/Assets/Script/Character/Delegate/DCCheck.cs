@@ -28,7 +28,7 @@ public class DCCheck : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        DM.basedamage = onwer.Int;
+        DM.basedamage = onwer.ATK;
         Debug.Log("Enter");
         if (other.GetComponent<HitModel>() == null)
         {

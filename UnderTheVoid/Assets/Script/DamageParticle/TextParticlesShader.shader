@@ -3,9 +3,8 @@ Shader "Custom/TextParticles"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        //Количество строк и столбцов в теории может быть меньше 10, но никак не больше
-        _Cols ("Columns Count", Int) = 5
-        _Rows ("Rows Count", Int) = 3
+        _Cols ("Columns Count", Int) = 10
+        _Rows ("Rows Count", Int) = 10
     }
     SubShader
     {            
@@ -27,10 +26,9 @@ Shader "Custom/TextParticles"
                 float4 vertex : POSITION;
                 fixed4 color : COLOR;
                 float4 uv : TEXCOORD0;
-                //Те самые вектора с customData
                 float4 customData1 : TEXCOORD1;
                 float4 customData2 : TEXCOORD2;
-            };           
+            };
 
             struct v2f
             {
@@ -52,7 +50,8 @@ Shader "Custom/TextParticles"
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv.xy = v.uv.xy * fixed2(textLength / _Cols, 1.0 / _Rows);
-                o.uv.zw = v.uv.zw;
+                //o.uv.xy = v.uv.xy * fixed2(1.0 / _Cols, 1.0 / _Rows) * fixed2(v.customData2.x, v.customData2.y);
+                o.uv.zw = v.uv.zw * fixed2(textLength / _Cols, 1.0 / _Rows);
                 o.color = v.color;                
                 o.customData1 = floor(v.customData1);
                 o.customData2 = floor(v.customData2);
@@ -64,24 +63,19 @@ Shader "Custom/TextParticles"
             {
 
                 fixed2 uv = v.uv.xy;
-                //Индекс символа в сообщении
                 uint ind = floor(uv.x * _Cols);
 
                 uint x = 0;
                 uint y = 0;
 
-                //Индекс координаты вектора, содержащий этот элемент
                 //0-3 - customData1
                 //4-7 - customData2
                 uint dataInd = ind / 3;
-                //Получаем значение всех 6 разрядов упакованных в нужный float
                 uint sum = dataInd < 4 ? v.customData1[dataInd] : v.customData2[dataInd - 4];
 
-                //Непосредственно распаковка float и получение строки и столбца символа
                 for(int i = 0; i < 3; ++i)
                 {
                     if (dataInd > 3 & i == 3) break;
-                    //округляем до большего, иначе получим 10^2 = 99 и т.д.
                     uint val = ceil(pow(10, 5 - i * 2));
                     x = sum / val;
                     sum -= x * val;
@@ -95,8 +89,6 @@ Shader "Custom/TextParticles"
 
                 float cols = 1.0 / _Cols;
                 float rows = 1.0 / _Rows;
-                //Сдвигаем UV-координаты, используя кол-во строк, столбцов, индекс
-                //и номер строки и столбца элемента
                 uv.x += x * cols - ind * rows;
                 uv.y += y * rows;
                 

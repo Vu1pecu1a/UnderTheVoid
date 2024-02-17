@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FSM <T> : MonoBehaviour
+public class FSM <T> : Base
 {
     T owner; // 상태 소유자
     InterfaceFsmState<T> currentState = null; //현재 상태

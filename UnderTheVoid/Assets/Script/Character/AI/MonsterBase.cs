@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
@@ -7,47 +8,65 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 {
     public delegate void MoveAction();
     public delegate void AttackAction();
-    public event MoveAction MoveEvent;
-    public event AttackAction AttackEvent;
-
-    public DemageModel DM;
-
-    NavMeshAgent agent { get; set; }
-    public NavMeshAgent _agent;
-    [SerializeField]
-    public Transform target;
-    [SerializeField]
-    float attackRange = 2.8f,attackSpeed = 0.5f;
-    [SerializeField]
-    int hp { get; set; }
-    public int HP;
-    public int Pow = 1,Int = 3;
-   
-
-    public float AttackSpeed;
+    public delegate void DieAction();
+    public virtual event MoveAction MoveEvent;
+    public virtual event AttackAction AttackEvent;
+    protected virtual event DieAction DieEvent;
     private void Awake()
     {
        
     }
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
+    {
+        ResetState();
+        InitState(this, IDEL.Instance);
+    }
+
+    protected void ResetState()
     {
         if (agent == null)
         {
             agent = this.gameObject.GetComponent<NavMeshAgent>();
         }
+        if (_animator == null)
+        {
+            _animator = gameObject.GetComponent<Animator>();
+        }
         _agent = agent;
-        hp = HP;
-        AttackSpeed = attackSpeed;
-        ResetState();
-        InitState(this, IDEL.Instance);
-        DM = new DemageModel(1,DamageType.Freeze);
-        StartCoroutine(StartFSM());
+        _agent.stoppingDistance = attackRange;
+        AttackEvent += Debug_log;
+        DieEvent += Debug_Die;
+    }
+    void Debug_log()
+    {
     }
 
-    private void ResetState()
+    public void TargetlockOn()//타겟확정 
+    {
+        target.GetComponent<MonsterBase>().DieEvent += TargetisNull;
+    }
+
+    public virtual void Search()
     {
         
+    }
+
+    void TargetisNull()
+    {
+        Debug.Log(" 상대 사망 ");
+        target = null;
+    }
+
+    void Debug_Die()
+    {
+        Debug.Log(gameObject.name+"죽음");
+        if(state.Equals(AI_State.Die))
+            Debug.Log("고마해라 마이무것다");
+        else
+        {
+            ChageState(Die.Instance);
+        }
     }
 
     private void OnEnable()
@@ -66,30 +85,53 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
            ChageState(Move.Instance);
         }else if(Input.GetKeyDown(KeyCode.R))
         {
+            if(state==AI_State.Die)
+            {
+
+            }else
            ChageState(IDEL.Instance);
         }
-    }
 
-    IEnumerator StartFSM()
-    {
-        yield return null;
+
         FsmUpdate();
-        StartCoroutine(StartFSM());
     }
 
-    IEnumerator AttackRange()
+   public void AttackRange()
     {
-        yield return new WaitForSeconds(0.1f);
+        
+        if(target.gameObject.GetComponent<MonsterBase>().HP <= 0)
+            target = null;
 
-        if(isAttack()==true)
-        StartCoroutine(AttackRange());
+        if (target == null)
+            ChageState(IDEL.Instance);
+
+        if (isAttack() == true)
+            return;
         else
-        ChageState(Attack.Instance);
+        {
+            switch (aI)
+            {
+                case AI_TYPE.Melee:
+                    ChageState(Attack.Instance);
+                    break;
+                case AI_TYPE.Range:
+                    ChageState(RangeAttack.Instance);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     IEnumerator CountAttackSpeed()
     {
-        yield return new WaitForSeconds(attackSpeed);
-        ChageState(IDEL.Instance);
+        yield return new WaitForSeconds(1/attackSpeed);
+
+        if (target == null)
+            ChageState(IDEL.Instance);
+        else if (aI == AI_TYPE.Melee)
+            ChageState(Attack.Instance);
+        else if(aI == AI_TYPE.Range)
+            ChageState(RangeAttack.Instance);
     }
     
     public void attackCoolTime()
@@ -99,51 +141,105 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
     public void _Attack()
     {
-        StartCoroutine(AttackRange());
+    }
+
+    public void _targetDown()
+    {
+        if (target == null)
+            return;
+
+        if (target.gameObject.GetComponent<MonsterBase>().HP <= 0)
+            target = null;
+
+        if (target == null)
+            ChageState(IDEL.Instance);
     }
 
     public void StopMove()
     {
         MoveEvent();
-        StopCoroutine(AttackRange());
     }
 
     bool isAttack()
     {
-        if (Vector3.Distance(gameObject.transform.position, target.position) >= attackRange)
+        if (target == null)
+            return false;
+        if (Vector3.Distance(gameObject.transform.position, target.transform.position) >= attackRange)
         {
-            Debug.Log(Vector3.Distance(gameObject.transform.position, target.position));
             return true;
         }
         else return false;
-
     }
 
-    public void AttackToTarget()
+    public void AttackToTarget()//공격 이벤트용 
     {
-        AttackEvent();
+        this.AttackEvent();
     }
 
-    public void TakeDamege(DemageModel damageModel)
+
+    public void BowAttack()
     {
-        hp -= damageModel.basedamage;
+        this.AttackEvent();
+        _animator.SetFloat("AttackSpeed", attackSpeed);
+        DM.basedamage = D_calcuate.i.bowshot(atk);
+        DM.damageType = DamageType.Stab;
+        if (target == null)
+            return;
+        DamageController.DealDamage(target.GetComponent<HitModel>(), DM, target.transform);
+    }
+
+    public void MeleeAttack()
+    {
+        this.AttackEvent();
+        DM.basedamage = atk;
+        DM.damageType = DamageType.Bash;
+        if (target == null)
+            return;
+        DamageController.DealDamage(target.GetComponent<HitModel>(), DM, target.transform);
+    }
+
+    public void DIe()//사망이벤트
+    {
+        DieEvent();
+    }
+
+    public void TakeDamege(DemageModel damageModel) // 대미지 계산 파츠
+    {
+        if (state == AI_State.Die)
+            return;
+        if (hp > 0)
+            hp -= damageModel.basedamage;
+
+        if (hp <= 0)
+        {
+            DIe();
+        }
     }
 }
+
 class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
 {
 
     public void Enter(MonsterBase e)
     {
+        e.State = AI_State.Idel;
         Debug.Log("기본상태 진입");
     }
 
     public void Execute(MonsterBase e)
     {
-
+        if (e.target == null)
+        {
+           e.Search();
+        }else
+        {
+            e.ChageState(Move.Instance);
+        }
     }
 
     public void Exit(MonsterBase e)
     {
+        e.TargetlockOn();
         Debug.Log("기본상태 탈출");
     }
 }
@@ -152,20 +248,24 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
     
     public void Enter(MonsterBase e)
     {
-        Debug.Log("이동상태 진입");
-        e._Attack();
+        e.State = AI_State.Walk;
+        e._animator.SetBool("Walk", true);
     }
 
     public void Execute(MonsterBase e)
     {
-        e._agent.isStopped = false;
-        e._agent.SetDestination(e.target.position);
+        if(e.target == null)
+        {
+            e.ChageState(IDEL.Instance);
+            return;
+        }
+        e._agent.SetDestination(e.target.transform.position);
+        e.AttackRange();
     }
 
     public void Exit(MonsterBase e)
     {
-        Debug.Log("이동상태 탈출");
-        e._agent.isStopped= true;
+        e._animator.SetBool("Walk", false);
     }
 }
 
@@ -174,25 +274,47 @@ class Attack : FSMSingleton<Attack>, InterfaceFsmState<MonsterBase>
 
     public void Enter(MonsterBase e)
     {
-        Debug.Log("공격상태 진입");
-        DamageController.DealDamage(e.target.GetComponent<HitModel>(), e.DM,e.target);
-
-        //TextRendererParticleSystem.i.SpawnParticle(e.target.position+Vector3.up, e.DM.basedamage.ToString(), Color.red);
+        e.State = AI_State.Attack;
+        e._animator.SetTrigger("Attack");
+        e._animator.SetFloat("AttackSpeed", 1);
         e.attackCoolTime();
-        e.AttackToTarget();
     }
 
     public void Execute(MonsterBase e)
     {
-       
+        e._targetDown();
+
     }
 
     public void Exit(MonsterBase e)
     {
-        Debug.Log("공격상태 탈출");
+        e.MeleeAttack();
+        e.StopAllCoroutines();
     }
 }
+class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
+{
 
+    public void Enter(MonsterBase e)
+    {
+        
+        e.State = AI_State.Attack;
+        e._animator.SetTrigger("Shot");
+        e.attackCoolTime();
+    }
+
+    public void Execute(MonsterBase e)
+    {
+        e._targetDown();
+
+    }
+
+    public void Exit(MonsterBase e)
+    {
+        e.BowAttack();
+        e.StopAllCoroutines();
+    }
+}
 class Stun : FSMSingleton<Stun>, InterfaceFsmState<MonsterBase>
 {
     public void Enter(MonsterBase e)
@@ -208,5 +330,26 @@ class Stun : FSMSingleton<Stun>, InterfaceFsmState<MonsterBase>
     public void Exit(MonsterBase e)
     {
         Debug.Log("기절상태 탈출");
+    }
+}
+class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
+{
+    public void Enter(MonsterBase e)
+    {
+        Debug.Log("사망상태 진입");
+        e.State = AI_State.Die;
+        e._animator.SetTrigger("Die");
+        e.StopAllCoroutines();
+    }
+
+    public void Execute(MonsterBase e)
+    {
+
+    }
+
+    public void Exit(MonsterBase e)
+    {
+        e._agent.isStopped = false;
+        Debug.Log("사망상태 탈출");
     }
 }

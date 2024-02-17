@@ -26,7 +26,7 @@ public class DemageModel
 
 public enum DamageType
 {
-    Slash,
+    Slash =0,
     Bash,
     Stab,
     Fire,
@@ -34,3 +34,17 @@ public enum DamageType
     Ligthning
 }
 
+public enum AI_TYPE
+{
+    Melee,
+    Range,
+    Heal
+}
+
+public enum AI_State
+{
+    Idel,
+    Walk,
+    Attack,
+    Die
+}
