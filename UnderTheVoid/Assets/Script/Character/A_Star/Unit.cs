@@ -59,9 +59,6 @@ public class Unit : MonoBehaviour
                     Gizmos.DrawLine(_path[n - 1], _path[n]);
             }
         }
-        else
-        {
-            Debug.Log(" ±æ ¾øÀ½");
-        }
+        
     }
 }

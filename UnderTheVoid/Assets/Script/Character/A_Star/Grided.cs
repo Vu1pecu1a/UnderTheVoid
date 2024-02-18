@@ -1,18 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 public class Grided : MonoBehaviour
 {
+    [Serializable]
+    public class TerrainType
+    {
+        public LayerMask _terrainMask;
+        public int _terrainPenalty;
+    }
+
     [SerializeField] LayerMask _unwalkableMask;
     [SerializeField] Vector2 _gridWorldSize;
     [SerializeField] float _nodeRadius;
     [SerializeField] bool _onlyDisplayPathGizmos;//보이기 옵션
-
+    [SerializeField] TerrainType[] _walkableRegions;
 
     Node[,] _grid;//2차원 배열
     float _nodeDiameter; //지름
     int _gridSizeX, _gridSizeY;//노드크기
+
+    Dictionary<int, int> _walkableRegionsDictionary = new Dictionary<int, int>();
+    LayerMask _walkableMask;
+
 
     public List<Node> _path
     {
@@ -29,6 +42,22 @@ public class Grided : MonoBehaviour
         _nodeDiameter = _nodeRadius*2;
         _gridSizeX = Mathf.RoundToInt(_gridWorldSize.x / _nodeDiameter);
         _gridSizeY = Mathf.RoundToInt(_gridWorldSize.y / _nodeDiameter);
+
+        Debug.Log(_walkableRegions.Length);
+        /*
+        foreach(TerrainType region in _walkableRegions)
+        {
+            _walkableMask.value |= region._terrainMask.value;
+
+            _walkableRegionsDictionary.Add((int)MathF.Log(region._terrainMask.value, 2), region._terrainPenalty);
+        }*/
+        for(int i = 1; i<= _walkableRegions.Length; i++)
+        {
+            TerrainType region = _walkableRegions[i - 1];
+            _walkableMask.value |= region._terrainMask.value;
+
+            _walkableRegionsDictionary.Add(region._terrainMask.value, region._terrainPenalty);
+        }
 
         CreatGird();
     }
@@ -53,8 +82,18 @@ public class Grided : MonoBehaviour
                     + Vector3.forward * (y * _nodeDiameter + _nodeRadius);
 
                 bool walkable = !(Physics.CheckSphere(wolrdPoint, _nodeRadius, _unwalkableMask));
+                int movePenealty = 0;
 
-                _grid[x, y] = new Node(walkable, wolrdPoint,x,y);
+                if(walkable)//못가는 길의 경우 패널티 계산 안함
+                {
+                    Ray ray = new Ray(wolrdPoint + Vector3.up, Vector3.down);
+                    RaycastHit rhit;
+                    if(Physics.Raycast(ray,out rhit,100,_walkableMask))
+                    {
+                        _walkableRegionsDictionary.TryGetValue(rhit.collider.gameObject.layer, out movePenealty);
+                    }
+                }
+                _grid[x, y] = new Node(walkable, wolrdPoint,x,y,movePenealty);
             }
         }
     }

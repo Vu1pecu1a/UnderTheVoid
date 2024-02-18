@@ -12,4 +12,11 @@ public class STATETMP : MonoBehaviour
     {
         text.text = mb.State.ToString(); 
     }
+
+    private void LateUpdate()
+    {
+        Vector3 dirFromCamera = transform.position - Camera.main.transform.position;
+
+        transform.LookAt(transform.position + dirFromCamera);
+    }
 }

@@ -15,6 +15,9 @@ public class PlayerBase : MonsterBase
     private void OnEnable()
     {
         D_calcuate.i.PlayerList.Add(this);
+        this.DieEvent += RemoveListthis;
+       if(this._agent!=null)
+        this.agent.enabled = true;
     }
 
     public override void Search()
@@ -39,7 +42,7 @@ public class PlayerBase : MonsterBase
             {
                 for (int j = 1; j < monsters.Count; j++)
                 {
-                    MonsterBase tmp = monsters[monsters.Count-j];//바꿔야할 대상
+                    MonsterBase tmp = monsters[monsters.Count-j-1];//바꿔야할 대상
                     monsters[monsters.Count-j-1] = monsters[monsters.Count-j];
                     monsters[monsters.Count-j] = tmp;
                     //여기까지가 스왑
@@ -52,10 +55,16 @@ public class PlayerBase : MonsterBase
             }
         }
         target = monsters[0];
-        Debug.Log(target.name);
+       // Debug.Log(target.name);
     }
     private void OnDisable()
     {
         D_calcuate.i.PlayerList.Remove(this);
+        this.agent.enabled = false;
+    }
+    void RemoveListthis()
+    {
+        D_calcuate.i.PlayerList.Remove(this);
+        this.agent.enabled = false;
     }
 }

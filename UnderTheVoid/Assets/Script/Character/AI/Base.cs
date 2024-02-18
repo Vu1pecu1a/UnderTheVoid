@@ -14,7 +14,7 @@ public abstract class Base : MonoBehaviour
     [SerializeField]
     public MonsterBase target;
     [SerializeField]
-    protected float attackRange = 2.8f, attackSpeed = 3f;
+    public float attackRange = 2.8f, attackSpeed = 3f;
     [SerializeField]
     protected int hp, atk, def, agi;
     [SerializeField]

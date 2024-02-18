@@ -35,7 +35,7 @@ public class D_calcuate : MonoBehaviour
 
 
     // public static event PlayerHit playerHit;
-    public static event PlayerDie playerDie;
+    //public static event PlayerDie playerDie;
 
 
     public static EventHandler hit;
@@ -68,11 +68,5 @@ public class D_calcuate : MonoBehaviour
     {
         int b = a * 2;
         return b;
-    }
-    static void Swap(ref int a, ref int b)
-    {
-        int temp = a;
-        a = b;
-        b = temp;
     }
 }

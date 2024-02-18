@@ -60,9 +60,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
     void Debug_Die()
     {
-        Debug.Log(gameObject.name+"죽음");
         if(state.Equals(AI_State.Die))
-            Debug.Log("고마해라 마이무것다");
+        { }
         else
         {
             ChageState(Die.Instance);
@@ -71,7 +70,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
     private void OnEnable()
     {
-        D_calcuate.playerDie += playerDie;
+        //D_calcuate.playerDie += playerDie;
     }
     void playerDie()
     {
@@ -124,11 +123,11 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     }
     IEnumerator CountAttackSpeed()
     {
+        if (target == null || target.State == AI_State.Die)
+            ChageState(IDEL.Instance);
         yield return new WaitForSeconds(1/attackSpeed);
 
-        if (target == null)
-            ChageState(IDEL.Instance);
-        else if (aI == AI_TYPE.Melee)
+        if (aI == AI_TYPE.Melee)
             ChageState(Attack.Instance);
         else if(aI == AI_TYPE.Range)
             ChageState(RangeAttack.Instance);
@@ -148,8 +147,13 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         if (target == null)
             return;
 
+        transform.LookAt(target.transform);
         if (target.gameObject.GetComponent<MonsterBase>().HP <= 0)
+        {
             target = null;
+            ChageState(IDEL.Instance);
+        }
+            
 
         if (target == null)
             ChageState(IDEL.Instance);
@@ -239,6 +243,7 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
 
     public void Exit(MonsterBase e)
     {
+        if(e.target!=null)
         e.TargetlockOn();
         Debug.Log("기본상태 탈출");
     }
@@ -259,6 +264,8 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
             e.ChageState(IDEL.Instance);
             return;
         }
+        e.Search();
+        if(e._agent!=null)
         e._agent.SetDestination(e.target.transform.position);
         e.AttackRange();
     }
@@ -276,14 +283,13 @@ class Attack : FSMSingleton<Attack>, InterfaceFsmState<MonsterBase>
     {
         e.State = AI_State.Attack;
         e._animator.SetTrigger("Attack");
-        e._animator.SetFloat("AttackSpeed", 1);
+        e._animator.SetFloat("AttackSpeed", e.attackSpeed);
         e.attackCoolTime();
     }
 
     public void Execute(MonsterBase e)
     {
         e._targetDown();
-
     }
 
     public void Exit(MonsterBase e)
@@ -297,7 +303,6 @@ class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
 
     public void Enter(MonsterBase e)
     {
-        
         e.State = AI_State.Attack;
         e._animator.SetTrigger("Shot");
         e.attackCoolTime();
@@ -306,7 +311,6 @@ class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
     public void Execute(MonsterBase e)
     {
         e._targetDown();
-
     }
 
     public void Exit(MonsterBase e)
@@ -340,6 +344,7 @@ class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
         e.State = AI_State.Die;
         e._animator.SetTrigger("Die");
         e.StopAllCoroutines();
+        e.DIe();
     }
 
     public void Execute(MonsterBase e)

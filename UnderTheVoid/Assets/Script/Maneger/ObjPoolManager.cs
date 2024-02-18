@@ -50,7 +50,7 @@ public class ObjPoolManager : MonoBehaviour
             {
                 GameObject newItem = Instantiate(_poolobj[i]._prefobj);
 
-                string suffix = "_" + idx;
+                string suffix = _poolobj[i].name + "_" + idx;
 
                 AddTOPoolObjList(i, newItem, suffix);
 
@@ -75,6 +75,7 @@ public class ObjPoolManager : MonoBehaviour
             if (_poolobj[i]._prefobj.name == Code)
             {
                 int listIdx = 0;
+
                 for(listIdx = 0; listIdx < _poolobjList[i].Count; listIdx++)
                 {
                     if (_poolobjList[i][listIdx] == null)
@@ -108,10 +109,12 @@ public class ObjPoolManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.R))
         {
-            InstantiateAPS("Player", null);
+            GameObject a= Instantiate(_poolobj[2]._prefobj);
+            a.SetActive(true);
         }else if(Input.GetKeyUp(KeyCode.V))
         {
-            InstantiateAPS("Monster", null);
+            GameObject a = Instantiate(_poolobj[3]._prefobj);
+            a.SetActive(true);
         }
     }
     public GameObject InstantiateAPS(int idx, GameObject parent = null)

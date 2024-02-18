@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Diagnostics;//패스 체크용
 
 public class PathFinding : MonoBehaviour
 {
@@ -26,11 +27,19 @@ public class PathFinding : MonoBehaviour
 
     IEnumerator FindPath(Vector3 startPos,Vector3 goalPos)
     {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
         Vector3[] wayPoints = new Vector3[0];
         bool pathSuccess = false;
 
         Node startNode = _grid.NodeFormWoldPosition(startPos);
         Node goalNode = _grid.NodeFormWoldPosition(goalPos);
+        UnityEngine.Debug.Log(goalPos);
+        UnityEngine.Debug.Log(goalNode._gX);
+        UnityEngine.Debug.Log(goalNode._gY);
+
+        startNode._parent = startNode;
 
         if(startNode._walkable && goalNode._walkable)
         {
@@ -45,6 +54,8 @@ public class PathFinding : MonoBehaviour
 
                 if(currntNod == goalNode)
                 {
+                    sw.Stop();
+                    print("path found :" + sw.ElapsedMilliseconds + "ms");
                     pathSuccess = true;
                     break;
                 }
@@ -57,7 +68,8 @@ public class PathFinding : MonoBehaviour
                         continue;
                     count++;
 
-                    int newCostToNeighbour = currntNod._gCost + GetDistance(currntNod, neighbour);
+                    int newCostToNeighbour = currntNod._gCost + GetDistance(currntNod, neighbour)
+                        +neighbour._movementPenalty;
 
                     if (newCostToNeighbour < neighbour._gCost || !openSet.Contains(neighbour))
                     {
@@ -68,7 +80,7 @@ public class PathFinding : MonoBehaviour
                             openSet.Add(neighbour);
                     }
                 }
-                Debug.Log("neughbour check count" + count.ToString());
+               // Debug.Log("neughbour check count" + count.ToString());
             }
         }
 
@@ -77,6 +89,10 @@ public class PathFinding : MonoBehaviour
         if(pathSuccess)
         {
             wayPoints = RetracePath(startNode, goalNode);
+        }
+        else
+        {
+            print(" 길 없음");
         }
         PathRequestManager._instance.FinishedProcessingPath(wayPoints, pathSuccess);
 
@@ -126,5 +142,4 @@ public class PathFinding : MonoBehaviour
         }
         return wayPoints.ToArray();
     }
-
 }

@@ -29,5 +29,17 @@ public class CameraMover : MonoBehaviour
         {
             gameObject.transform.Translate(Vector3.left * movespeed);
         }
+        float wheelInput = Input.GetAxis("Mouse ScrollWheel");
+        if (wheelInput > 0)
+        {
+            if (Camera.main.orthographicSize > 2)
+                Camera.main.orthographicSize--;
+        }
+        else if (wheelInput < 0)
+        {
+
+            Camera.main.orthographicSize++;
+        }
+            
     }
 }

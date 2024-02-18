@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Node  : IHeapItem<Node>
+public class Node : IHeapItem<Node>
 {
     int _gridX;
     int _gridY;
@@ -8,13 +8,16 @@ public class Node  : IHeapItem<Node>
 
     public Node _parent//부모노드
     {
-        get;set;
+        get; set;
     }
 
     public bool _walkable
     {
         get; set;
     }
+
+    public int _movementPenalty { get; set; }
+
 
     public Vector3 _wolrdPosition
     {
@@ -51,12 +54,13 @@ public class Node  : IHeapItem<Node>
     }
 
 
-    public Node(bool walkable,Vector3 wolrdpos,int gridX,int gridY)
+    public Node(bool walkable,Vector3 wolrdpos,int gridX,int gridY,int penalty)
     {
         _walkable = walkable;
         _wolrdPosition = wolrdpos;
         _gridX = gridX;
         _gridY = gridY;
+        _movementPenalty = penalty;
     }
 
     public int CompareTo(Node nodeToCompare)
