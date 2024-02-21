@@ -109,11 +109,11 @@ public class ObjPoolManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.R))
         {
-            GameObject a= Instantiate(_poolobj[2]._prefobj);
+            GameObject a= Instantiate(_poolobj[0]._prefobj);
             a.SetActive(true);
         }else if(Input.GetKeyUp(KeyCode.V))
         {
-            GameObject a = Instantiate(_poolobj[3]._prefobj);
+            GameObject a = Instantiate(_poolobj[1]._prefobj);
             a.SetActive(true);
         }
     }

@@ -19,6 +19,7 @@ public class D_calcuate : MonoBehaviour
     [SerializeField]
     MonsterBase mb;
 
+    public GameObject UI_Canvas;
     public static D_calcuate i;
     delegate void CallintD(int d);
     public delegate int PlayerHit(MonsterBase A,int B);
@@ -32,7 +33,7 @@ public class D_calcuate : MonoBehaviour
 
     // public Dictionary<string, DemageModel> D_C = new Dictionary<string, DemageModel>();
 
-
+    public DemageModel Killer = new(9999, DamageType.Slash);
 
     // public static event PlayerHit playerHit;
     //public static event PlayerDie playerDie;

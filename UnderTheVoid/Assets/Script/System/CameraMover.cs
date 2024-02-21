@@ -29,6 +29,15 @@ public class CameraMover : MonoBehaviour
         {
             gameObject.transform.Translate(Vector3.left * movespeed);
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            gameObject.transform.Rotate(0,90,0);
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            gameObject.transform.Rotate(0, -90, 0);
+        }
+
         float wheelInput = Input.GetAxis("Mouse ScrollWheel");
         if (wheelInput > 0)
         {
@@ -40,6 +49,6 @@ public class CameraMover : MonoBehaviour
 
             Camera.main.orthographicSize++;
         }
-            
+
     }
 }

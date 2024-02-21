@@ -57,6 +57,12 @@ public class PlayerBase : MonsterBase
         target = monsters[0];
        // Debug.Log(target.name);
     }
+
+    public override void TakeDamege(DemageModel damageModel)
+    {
+        base.TakeDamege(damageModel);
+    }
+
     private void OnDisable()
     {
         D_calcuate.i.PlayerList.Remove(this);

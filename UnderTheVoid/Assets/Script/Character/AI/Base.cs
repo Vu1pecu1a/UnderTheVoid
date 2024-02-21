@@ -16,7 +16,7 @@ public abstract class Base : MonoBehaviour
     [SerializeField]
     public float attackRange = 2.8f, attackSpeed = 3f;
     [SerializeField]
-    protected int hp, atk, def, agi;
+    protected int MaxHp ,hp, atk, def, agi;
     [SerializeField]
     protected AI_TYPE aI;
     [SerializeField]

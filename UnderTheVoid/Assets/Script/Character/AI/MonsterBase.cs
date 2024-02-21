@@ -12,6 +12,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     public virtual event MoveAction MoveEvent;
     public virtual event AttackAction AttackEvent;
     protected virtual event DieAction DieEvent;
+    [SerializeField]
+    Renderer _HpBar;
     private void Awake()
     {
        
@@ -37,6 +39,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         _agent.stoppingDistance = attackRange;
         AttackEvent += Debug_log;
         DieEvent += Debug_Die;
+        hp = MaxHp;
+        _HpBar.gameObject.SetActive(true);
     }
     void Debug_log()
     {
@@ -61,10 +65,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     void Debug_Die()
     {
         if(state.Equals(AI_State.Die))
-        { }
-        else
         {
-            ChageState(Die.Instance);
+            Debug.Log("DIE");
         }
     }
 
@@ -79,19 +81,6 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-           ChageState(Move.Instance);
-        }else if(Input.GetKeyDown(KeyCode.R))
-        {
-            if(state==AI_State.Die)
-            {
-
-            }else
-           ChageState(IDEL.Instance);
-        }
-
-
         FsmUpdate();
     }
 
@@ -204,20 +193,29 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
     public void DIe()//사망이벤트
     {
+        State = AI_State.Die;
+        ChageState(Die.Instance);
         DieEvent();
     }
 
-    public void TakeDamege(DemageModel damageModel) // 대미지 계산 파츠
+    public void UIOFF()
+    {
+        _HpBar.gameObject.SetActive(false);
+    }
+
+    public virtual void TakeDamege(DemageModel damageModel) // 대미지 계산 파츠
     {
         if (state == AI_State.Die)
             return;
+
         if (hp > 0)
             hp -= damageModel.basedamage;
 
+        _HpBar.material.SetFloat("_FillAmount", (float)hp / MaxHp);
+       // Debug.Log((float)hp / MaxHp);
+
         if (hp <= 0)
-        {
             DIe();
-        }
     }
 }
 
@@ -294,6 +292,7 @@ class Attack : FSMSingleton<Attack>, InterfaceFsmState<MonsterBase>
 
     public void Exit(MonsterBase e)
     {
+        if(e.State == AI_State.Attack)
         e.MeleeAttack();
         e.StopAllCoroutines();
     }
@@ -315,7 +314,8 @@ class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
 
     public void Exit(MonsterBase e)
     {
-        e.BowAttack();
+        if (e.State == AI_State.Attack)
+            e.BowAttack();
         e.StopAllCoroutines();
     }
 }
@@ -344,7 +344,7 @@ class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
         e.State = AI_State.Die;
         e._animator.SetTrigger("Die");
         e.StopAllCoroutines();
-        e.DIe();
+        e.UIOFF();
     }
 
     public void Execute(MonsterBase e)
