@@ -39,15 +39,16 @@ public class EnemyBase : MonsterBase
             {
                 for (int j = 1; j < players.Count; j++)
                 {
-                    MonsterBase tmp = players[players.Count - j];//바꿔야할 대상
-                    players[players.Count - j - 1] = players[players.Count - j];
-                    players[players.Count - j] = tmp;
-                    //여기까지가 스왑
                     float alfa = Vector3.Distance(this.transform.position, players[players.Count - j].transform.position);//바꾸고 있는 객체
                     float beta = Vector3.Distance(this.transform.position, players[players.Count - j - 1].transform.position);
 
                     if (alfa > beta)
                         break;
+                    MonsterBase tmp = players[players.Count - j];//바꿔야할 대상
+                    players[players.Count - j] = players[players.Count - j-1];
+                    players[players.Count - j] = tmp;
+                    //여기까지가 스왑
+                    
                 }
             }
         }

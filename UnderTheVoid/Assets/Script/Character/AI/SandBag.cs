@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class SandBag : MonoBehaviour,HitModel
 {
-
+    [SerializeField]
+    private InvenShape _shape;
+    [SerializeField]
+    public bool[] israck; 
     public void TakeDamege(DemageModel damageModel)
     {
         Debug.Log(damageModel.basedamage);

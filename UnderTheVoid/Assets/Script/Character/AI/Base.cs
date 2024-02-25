@@ -11,6 +11,7 @@ public abstract class Base : MonoBehaviour
 
     protected NavMeshAgent agent { get; set; }
     public NavMeshAgent _agent;
+    public NavMeshObstacle _objstacle;
     [SerializeField]
     public MonsterBase target;
     [SerializeField]

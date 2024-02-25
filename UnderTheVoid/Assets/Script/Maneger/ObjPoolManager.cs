@@ -101,22 +101,10 @@ public class ObjPoolManager : MonoBehaviour
 
     void Start()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            GameObject a= Instantiate(_poolobj[0]._prefobj);
-            a.SetActive(true);
-        }else if(Input.GetKeyUp(KeyCode.V))
-        {
-            GameObject a = Instantiate(_poolobj[1]._prefobj);
-            a.SetActive(true);
-        }
     }
+    public static void DestroyAPS(GameObject obj) { obj.SetActive(false); }
+    // Update is called once per frame
     public GameObject InstantiateAPS(int idx, GameObject parent = null)
     {
         string pooledObjName = _poolobj[idx].name;
@@ -169,4 +157,26 @@ public class ObjPoolManager : MonoBehaviour
         return tmpObj;
 
     }
+}
+public static class PoolingSystemExtensions
+{
+    //-----------------------------
+    public static void DestroyAPS(this GameObject obj)
+    { ObjPoolManager.DestroyAPS(obj); }
+    //-----------------------------
+    /*
+    public static void PlaySoundRepeatedly(this GameObject soundObj, float volume = 1.0f)
+    { ObjPoolManager.PlaySoundRepeatedly(soundObj, volume); }
+    //-----------------------------
+    public static void PlaySound(this GameObject soundObj, float volume = 1.0f)
+    { ObjPoolManager.PlaySound(soundObj, volume); }
+    //-----------------------------
+    public static void StopSound(this GameObject soundObj)
+    { ObjPoolManager.StopSound(soundObj); }
+    //-----------------------------
+    public static void PlayEffect(this GameObject effObj, int emitCount) { ObjPoolManager.PlayEffect(effObj, emitCount); }
+    //-----------------------------
+    public static void PlayEffect(this GameObject effObj) { ObjPoolManager.PlayEffect(effObj); }
+    //-----------------------------
+    */
 }

@@ -35,8 +35,10 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         {
             _animator = gameObject.GetComponent<Animator>();
         }
+        if(_objstacle== null)_objstacle = gameObject.GetComponent<NavMeshObstacle>();
         _agent = agent;
         _agent.stoppingDistance = attackRange;
+        _objstacle.enabled= false;
         AttackEvent += Debug_log;
         DieEvent += Debug_Die;
         hp = MaxHp;
@@ -105,7 +107,11 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
                 case AI_TYPE.Range:
                     ChageState(RangeAttack.Instance);
                     break;
+                case AI_TYPE.Heal: 
+                    ChageState(Attack.Instance);
+                    break;
                 default:
+                    ChageState(Attack.Instance);
                     break;
             }
         }
@@ -116,10 +122,13 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             ChageState(IDEL.Instance);
         yield return new WaitForSeconds(1/attackSpeed);
 
-        if (aI == AI_TYPE.Melee)
+        if (State == AI_State.Attack)
+        {
+            if (aI == AI_TYPE.Melee)
             ChageState(Attack.Instance);
-        else if(aI == AI_TYPE.Range)
+            else if(aI == AI_TYPE.Range)
             ChageState(RangeAttack.Instance);
+        }
     }
     
     public void attackCoolTime()
@@ -131,7 +140,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
     }
 
-    public void _targetDown()
+    public void _targetDown()//적이 사망했는지 체크
     {
         if (target == null)
             return;
@@ -148,12 +157,12 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             ChageState(IDEL.Instance);
     }
 
-    public void StopMove()
+    public void StopMove()//이동이 종료되면 호출되는 이벤트
     {
         MoveEvent();
     }
 
-    bool isAttack()
+    bool isAttack()//사거리 체크용
     {
         if (target == null)
             return false;
@@ -169,6 +178,11 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         this.AttackEvent();
     }
 
+    IEnumerator gotoPool(float time,GameObject alfa) //불러온 이펙트 삭제
+    {
+        yield return new WaitForSeconds(time);
+        alfa.DestroyAPS();
+    }
 
     public void BowAttack()
     {
@@ -178,7 +192,11 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         DM.damageType = DamageType.Stab;
         if (target == null)
             return;
+        GameObject effecti = ObjPoolManager.i.InstantiateAPS("bowShot", null);
+        effecti.GetComponent<LineRenderer>().SetPosition(0, transform.position+Vector3.up);
+        effecti.GetComponent<LineRenderer>().SetPosition(1, target.transform.position + Vector3.up);
         DamageController.DealDamage(target.GetComponent<HitModel>(), DM, target.transform);
+        StartCoroutine(gotoPool(0.1f,effecti));
     }
 
     public void MeleeAttack()
@@ -251,6 +269,8 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
     
     public void Enter(MonsterBase e)
     {
+        e._objstacle.enabled = false;
+        e._agent.enabled = true;
         e.State = AI_State.Walk;
         e._animator.SetBool("Walk", true);
     }
@@ -262,7 +282,6 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
             e.ChageState(IDEL.Instance);
             return;
         }
-        e.Search();
         if(e._agent!=null)
         e._agent.SetDestination(e.target.transform.position);
         e.AttackRange();
@@ -271,6 +290,8 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
     public void Exit(MonsterBase e)
     {
         e._animator.SetBool("Walk", false);
+        e._agent.enabled= false;
+        e._objstacle.enabled = true;
     }
 }
 
@@ -294,7 +315,6 @@ class Attack : FSMSingleton<Attack>, InterfaceFsmState<MonsterBase>
     {
         if(e.State == AI_State.Attack)
         e.MeleeAttack();
-        e.StopAllCoroutines();
     }
 }
 class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
@@ -316,7 +336,6 @@ class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
     {
         if (e.State == AI_State.Attack)
             e.BowAttack();
-        e.StopAllCoroutines();
     }
 }
 class Stun : FSMSingleton<Stun>, InterfaceFsmState<MonsterBase>
@@ -343,6 +362,8 @@ class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
         Debug.Log("사망상태 진입");
         e.State = AI_State.Die;
         e._animator.SetTrigger("Die");
+        e._agent.enabled = false;
+        e._objstacle.enabled = false;
         e.StopAllCoroutines();
         e.UIOFF();
     }

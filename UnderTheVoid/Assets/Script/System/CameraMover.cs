@@ -8,6 +8,28 @@ public class CameraMover : MonoBehaviour
 {
     [SerializeField]
     float movespeed =1;
+    bool Stop;
+
+    public void TimeScaleUp()
+    {
+        if(Time.timeScale <4)
+        Time.timeScale += 1f;
+        Debug.Log(Time.timeScale);  
+    }
+    public void TimeScaleDown()
+    {
+        if (Time.timeScale > 0)
+            Time.timeScale -= 1f;
+        Debug.Log(Time.timeScale);
+    }
+
+    public void Puase()
+    {
+        if (Stop)
+            Time.timeScale = 1.0f;
+        else
+            Time.timeScale = 0.0f;
+    }
 
     // Update is called once per frame
     void Update()
@@ -46,9 +68,16 @@ public class CameraMover : MonoBehaviour
         }
         else if (wheelInput < 0)
         {
-
             Camera.main.orthographicSize++;
         }
 
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if(Stop==true)
+            Stop = false;
+            else
+                Stop= true;
+            Puase();
+        }
     }
 }
