@@ -6,6 +6,7 @@ TagManager:
   tags:
   - place
   - Monster
+  - MapPicea
   layers:
   - Default
   - TransparentFX
@@ -37,7 +38,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Donotpass
   - 
   m_SortingLayers:
   - name: Default

@@ -12,7 +12,10 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField]
     private List<Vector2Int> takenPositions = new List<Vector2Int>(); // 이미 배치된 위치 목록
-
+    [SerializeField]
+    private List<Vector2Int> endrooms = new List<Vector2Int>(); //엔드룸
+    [SerializeField]
+    private Dictionary<Vector2Int, GameObject> roomsdic = new Dictionary<Vector2Int, GameObject>();//실제 딕셔너리 목록
     public int RoomCount;
     void Start()
     {
@@ -22,42 +25,150 @@ public class MapGenerator : MonoBehaviour
     void GenerateMap()
     {
         Vector2Int startPosition = new Vector2Int(mapWidth / 2, mapHeight / 2); // 시작 위치는 맵의 중심
-
+        GameObject newRoom = Instantiate(roomPrefabs[0], new Vector3(startPosition.x, 0, startPosition.y), Quaternion.identity);
+        newRoom.gameObject.GetComponent<Renderer>().material.color = Color.black;
+        roomsdic.Add(startPosition, newRoom);
         takenPositions.Add(startPosition); // 시작 위치를 이미 배치된 위치에 추가
         int i = 0;
-        StartCoroutine(_newRoom(i));
+        StartCoroutine(_newRoom(i,startPosition));//방생성 시도
         // 방 배치
-        // 방 연결 등의 추가 로직을 구현할 수 있음
+    }
+    void NomalroomToEndRoom()
+    {
+        for (int alfa = 0; alfa < takenPositions.Count; alfa++)
+        {
+            int end =0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (PosContains(i, takenPositions[alfa]) == true)//주변 방 검사
+                    end++;
+            }
+            if (end == 1)
+            {
+                if(!endrooms.Contains(takenPositions[alfa]) && alfa!=0)
+                endrooms.Add(takenPositions[alfa]);//엔드룸 추가
+            }
+        }
+        foreach (Vector2Int v in endrooms)
+        {
+            if (takenPositions.Contains(v))
+                roomsdic[v].gameObject.GetComponent<Renderer>().material.color = Color.red;
+        }
+        
+        if(takenPositions.Count<MinRoom)
+        {
+            StopCoroutine("_newRoom");
+            ResetMap();
+        }
     }
 
-    IEnumerator _newRoom(int i)
+
+
+    IEnumerator _newRoom(int k,Vector2Int startPosition)
     {
-        yield return new WaitForSeconds(1f);
-        i++;
-        Vector2Int newPos = NewPosition(); // 새로운 위치를 찾음
-        GameObject newRoom = Instantiate(roomPrefabs[0], new Vector3(newPos.x, 0, newPos.y), Quaternion.identity); // 방 생성
-        takenPositions.Add(newPos);
-        if(i < RoomCount)
-        StartCoroutine(_newRoom(i));
+        yield return new WaitForSeconds(0.1f);
+        k++;
+
+        int t = takenPositions.Count;
+
+        if (endrooms.Contains(startPosition))
+        {
+            if (k < takenPositions.Count)//시도 
+                StartCoroutine(_newRoom(k, takenPositions[k]));
+            else
+                NomalroomToEndRoom();
+        }
+
+        NewPosition(startPosition + Vector2Int.up); // 방생성 시도
+        NewPosition(startPosition + Vector2Int.down);
+        NewPosition(startPosition + Vector2Int.left);
+        NewPosition(startPosition + Vector2Int.right);
+        
+        if(t==takenPositions.Count)
+        {
+          //  k--;
+        }
+
+        int end =0;
+        
+        for (int i = 0; i < 4; i++)
+        {
+            if (PosContains(i, startPosition) == true)//주변 방 검사
+                end++;
+        }
+
+        if (end == 1)
+        {
+            endrooms.Add(startPosition);//엔드룸 추가
+            roomsdic[startPosition].gameObject.GetComponent<Renderer>().material.color = Color.red;
+        }
+
+        if (takenPositions.Count<MaxRoom && k<100&& takenPositions.Count>k)//시도 
+            StartCoroutine(_newRoom(k, takenPositions[k]));
+        else if (k<MinRoom)
+        {
+            StartCoroutine(_newRoom(k, takenPositions[0]));
+        }
+        else if(MaxRoom<takenPositions.Count)
+        {
+            NomalroomToEndRoom();
+        }
+        else
+            NomalroomToEndRoom();
     }
 
-    Vector2Int NewPosition()
+    public void ResetMap()
     {
-        Vector2Int newPos = Vector2Int.zero;
+        GameObject[] findall = GameObject.FindGameObjectsWithTag("MapPicea");
+        foreach (GameObject a in findall)
+        {
+            Destroy(a);
+        }
+        takenPositions.Clear();
+        endrooms.Clear();
+        roomsdic.Clear();
+        GenerateMap();
+    }
+
+    void NewPosition(Vector2Int curpos)
+    {
+        Vector2Int newPos = curpos;
         int attempts = 0;
         
-        if(takenPositions.Contains(newPos) && attempts < 100 && Random.Range(0,9)<5)
+        if(!takenPositions.Contains(newPos))
         {
-            
+            for(int i=0;i<4;i++)
+            {
+                if (PosContains(i, newPos) == true)
+                    attempts++;
+            }
+
+            if (attempts == 1&&Random.Range(0,9)<5)
+            {
+                takenPositions.Add(newPos);//방생성 시도
+                GameObject newRoom = Instantiate(roomPrefabs[0], new Vector3(newPos.x, 0, newPos.y), Quaternion.identity);
+                roomsdic.Add(newPos, newRoom);
+            }                
         }
-            // 위치가 이미 배치된 위치에 있거나 시도 횟수가 100번을 넘으면 중지
-
-        return newPos;
     }
-
-    Vector2Int RandomDirection()
+    bool PosContains(int i,Vector2Int newPos)
     {
-        int dir = Random.Range(0, 4); // 랜덤한 방향 선택 (0: 위, 1: 오른쪽, 2: 아래, 3: 왼쪽)
+        switch (i)
+        {
+            case 0:
+                return takenPositions.Contains(newPos+Vector2Int.up);
+            case 1:
+                return takenPositions.Contains(newPos + Vector2Int.right);
+            case 2:
+                return takenPositions.Contains(newPos + Vector2Int.down);
+            case 3:
+                return takenPositions.Contains(newPos + Vector2Int.left);
+            default:
+                return takenPositions.Contains(newPos);
+        }
+    }
+    Vector2Int RandomDirection(int dir)
+    {
 
         switch (dir)
         {
