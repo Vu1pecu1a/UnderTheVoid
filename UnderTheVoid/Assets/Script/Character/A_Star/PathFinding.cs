@@ -9,10 +9,12 @@ public class PathFinding : MonoBehaviour
   //  [SerializeField] Transform _seeker,_target;
 
     Grided _grid;
+    MapGenerator MapGenerator;
     // Start is called before the first frame update
     private void Awake()
     {
         _grid = GetComponent<Grided>();
+        MapGenerator = GetComponent<MapGenerator>();
     }
     /*
     private void Update()
@@ -24,7 +26,10 @@ public class PathFinding : MonoBehaviour
     {
         StartCoroutine(FindPath(startPos, targetPos));
     }
-
+    public void StartFindPath(Vector2Int startPos, Vector2Int targetPos)
+    {
+        StartCoroutine(FindPathGrid(startPos, targetPos));
+    }
     IEnumerator FindPath(Vector3 startPos,Vector3 goalPos)
     {
         Stopwatch sw = new Stopwatch();
@@ -97,6 +102,74 @@ public class PathFinding : MonoBehaviour
         PathRequestManager._instance.FinishedProcessingPath(wayPoints, pathSuccess);
 
     }
+    IEnumerator FindPathGrid(Vector2Int alfa, Vector2Int beta)
+    {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
+        Vector2[] wayPoints = new Vector2[0];
+        bool pathSuccess = false;
+
+        Node startNode = MapGenerator.NodeFormCanvas(alfa);
+        Node goalNode = MapGenerator.NodeFormCanvas(beta);//목적지 노드
+
+        startNode._parent = startNode;
+
+        if (startNode._walkable && goalNode._walkable)
+        {
+            Heap<Node> openSet = new Heap<Node>(MapGenerator._maxSize);
+            HashSet<Node> closeSet = new HashSet<Node>();//끝난길을 넣어두는곳
+            openSet.Add(startNode);
+
+            while (openSet._count > 0)
+            {
+                Node currntNod = openSet.RemoveFirst();
+                closeSet.Add(currntNod);
+
+                if (currntNod == goalNode)
+                {
+                    sw.Stop();
+                    print("path found :" + sw.ElapsedMilliseconds + "ms");
+                    pathSuccess = true;
+                    break;
+                }
+
+                int count = 0;
+
+                foreach (Node neighbour in MapGenerator.GetNeighbours1234(currntNod))
+                {
+                    if (!neighbour._walkable || closeSet.Contains(neighbour))
+                        continue;
+                    count++;
+
+                    int newCostToNeighbour = currntNod._gCost + GetDistance(currntNod, neighbour);
+
+                    if (newCostToNeighbour < neighbour._gCost || !openSet.Contains(neighbour))
+                    {
+                        neighbour._gCost = newCostToNeighbour;
+                        neighbour._hCost = GetDistance(neighbour, goalNode);
+                        neighbour._parent = currntNod;
+                        if (!openSet.Contains(neighbour))
+                            openSet.Add(neighbour);
+                    }
+                }
+                // Debug.Log("neughbour check count" + count.ToString());
+            }
+        }
+
+        yield return null;
+
+        if (pathSuccess)
+        {
+            wayPoints = RetracePathV2(startNode, goalNode);
+        }
+        else
+        {
+            print(" 길 없음");
+        }
+        PathRequestManager._instance.FinishedProcessingPath(wayPoints, pathSuccess);
+
+    }
     Vector3[] RetracePath(Node startNode,Node endNode)
     {
         List<Node> path = new List<Node>();
@@ -111,6 +184,21 @@ public class PathFinding : MonoBehaviour
         // _grid._path = path;
 
         Vector3[] wayPoints = SimplifyPath(path);
+        Array.Reverse(wayPoints);
+
+        return wayPoints;
+    }
+    Vector2[] RetracePathV2(Node startNode, Node endNode)
+    {
+        List<Node> path = new List<Node>();
+        Node currentNode = endNode;
+        while (currentNode != startNode)
+        {
+            path.Add(currentNode);//현재 노드 추가
+            currentNode = currentNode._parent; //현재 노드는 노드의 부모노드
+        }
+
+        Vector2[] wayPoints = LongPath(path);
         Array.Reverse(wayPoints);
 
         return wayPoints;
@@ -139,6 +227,22 @@ public class PathFinding : MonoBehaviour
             if (directionNew != direcstionOld)
                 wayPoints.Add(path[n]._wolrdPosition);
             direcstionOld = directionNew;
+        }
+        return wayPoints.ToArray();
+    }
+    Vector2[] LongPath(List<Node> path)
+    {
+        List<Vector2> wayPoints = new List<Vector2>();
+        Vector2 direcstionOld = Vector2.zero;
+
+        wayPoints.Add(path[0]._wolrdPosition);
+        for (int n = 1; n < path.Count; n++)
+        {
+            //Vector2 directionNew = new Vector2(path[n - 1]._gX - path[n]._gX, path[n - 1]._gY - path[n]._gY);
+
+            //if (directionNew != direcstionOld)
+            wayPoints.Add(new Vector2(path[n]._gX, path[n]._gY));
+            //direcstionOld = directionNew;
         }
         return wayPoints.ToArray();
     }

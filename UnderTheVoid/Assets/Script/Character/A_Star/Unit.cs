@@ -6,6 +6,7 @@ public class Unit : MonoBehaviour
 {
     [SerializeField] Transform _target;
     float _speed = 10;
+    [SerializeField]
     Vector3[] _path;
     int _nextIndex;
 
@@ -26,7 +27,7 @@ public class Unit : MonoBehaviour
             StartCoroutine("FollowPath");
         }
     }
-
+    
     IEnumerator FollowPath()
     {
         Vector3 currentWayPoint = _path[0];

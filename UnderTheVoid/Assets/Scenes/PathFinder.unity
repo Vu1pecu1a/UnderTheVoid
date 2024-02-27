@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 158776404}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.7, y: 2, z: -36.1}
+  m_LocalPosition: {x: -29.22, y: 2, z: -36.1}
   m_LocalScale: {x: 30, y: 4, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -858,6 +858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 519081607}
+  _path: []
 --- !u!1 &630750364
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,7 +991,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   _gridWorldSize: {x: 100, y: 100}
-  _nodeRadius: 1
+  _nodeRadius: 2
   _obstacleProxmityPenalty: 100
   _walkableRegions:
   - _terrainMask:
@@ -1000,7 +1001,7 @@ MonoBehaviour:
   - _terrainMask:
       serializedVersion: 2
       m_Bits: 8192
-    _terrainPenalty: 0
+    _terrainPenalty: 1
   _onlyDisplayPathGizmos: 1
 --- !u!4 &700467021
 Transform:
@@ -1676,6 +1677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
+  _path: []
 --- !u!4 &1225179870
 Transform:
   m_ObjectHideFlags: 0
@@ -2031,6 +2033,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
+  _path: []
 --- !u!4 &1571440854
 Transform:
   m_ObjectHideFlags: 0

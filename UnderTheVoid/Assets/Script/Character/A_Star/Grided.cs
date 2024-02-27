@@ -48,8 +48,6 @@ public class Grided : MonoBehaviour
         _nodeDiameter = _nodeRadius*2;
         _gridSizeX = Mathf.RoundToInt(_gridWorldSize.x / _nodeDiameter);
         _gridSizeY = Mathf.RoundToInt(_gridWorldSize.y / _nodeDiameter);
-
-        Debug.Log(_walkableRegions.Length);
         /*
         foreach(TerrainType region in _walkableRegions)
         {
@@ -61,9 +59,6 @@ public class Grided : MonoBehaviour
         {
             TerrainType region = _walkableRegions[i - 1];
             _walkableMask.value |= region._terrainMask.value;
-
-            // _walkableRegionsDictionary.Add(region._terrainMask.value, region._terrainPenalty);
-            Debug.Log((float)MathF.Log(region._terrainMask.value, 2));
             _walkableRegionsDictionary.Add(Mathf.RoundToInt(MathF.Log(region._terrainMask.value, 2)), region._terrainPenalty);
         }
 
@@ -157,6 +152,7 @@ public class Grided : MonoBehaviour
 
         return neighbours;
     }
+    
 
     void BlurPenaltyMap(int blurSize)
     {
@@ -199,8 +195,8 @@ public class Grided : MonoBehaviour
                 blurredPenalty = Mathf.RoundToInt((float)penaltyVerticalPass[x, y] / (kernelSize * kernelSize));
                 _grid[x, y]._movementPenalty = blurredPenalty;
 
-                if (_grid[x, y]._movementPenalty < 98)
-                    Debug.Log(x+","+y);
+                //if (_grid[x, y]._movementPenalty < 98)
+                //    Debug.Log(x+","+y);
 
                 if (blurredPenalty > _penaltyMax)
                     _penaltyMax = blurredPenalty;
