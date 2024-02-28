@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 473783870780252873}
   - component: {fileID: 473783870780252887}
   - component: {fileID: 473783870780252872}
+  - component: {fileID: 166024825507738872}
   m_Layer: 5
   m_Name: Nomarl_UI
   m_TagString: MapPicea
@@ -77,6 +78,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &166024825507738872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473783870780252874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f50ab026d392e74a9b1c1713ffa10db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Endroom: 0
+  RoomCode: 0
 --- !u!1 &4434356306725923314
 GameObject:
   m_ObjectHideFlags: 0
