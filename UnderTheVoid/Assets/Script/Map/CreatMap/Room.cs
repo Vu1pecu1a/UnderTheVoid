@@ -7,6 +7,7 @@ public class Room : MonoBehaviour
     public bool Endroom = false;
     public Vector2 roomVector2;
     public int RoomCode= 0;
+    public bool isClear = false;
 
     GameObject newRoom;
     // Start is called before the first frame update
@@ -29,6 +30,8 @@ public class Room : MonoBehaviour
 
         newRoom.SetActive(false);
     }
+
+    
 
     public void SetFiled(bool a)
     {

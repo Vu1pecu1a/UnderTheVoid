@@ -18,6 +18,8 @@ public class Node : IHeapItem<Node>
 
     public int _movementPenalty { get; set; }
 
+    public RoomType RoomType
+    { get; set; }
 
     public Vector3 _wolrdPosition
     {

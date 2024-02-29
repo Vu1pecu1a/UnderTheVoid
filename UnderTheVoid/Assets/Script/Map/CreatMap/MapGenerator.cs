@@ -8,19 +8,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
+public enum RoomType
+{
+    Normal,
+    Boss,
+    Gold,
+    Max
+}
+
+
 public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
 {
     [SerializeField]
     Sprite[] images;
-    public GameObject[] roomPrefabs; // 방 프리팹 배열
-    public GameObject[] Room;//일반 방
-    public GameObject[] SpecialRoom;//스페셜 룸
+    public GameObject[] roomPrefabs,Room,SpecialRoom; // 방 프리팹 배열
     [SerializeField]
     public static Vector2Int PlayerV2;//플레이어 위치
     public int mapWidth = 10; // 맵의 가로 길이
     public int mapHeight = 10; // 맵의 세로 길이
     public int MaxRoom,MinRoom; // 최대값 최소값
     Node[,] _grid;
+    [SerializeField]
+    GameObject[] Doors;
 
     [SerializeField]
     int tilex = 100, tiley=100;
@@ -28,6 +37,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     private List<Vector2Int> takenPositions = new List<Vector2Int>(); // 이미 배치된 위치 목록
     [SerializeField]
     private List<Vector2Int> endrooms = new List<Vector2Int>(); //엔드룸
+    private List<Vector2Int> specialrooms = new List<Vector2Int>(); //엔드룸
     [SerializeField]
     private Dictionary<Vector2Int, GameObject> roomsdic = new Dictionary<Vector2Int, GameObject>();//미니맵 딕셔너리 목록 
     [SerializeField]
@@ -46,6 +56,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     [SerializeField]
     GameObject Canvas,Loding;
 
+    #region [맵 생성 함수]
     private void Awake()
     {
         i = this;
@@ -77,7 +88,19 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         {
             PlayerMoveToMap(0);
         }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            RoomClearTrue();
+        }
     }
+
+    public void RoomClearTrue()
+    {
+        i.roomsdic[PlayerV2].GetComponent<Room>().isClear = true;
+        i.IsClearRoom();
+    }
+
     public int _maxSize
     {
         get { return mapHeight*mapWidth; }
@@ -112,7 +135,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         endrooms.Clear();
         Vector2Int startPosition = new Vector2Int(mapWidth / 2, mapHeight / 2); // 시작 위치는 맵의 중심
         GameObject newRoom = RoomCreat(startPosition);
-        newRoom.GetComponent<Image>().color = Color.black;
+        newRoom.GetComponent<Image>().color = Color.white;
         newRoom.GetComponent<Room>().RoomCode = 0;
         roomsdic.Add(startPosition, newRoom);
         takenPositions.Add(startPosition); // 시작 위치를 이미 배치된 위치에 추가
@@ -145,26 +168,38 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
                 EndroomToBoss(vi,Max);
             }
         }
-    }
+    }//출발지점에서 가장 멀리있는 엔드룸을 찾는 길찾기 함수
 
     void EndroomToBoss(Vector2Int Vi2,int Max)
     {
+        _grid[Vi2.x, Vi2.y].RoomType = RoomType.Boss;
         GameObject Room = roomsdic[Vi2].gameObject;
-        Room.GetComponent<Image>().color = Color.red;
-        Room.transform.GetChild(0).GetComponent<TMP_Text>().text = "BOSS"+"\n"+Max;
+        //Room.GetComponent<Image>().color = new Color(1, 0, 0, 0);
+        Room.name = "BOSS";
+        Room.transform.GetChild(0).gameObject.SetActive(true);
+        Room.transform.GetChild(0).GetComponent<Image>().sprite = null;
+        Room.transform.GetChild(0).GetComponent<Image>().color = new Color(1, 0, 0, 0);
+        Room.transform.GetChild(1).GetComponent<TMP_Text>().text = "BOSS"+"\n"+Max;
         Room.GetComponent<Room>().RoomCode = 1;
         Room.GetComponent<Room>().Endroom = true;
         endrooms.Remove(Vi2);
+        specialrooms.Add(Vi2);
         EndroomToGoldenRoom(Random.Range(0, endrooms.Count));
     }//보스룸으로 변경
 
     void EndroomToGoldenRoom(int Vi2)
     {
+        _grid[endrooms[Vi2].x, endrooms[Vi2].y].RoomType = RoomType.Gold;
         GameObject Room = roomsdic[endrooms[Vi2]].gameObject;
-        Room.GetComponent<Image>().color = Color.yellow;
-        Room.transform.GetChild(0).GetComponent<TMP_Text>().text = "Gold";
+        // Room.GetComponent<Image>().color = new Color(1, 0.92f, 0.16f, 0);
+        Room.name = "Gold";
+        Room.transform.GetChild(1).GetComponent<TMP_Text>().text = "Gold";
+        Room.transform.GetChild(0).gameObject.SetActive(true);
+        Room.transform.GetChild(0).GetComponent<Image>().sprite = null;
+        Room.transform.GetChild(0).GetComponent<Image>().color = new Color(1, 0.92f, 0.16f, 0);
         Room.GetComponent<Room>().RoomCode = 0;
         Room.GetComponent<Room>().Endroom = true;
+        specialrooms.Add(endrooms[Vi2]);
         endrooms.Remove(endrooms[Vi2]);
         mapInstanceEvent();
         PlayerVector2Set(_grid[5,5]);
@@ -181,14 +216,69 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     {
         PlayerV2 = new Vector2Int(node._gX, node._gY);
         roomsdic[PlayerV2].transform.GetComponent<Image>().sprite = images[0];
+        List<Node> Neighboirs = GetNeighbours1234(node);
+        for(int i = 0;i< Neighboirs.Count;i++)
+        {
+            if (takenPositions.Contains(Rtv2(Neighboirs[i])))
+            {
+                Image alfa = roomsdic[Rtv2(Neighboirs[i])].GetComponent<Image>();
+                Image beta = roomsdic[Rtv2(Neighboirs[i])].transform.GetChild(0).GetComponent<Image>();
+                alfa.color = Color255(alfa.color);
+                beta.color = Color255(beta.color);
+            }
+
+            if (Neighboirs[i]._walkable == false)
+                Doors[i].SetActive(false);
+            else
+                Doors[i].SetActive(true);
+
+            if (Neighboirs[i].RoomType.Equals(RoomType.Boss))
+                Doors[i].GetComponent<Renderer>().material.color = Color.red;
+            else if (Neighboirs[i].RoomType.Equals(RoomType.Gold))
+                Doors[i].GetComponent<Renderer>().material.color = Color.yellow;
+            else
+                Doors[i].GetComponent<Renderer>().material.color = Color.white;
+        }
+        IsClearRoom();//방 진입시 출구 체크
         roomsdic[PlayerV2].GetComponent<Room>().SetFiled(true);   
-    }//맵상에서의 플레이어 위치 변경
+    }//맵상에서의 플레이어 노드 상 좌표 변경
     
+    Vector2Int Rtv2(Node node)//노드를 Vector2Int로 바꿔주는 함수
+    {
+        Vector2Int alfa = new Vector2Int(node._gX, node._gY);
+        return alfa;
+    }
+
+    Node Rtnode(Vector2Int v2)
+    {
+        Node node = _grid[v2.x,v2.y];
+        return node;
+    }//Vector2Int를 Node로 바꿔주는 함수
+
+    Color Color255(Color tmpcolor)
+    {
+        Color curColor = new Color(tmpcolor.r, tmpcolor.g, tmpcolor.b, 255);
+        tmpcolor = curColor;
+        return tmpcolor;
+    }//알파값이 0인 색을 255로 돌려주는 함수
+    
+    void Hidemap()
+    {
+        roomsdic[PlayerV2].transform.GetComponent<Image>().sprite = images[1];//이미지 초기화
+        roomsdic[PlayerV2].GetComponent<Room>().SetFiled(false);
+    }
+
+    public void IsClearRoom()
+    {
+        if (roomsdic[PlayerV2].GetComponent<Room>().isClear == false)
+            Doors[0].transform.parent.gameObject.SetActive(false);
+        else
+            Doors[0].transform.parent.gameObject.SetActive(true);
+    }
     public void PlayerMoveToMap(int i)
     {
         Vector2Int v = PlayerV2;
-        roomsdic[PlayerV2].transform.GetComponent<Image>().sprite = null;//이미지 초기화
-        roomsdic[PlayerV2].GetComponent<Room>().SetFiled(false);
+        Hidemap();
         List<Node> Neighboirs = GetNeighbours1234(_grid[v.x,v.y]);//up,left,right,down
         if (Neighboirs[i]._walkable == true)
         {
@@ -197,7 +287,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         else//갈곳이 없으면 현재자리로 다시 이동
             PlayerVector2Set(_grid[v.x, v.y]);
 
-    }//플레이어 위치 이동
+    }//플레이어 위치 이동[연결된곳]
 
     Vector2Int retrunV2(int i)
     {
@@ -231,6 +321,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
             foreach(Vector2Int a in takenPositions)
             {
                 _grid[a.x,a.y]._walkable= true;
+                _grid[a.x, a.y].RoomType = RoomType.Normal;
             }
             foreach (Vector2Int v in endrooms)
             {
@@ -265,7 +356,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     {
         Color prevColor = roomsdic[startPosition].GetComponent<Image>().color;
         roomsdic[startPosition].GetComponent<Image>().color = Color.blue;
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.001f);
         k++;//시도 횟수
         t++;//방 번호 찾기
         if (endrooms.Contains(startPosition))
@@ -316,7 +407,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         {
             endrooms.Add(startPosition);//엔드룸 추가
             //roomsdic[startPosition].gameObject.GetComponent<Renderer>().material.color = Color.red;
-            roomsdic[startPosition].GetComponent<Image>().color = Color.cyan;
+            //roomsdic[startPosition].GetComponent<Image>().color = new Color(0, 1, 1, 0);
         }
     }
 
@@ -333,6 +424,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         endrooms.Clear();
         roomsdic.Clear();
         endroomsDistance.Clear();
+        specialrooms.Clear();
         Pathcount=0;
         GenerateMap();
     }
@@ -354,7 +446,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
             {
                 takenPositions.Add(newPos);//방생성 시도
                 GameObject newRoom = RoomCreat(curpos);
-                newRoom.transform.GetChild(0).GetComponent<TMP_Text>().text = takenPositions.Count.ToString()+"\n"+curpos.ToString();
+                newRoom.transform.GetChild(1).GetComponent<TMP_Text>().text = takenPositions.Count.ToString()+"\n"+curpos.ToString();
                 newRoom.GetComponent<Room>().roomVector2 = newPos;
                 newRoom.GetComponent<Room>().RoomCode = Random.Range(1,Room.Length);
                 roomsdic.Add(newPos, newRoom);
@@ -362,7 +454,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         }
     }
 
-    GameObject RoomCreat(Vector2 curpos)//실제 방을 생성하는 함수
+    GameObject RoomCreat(Vector2 curpos)//지도위에 방을 생성하는 함수
     {
         GameObject newRoom = Instantiate(roomPrefabs[0], Canvas.transform);
         newRoom.GetComponent<RectTransform>().sizeDelta =new Vector2(tilex, tiley);
@@ -431,4 +523,23 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
 
         return neighbours;
     }
+    #endregion [맵 생성 함수]
+    #region[맵 이벤트 함수]
+    Vector2Int SerchRoom(int i)
+    {
+       return specialrooms[i];
+    }//스페셜룸 찾기[0=보스룸,1=황금방]
+    public void ViewRoom(int i)
+    {
+        Image alfa = roomsdic[SerchRoom(i)].GetComponent<Image>();
+        Image beta = roomsdic[SerchRoom(i)].transform.GetChild(0).GetComponent<Image>();
+        alfa.color = Color255(alfa.color);
+        beta.color = Color255(beta.color);
+    }//스페셜룸 드러내기 
+    public void GotoRoom(int i)
+    {
+        Hidemap();
+        PlayerVector2Set(Rtnode(SerchRoom(i)));
+    }//해당 스페셜룸으로 이동하기
+    #endregion[맵 이벤트 함수]
 }

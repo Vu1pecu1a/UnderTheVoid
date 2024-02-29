@@ -21,6 +21,8 @@ public class D_calcuate : MonoBehaviour
 
     public GameObject UI_Canvas;
     public static D_calcuate i;
+    public delegate void RoomClear();
+    public RoomClear roomClear;
     delegate void CallintD(int d);
     public delegate int PlayerHit(MonsterBase A,int B);
     public delegate void PlayerDie();
@@ -47,18 +49,34 @@ public class D_calcuate : MonoBehaviour
 
     void ReturnD(MonsterBase target,int D)
     {
-        target.HP -= D;
+        target.HP -= D; 
+    }
+
+    public void BattelStart()
+    {
+        Debug.Log("전투 시작");
+        StartCoroutine(BattelEnd()); 
+    }
+    IEnumerator BattelEnd()
+    {
+       yield return new WaitForSeconds(1);//1초마다 한번씩 검사
+        if(MonsterList.Count == 0)
+       MapGenerator.i.RoomClearTrue();
+        else
+            StartCoroutine(BattelEnd());
     }
 
     // Start is called before the first frame update
     void Start()
     {
         i = this;
+        
         // mb.AttackEvent += IceBallInstance;
     }
+   
 
     // Update is called once per frame
-     
+
     void IceBallInstance()
     {
         GameObject a = Instantiate(iceball,mb.target.transform.position,Quaternion.identity);
