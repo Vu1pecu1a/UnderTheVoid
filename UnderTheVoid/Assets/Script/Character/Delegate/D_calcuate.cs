@@ -73,7 +73,14 @@ public class D_calcuate : MonoBehaviour
         
         // mb.AttackEvent += IceBallInstance;
     }
-   
+    
+    public void PlayerPositionReset()
+    {
+        foreach(MonsterBase a in  PlayerList )
+        {
+            a.gameObject.transform.position = new Vector3(-3, 0, -6.5f);
+        }
+    }
 
     // Update is called once per frame
 

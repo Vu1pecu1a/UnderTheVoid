@@ -21,7 +21,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
 {
     [SerializeField]
     Sprite[] images;
-    public GameObject[] roomPrefabs,Room,SpecialRoom; // 방 프리팹 배열
+    public GameObject[] roomPrefabs,Room,SpecialRoom,Monstergen; // 방 프리팹 배열
     [SerializeField]
     public static Vector2Int PlayerV2;//플레이어 위치
     public int mapWidth = 10; // 맵의 가로 길이
@@ -99,7 +99,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     {
         i.roomsdic[PlayerV2].GetComponent<Room>().isClear = true;
         i.IsClearRoom();
-    }
+    }//방 클리어 판정
 
     public int _maxSize
     {
@@ -216,6 +216,8 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     {
         PlayerV2 = new Vector2Int(node._gX, node._gY);
         roomsdic[PlayerV2].transform.GetComponent<Image>().sprite = images[0];
+        roomsdic[PlayerV2].transform.GetChild(0).gameObject.SetActive(true);
+        roomsdic[PlayerV2].transform.GetChild(0).GetComponent<Image>().sprite = images[2];
         List<Node> Neighboirs = GetNeighbours1234(node);
         for(int i = 0;i< Neighboirs.Count;i++)
         {
@@ -227,7 +229,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
                 beta.color = Color255(beta.color);
             }
 
-            if (Neighboirs[i]._walkable == false)
+            if (Neighboirs[i]._walkable == false || Neighboirs[i].Equals(node))//갈 수 없거나 자기 자신일 경우
                 Doors[i].SetActive(false);
             else
                 Doors[i].SetActive(true);
@@ -241,7 +243,9 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         }
         IsClearRoom();//방 진입시 출구 체크
         roomsdic[PlayerV2].GetComponent<Room>().SetFiled(true);   
-    }//맵상에서의 플레이어 노드 상 좌표 변경
+        roomsdic[PlayerV2].GetComponent<Room>().SetEnemy();
+        D_calcuate.i.BattelStart();
+    }//맵상에서의 플레이어 노드 상 좌표 변경 [방 입장 판정]
     
     Vector2Int Rtv2(Node node)//노드를 Vector2Int로 바꿔주는 함수
     {
@@ -264,7 +268,9 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     
     void Hidemap()
     {
-        roomsdic[PlayerV2].transform.GetComponent<Image>().sprite = images[1];//이미지 초기화
+        roomsdic[PlayerV2].transform.GetComponent<Image>().sprite = images[0];//이미지 초기화
+        roomsdic[PlayerV2].transform.GetChild(0).gameObject.SetActive(false);
+        roomsdic[PlayerV2].transform.GetChild(0).GetComponent<Image>().sprite = null;
         roomsdic[PlayerV2].GetComponent<Room>().SetFiled(false);
     }
 
@@ -286,7 +292,6 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         }
         else//갈곳이 없으면 현재자리로 다시 이동
             PlayerVector2Set(_grid[v.x, v.y]);
-
     }//플레이어 위치 이동[연결된곳]
 
     Vector2Int retrunV2(int i)
