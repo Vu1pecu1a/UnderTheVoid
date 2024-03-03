@@ -19,11 +19,14 @@ public enum RoomType
 
 public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
 {
+    #region[설정값]
     [SerializeField]
     Sprite[] images;
     public GameObject[] roomPrefabs,Room,SpecialRoom,Monstergen; // 방 프리팹 배열
     [SerializeField]
     public static Vector2Int PlayerV2;//플레이어 위치
+    [SerializeField]
+    float MapSacle = 1;
     public int mapWidth = 10; // 맵의 가로 길이
     public int mapHeight = 10; // 맵의 세로 길이
     public int MaxRoom,MinRoom; // 최대값 최소값
@@ -55,7 +58,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
 
     [SerializeField]
     GameObject Canvas,Loding;
-
+    #endregion[설정값]
     #region [맵 생성 함수]
     private void Awake()
     {
@@ -115,19 +118,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         StartCoroutine(LodingText(i));
     }
 
-    public void Minimap(bool bol)
-    {
-        if (bol)
-        {
-            Canvas.GetComponent<RectTransform>().transform.position = new Vector3(230, 150);
-            Canvas.GetComponent<RectTransform>().localScale = Vector3.one * 0.2f;
-        }
-        else
-        {
-            Canvas.GetComponent<RectTransform>().transform.position = new Vector3(960, 540);
-            Canvas.GetComponent<RectTransform>().localScale = Vector3.one * 1f;
-        }  
-    }
+    
 
 
     void GenerateMap()
@@ -184,6 +175,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         Room.GetComponent<Room>().Endroom = true;
         endrooms.Remove(Vi2);
         specialrooms.Add(Vi2);
+        Debug.Log("보스방");
         EndroomToGoldenRoom(Random.Range(0, endrooms.Count));
     }//보스룸으로 변경
 
@@ -202,7 +194,8 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         specialrooms.Add(endrooms[Vi2]);
         endrooms.Remove(endrooms[Vi2]);
         mapInstanceEvent();
-        PlayerVector2Set(_grid[5,5]);
+        Debug.Log("황금방");
+        PlayerVector2Set(_grid[mapWidth/2,mapWidth/2]);//중앙지점
         Minimap(true);
         Loding.SetActive(false);
     }//황금방으로 변경
@@ -244,8 +237,11 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         IsClearRoom();//방 진입시 출구 체크
         roomsdic[PlayerV2].GetComponent<Room>().SetFiled(true);   
         roomsdic[PlayerV2].GetComponent<Room>().SetEnemy();
+        MiniMapMove();
         D_calcuate.i.BattelStart();
     }//맵상에서의 플레이어 노드 상 좌표 변경 [방 입장 판정]
+    
+    // 5,5면 0,0?
     
     Vector2Int Rtv2(Node node)//노드를 Vector2Int로 바꿔주는 함수
     {
@@ -447,7 +443,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
                     attempts++;
             }
 
-            if (attempts == 1&&Random.Range(0,9)<5&& curpos.x<10 &&curpos.x>0 && curpos.y <10 &&curpos.y>0)
+            if (attempts == 1&&Random.Range(0,9)<5&& curpos.x<mapWidth &&curpos.x>0 && curpos.y <mapWidth &&curpos.y>0)
             {
                 takenPositions.Add(newPos);//방생성 시도
                 GameObject newRoom = RoomCreat(curpos);
@@ -461,9 +457,9 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
 
     GameObject RoomCreat(Vector2 curpos)//지도위에 방을 생성하는 함수
     {
-        GameObject newRoom = Instantiate(roomPrefabs[0], Canvas.transform);
+        GameObject newRoom = Instantiate(roomPrefabs[0], Canvas.transform.GetChild(0));
         newRoom.GetComponent<RectTransform>().sizeDelta =new Vector2(tilex, tiley);
-        newRoom.GetComponent<RectTransform>().anchoredPosition = new Vector2((curpos.x - 5) * tilex, (curpos.y - 5) * tiley);
+        newRoom.GetComponent<RectTransform>().anchoredPosition = new Vector2((curpos.x - mapWidth/2) * tilex, (curpos.y -mapHeight/2) * tiley);
         return newRoom;
     }
 
@@ -540,11 +536,74 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         Image beta = roomsdic[SerchRoom(i)].transform.GetChild(0).GetComponent<Image>();
         alfa.color = Color255(alfa.color);
         beta.color = Color255(beta.color);
-    }//스페셜룸 드러내기 
+    }//스페셜룸 드러내기
+     public void ViewMap()
+    {
+        for(int i=0; i<roomsdic.Count;i++)
+        {
+            Image alfa = roomsdic[takenPositions[i]].GetComponent<Image>();
+            alfa.color = Color255(alfa.color);
+        }
+    }//지도 
+
     public void GotoRoom(int i)
     {
         Hidemap();
         PlayerVector2Set(Rtnode(SerchRoom(i)));
     }//해당 스페셜룸으로 이동하기
     #endregion[맵 이벤트 함수]
+    #region[미니맵]
+    public void Minimap(bool bol)
+    {
+        if (bol)
+        {
+            Canvas.GetComponent<RectTransform>().transform.position = new Vector3(230, 150);
+            Canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(900, 490);
+            MapSacle = 1f;
+            Canvas.GetComponent<RectTransform>().localScale = Vector3.one * 0.5f;
+            Canvas.transform.GetChild(0).GetComponent<RectTransform>().localScale = Vector3.one * MapSacle;
+            Canvas.transform.GetChild(1).gameObject.SetActive(false);
+            Canvas.transform.GetChild(2).gameObject.SetActive(false);
+        }
+        else
+        {
+            Canvas.GetComponent<RectTransform>().transform.position = new Vector3(960, 540);
+            Canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(1820, 980);
+            MapSacle = 1f;
+            Canvas.GetComponent<RectTransform>().localScale = Vector3.one * MapSacle;
+            Canvas.transform.GetChild(0).GetComponent<RectTransform>().localScale = Vector3.one * MapSacle;
+            Canvas.transform.GetChild(1).gameObject.SetActive(true);
+            Canvas.transform.GetChild(2).gameObject.SetActive(true);
+        }
+        MiniMapMove();
+    }
+    public void Minimap(int a)
+    {
+        if(a==0)
+        Canvas.GetComponent<RectTransform>().transform.position = new Vector3(9999, 9999);
+    }//대충 맵 어딘가에다 치워둠 게임오브젝트를 비활성화 하면 뭔가 오류가 터질지도 모름
+
+    void MiniMapMove()
+    {
+        Transform a = Canvas.transform.GetChild(0);
+        a.GetComponent<RectTransform>().anchoredPosition = new Vector2((PlayerV2.x - mapWidth / 2) * -182*MapSacle, (PlayerV2.y - mapHeight / 2) * -100 * MapSacle);
+    }//미니맵 좌표 수정
+
+    public void minimapscaleminus()
+    {
+        if (MapSacle <= 0.1f)
+            return;
+        MapSacle -= 0.1f;
+        Canvas.transform.GetChild(0).GetComponent<RectTransform>().localScale = Vector3.one * MapSacle;
+        MiniMapMove();
+    }
+    public void minimapscaleplus()
+    {
+        if (MapSacle >= 2f)
+            return;
+        MapSacle += 0.1f;
+        Canvas.transform.GetChild(0).GetComponent<RectTransform>().localScale = Vector3.one * MapSacle;
+        MiniMapMove();
+    }
+    #endregion[미니맵]
 }

@@ -193,10 +193,22 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         if (target == null)
             return;
         GameObject effecti = ObjPoolManager.i.InstantiateAPS("bowShot", null);
-        effecti.GetComponent<LineRenderer>().SetPosition(0, transform.position+Vector3.up);
-        effecti.GetComponent<LineRenderer>().SetPosition(1, target.transform.position + Vector3.up);
+        GameObject effectj = ObjPoolManager.i.InstantiateAPS("CFXR3 Hit Misc A", null);
+        effectSetLine(effecti);
+        effectSet(effectj);
         DamageController.DealDamage(target.GetComponent<HitModel>(), DM, target.transform);
-        StartCoroutine(gotoPool(0.1f,effecti));
+    }
+    void effectSetLine(GameObject effecti)
+    {
+        effecti.GetComponent<LineRenderer>().SetPosition(0, transform.position + Vector3.up);
+        effecti.GetComponent<LineRenderer>().SetPosition(1, target.transform.position + Vector3.up);
+        StartCoroutine(gotoPool(0.1f, effecti));
+    }
+    void effectSet(GameObject effecti)
+    {
+        if (target != null)
+            effecti.transform.position = target.transform.position + Vector3.up;
+        StartCoroutine(gotoPool(0.5f, effecti));
     }
 
     public void MeleeAttack()
@@ -206,6 +218,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         DM.damageType = DamageType.Bash;
         if (target == null)
             return;
+        GameObject effecti = ObjPoolManager.i.InstantiateAPS("CFXR3 Hit Misc A", null);
+        effectSet(effecti);
         DamageController.DealDamage(target.GetComponent<HitModel>(), DM, target.transform);
     }
 
@@ -248,6 +262,9 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
 
     public void Execute(MonsterBase e)
     {
+        if (D_calcuate.isbattel == false)
+            return;
+
         if (e.target == null)
         {
            e.Search();
@@ -364,7 +381,7 @@ class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
         e._animator.SetTrigger("Die");
         e._agent.enabled = false;
         e._objstacle.enabled = false;
-        e.StopAllCoroutines();
+       // e.StopAllCoroutines();
         e.UIOFF();
     }
 

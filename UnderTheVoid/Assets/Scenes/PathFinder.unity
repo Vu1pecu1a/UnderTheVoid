@@ -858,7 +858,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 519081607}
-  _path: []
 --- !u!1 &630750364
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,7 +990,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   _gridWorldSize: {x: 100, y: 100}
-  _nodeRadius: 2
+  _nodeRadius: 1
   _obstacleProxmityPenalty: 100
   _walkableRegions:
   - _terrainMask:
@@ -1002,7 +1001,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8192
     _terrainPenalty: 1
-  _onlyDisplayPathGizmos: 1
+  _onlyDisplayPathGizmos: 0
 --- !u!4 &700467021
 Transform:
   m_ObjectHideFlags: 0
@@ -1677,7 +1676,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
-  _path: []
 --- !u!4 &1225179870
 Transform:
   m_ObjectHideFlags: 0
@@ -2033,7 +2031,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
-  _path: []
 --- !u!4 &1571440854
 Transform:
   m_ObjectHideFlags: 0

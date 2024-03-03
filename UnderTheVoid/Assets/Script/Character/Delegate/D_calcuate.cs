@@ -21,11 +21,19 @@ public class D_calcuate : MonoBehaviour
 
     public GameObject UI_Canvas;
     public static D_calcuate i;
+
+    public static bool isbattel=false;
+
+
     public delegate void RoomClear();
     public RoomClear roomClear;
     delegate void CallintD(int d);
     public delegate int PlayerHit(MonsterBase A,int B);
     public delegate void PlayerDie();
+
+
+
+
     [SerializeField]
     List<EnemyBase> list = new List<EnemyBase>();
     [SerializeField]
@@ -52,16 +60,26 @@ public class D_calcuate : MonoBehaviour
         target.HP -= D; 
     }
 
-    public void BattelStart()
+    public void BattleStart()
     {
         Debug.Log("전투 시작");
+        isbattel = true;
+        MapGenerator.i.Minimap(0);
+    }
+
+    public void BattelStart()
+    {
         StartCoroutine(BattelEnd()); 
     }
     IEnumerator BattelEnd()
     {
        yield return new WaitForSeconds(1);//1초마다 한번씩 검사
         if(MonsterList.Count == 0)
-       MapGenerator.i.RoomClearTrue();
+        {
+            MapGenerator.i.RoomClearTrue();
+            isbattel = false;
+            MapGenerator.i.Minimap(true);
+        }
         else
             StartCoroutine(BattelEnd());
     }
