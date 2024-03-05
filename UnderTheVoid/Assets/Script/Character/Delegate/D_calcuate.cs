@@ -41,23 +41,14 @@ public class D_calcuate : MonoBehaviour
     public List<EnemyBase> MonsterList { get { return list; } set { list = value; } }
     public List<MonsterBase> PlayerList { get { return _playerList; } set { _playerList = value; } }
 
-    // public Dictionary<string, DemageModel> D_C = new Dictionary<string, DemageModel>();
+    public Dictionary<string, DemageModel> D_C = new Dictionary<string, DemageModel>(); // 대미지 계산기
 
     public DemageModel Killer = new(9999, DamageType.Slash);
 
-    // public static event PlayerHit playerHit;
-    //public static event PlayerDie playerDie;
-
-
-    public static EventHandler hit;
-    delegate int intop(int x,int y);
-    
-    intop op;
-
-
-    void ReturnD(MonsterBase target,int D)
+    public DemageModel BowShot(int a)
     {
-        target.HP -= D; 
+       DemageModel Bowshot = new(a*2, DamageType.Stab);
+        return Bowshot;
     }
 
     public void BattleStart()

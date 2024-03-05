@@ -58,8 +58,7 @@ public class PlayerBase : MonsterBase
             }
         }
         target = monsters[0];
-        Debug.DrawLine(gameObject.transform.position, target.gameObject.transform.position, Color.blue);
-        // Debug.Log(target.name);
+         // Debug.Log(target.name);
     }
 
     public override void TakeDamege(DemageModel damageModel)

@@ -33,7 +33,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         }
         if (_animator == null)
         {
-            _animator = gameObject.GetComponent<Animator>();
+            _animator = transform.GetChild(1).GetComponent<Animator>();
         }
         if(_objstacle== null)_objstacle = gameObject.GetComponent<NavMeshObstacle>();
         _agent = agent;
@@ -43,6 +43,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         DieEvent += Debug_Die;
         hp = MaxHp;
         _HpBar.gameObject.SetActive(true);
+        gameObject.GetComponent<Collider>().enabled = true;
     }
     void Debug_log()
     {
@@ -89,7 +90,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
    public void AttackRange()
     {
         
-        if(target.gameObject.GetComponent<MonsterBase>().HP <= 0)
+        if (target.gameObject.GetComponent<MonsterBase>().HP <= 0)
             target = null;
 
         if (target == null)
@@ -144,6 +145,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         if (target == null)
             return;
+        Debug.DrawLine(gameObject.transform.position, target.gameObject.transform.position, Color.blue);
 
         transform.LookAt(target.transform);
         if (target.gameObject.GetComponent<MonsterBase>().HP <= 0)
@@ -181,7 +183,17 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     IEnumerator gotoPool(float time,GameObject alfa) //불러온 이펙트 삭제
     {
         yield return new WaitForSeconds(time);
-        alfa.DestroyAPS();
+        if (alfa.activeSelf == false)
+            alfa.DestroyAPS();
+    }
+    public void BowShot()
+    {
+        this.AttackEvent();
+        _animator.SetFloat("AttackSpeed", attackSpeed);
+        if (target == null)
+            return;
+        GameObject effecti = ObjPoolManager.i.InstantiateAPS("Arrow_01", null);
+        Throwprojectile(effecti);
     }
 
     public void BowAttack()
@@ -197,19 +209,29 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         effectSetLine(effecti);
         effectSet(effectj);
         DamageController.DealDamage(target.GetComponent<HitModel>(), DM, target.transform);
-    }
+    }//라인렌더러 기준
+
     void effectSetLine(GameObject effecti)
     {
         effecti.GetComponent<LineRenderer>().SetPosition(0, transform.position + Vector3.up);
         effecti.GetComponent<LineRenderer>().SetPosition(1, target.transform.position + Vector3.up);
         StartCoroutine(gotoPool(0.1f, effecti));
     }
+    void Throwprojectile(GameObject effecti)
+    {
+        effecti.transform.position = this.gameObject.transform.position + Vector3.up;
+        //effecti.GetComponent<Rigidbody>().AddForce((target.transform.position+Vector3.up).normalized * 1);
+        Debug.Log(target.transform.position);
+        effecti.GetComponent<DCCheck>().onwer = this;
+        effecti.GetComponent<DCCheck>().TargetLockOn();
+        StartCoroutine(gotoPool(1f, effecti));
+    }//투사체 발사
     void effectSet(GameObject effecti)
     {
         if (target != null)
             effecti.transform.position = target.transform.position + Vector3.up;
         StartCoroutine(gotoPool(0.5f, effecti));
-    }
+    }//타격 이팩트 삭제 코루틴
 
     public void MeleeAttack()
     {
@@ -257,7 +279,6 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
     public void Enter(MonsterBase e)
     {
         e.State = AI_State.Idel;
-        Debug.Log("기본상태 진입");
     }
 
     public void Execute(MonsterBase e)
@@ -278,7 +299,6 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
     {
         if(e.target!=null)
         e.TargetlockOn();
-        Debug.Log("기본상태 탈출");
     }
 }
  class Move :FSMSingleton<Move>, InterfaceFsmState<MonsterBase>
@@ -352,7 +372,7 @@ class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
     public void Exit(MonsterBase e)
     {
         if (e.State == AI_State.Attack)
-            e.BowAttack();
+            e.BowShot();
     }
 }
 class Stun : FSMSingleton<Stun>, InterfaceFsmState<MonsterBase>
@@ -381,6 +401,7 @@ class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
         e._animator.SetTrigger("Die");
         e._agent.enabled = false;
         e._objstacle.enabled = false;
+        e.GetComponent<Collider>().enabled= false;
        // e.StopAllCoroutines();
         e.UIOFF();
     }
