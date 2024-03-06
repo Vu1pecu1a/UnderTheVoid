@@ -221,7 +221,6 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         effecti.transform.position = this.gameObject.transform.position + Vector3.up;
         //effecti.GetComponent<Rigidbody>().AddForce((target.transform.position+Vector3.up).normalized * 1);
-        Debug.Log(target.transform.position);
         effecti.GetComponent<DCCheck>().onwer = this;
         effecti.GetComponent<DCCheck>().TargetLockOn();
         StartCoroutine(gotoPool(1f, effecti));

@@ -41,8 +41,7 @@ public class DCCheck : MonoBehaviour
     {
         if (other.GetComponent<HitModel>() != null && other.tag != onwer.tag)
         {
-            Debug.Log("Enter");
-            DamageController.DealDamage(other.GetComponent<HitModel>(),
+             DamageController.DealDamage(other.GetComponent<HitModel>(),
                D_calcuate.i.BowShot(onwer.ATK) , other.transform);
             gameObject.DestroyAPS();
         }

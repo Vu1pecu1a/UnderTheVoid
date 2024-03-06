@@ -22,8 +22,8 @@ public class GUIControllerSD : MonoBehaviour {
 	[SerializeField]
 	bool showCommon, showNormal, showBlack, showOsaka, showFukuoka, showHokkaido;
 	
-	[SerializeField]
-	string NextSceneName = "";
+	//[SerializeField]
+	//string NextSceneName = "";
 	
 	[SerializeField]
 	string NextSceneButtonLabel = "";
@@ -238,7 +238,7 @@ public class GUIControllerSD : MonoBehaviour {
 		
 		if (GUI.Button (new Rect (Screen.width -150, Screen.height-100, 150,100), NextSceneButtonLabel))
 		{
-			Application.LoadLevel( NextSceneName );
+		//	Application.LoadLevel( NextSceneName );
 		}
 		
 	}
