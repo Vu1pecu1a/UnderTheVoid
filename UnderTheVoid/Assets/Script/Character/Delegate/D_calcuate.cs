@@ -53,13 +53,17 @@ public class D_calcuate : MonoBehaviour
 
     public void BattleStart()
     {
+        if (PlayerReady())
+            return;
         Debug.Log("전투 시작");
         isbattel = true;
         MapGenerator.i.Minimap(0);
+        SelectGrid.i.gameObject.SetActive(false);
     }
 
     public void BattelStart()
     {
+        SelectGrid.i.gameObject.SetActive(true);
         StartCoroutine(BattelEnd()); 
     }
     IEnumerator BattelEnd()
@@ -83,11 +87,22 @@ public class D_calcuate : MonoBehaviour
         // mb.AttackEvent += IceBallInstance;
     }
     
+    bool PlayerReady()
+    {
+        int p = 0;
+        foreach (MonsterBase a in PlayerList)
+        {
+            if (a.GetComponent<SelecPos>().prevpos == null)
+                p++;
+        }
+        return p == PlayerList.Count;
+    }
+
     public void PlayerPositionReset()
     {
         foreach(MonsterBase a in  PlayerList )
         {
-            a.gameObject.transform.position = new Vector3(-3, 0, -6.5f);
+            a.gameObject.transform.position = a.GetComponent<SelecPos>().prevpos.position;
         }
     }
 

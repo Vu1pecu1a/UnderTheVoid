@@ -205,41 +205,6 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         Debug.Log("이벤트 시작");
     }
 
-    void PlayerVector2Set(Node node)
-    {
-        PlayerV2 = new Vector2Int(node._gX, node._gY);
-        roomsdic[PlayerV2].transform.GetComponent<Image>().sprite = images[0];
-        roomsdic[PlayerV2].transform.GetChild(0).gameObject.SetActive(true);
-        roomsdic[PlayerV2].transform.GetChild(0).GetComponent<Image>().sprite = images[2];
-        List<Node> Neighboirs = GetNeighbours1234(node);
-        for(int i = 0;i< Neighboirs.Count;i++)
-        {
-            if (takenPositions.Contains(Rtv2(Neighboirs[i])))
-            {
-                Image alfa = roomsdic[Rtv2(Neighboirs[i])].GetComponent<Image>();
-                Image beta = roomsdic[Rtv2(Neighboirs[i])].transform.GetChild(0).GetComponent<Image>();
-                alfa.color = Color255(alfa.color);
-                beta.color = Color255(beta.color);
-            }
-
-            if (Neighboirs[i]._walkable == false || Neighboirs[i].Equals(node))//갈 수 없거나 자기 자신일 경우
-                Doors[i].SetActive(false);
-            else
-                Doors[i].SetActive(true);
-
-            if (Neighboirs[i].RoomType.Equals(RoomType.Boss))
-                Doors[i].GetComponent<Renderer>().material.color = Color.red;
-            else if (Neighboirs[i].RoomType.Equals(RoomType.Gold))
-                Doors[i].GetComponent<Renderer>().material.color = Color.yellow;
-            else
-                Doors[i].GetComponent<Renderer>().material.color = Color.white;
-        }
-        IsClearRoom();//방 진입시 출구 체크
-        roomsdic[PlayerV2].GetComponent<Room>().SetFiled(true);   
-        roomsdic[PlayerV2].GetComponent<Room>().SetEnemy();
-        MiniMapMove();
-        D_calcuate.i.BattelStart();
-    }//맵상에서의 플레이어 노드 상 좌표 변경 [방 입장 판정]
     
     // 5,5면 0,0?
     
@@ -530,6 +495,42 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     {
        return specialrooms[i];
     }//스페셜룸 찾기[0=보스룸,1=황금방]
+    void PlayerVector2Set(Node node)
+    {
+        PlayerV2 = new Vector2Int(node._gX, node._gY);
+        roomsdic[PlayerV2].transform.GetComponent<Image>().sprite = images[0];
+        roomsdic[PlayerV2].transform.GetChild(0).gameObject.SetActive(true);
+        roomsdic[PlayerV2].transform.GetChild(0).GetComponent<Image>().sprite = images[2];
+        List<Node> Neighboirs = GetNeighbours1234(node);
+        for (int i = 0; i < Neighboirs.Count; i++)
+        {
+            if (takenPositions.Contains(Rtv2(Neighboirs[i])))
+            {
+                Image alfa = roomsdic[Rtv2(Neighboirs[i])].GetComponent<Image>();
+                Image beta = roomsdic[Rtv2(Neighboirs[i])].transform.GetChild(0).GetComponent<Image>();
+                alfa.color = Color255(alfa.color);
+                beta.color = Color255(beta.color);
+            }
+
+            if (Neighboirs[i]._walkable == false || Neighboirs[i].Equals(node))//갈 수 없거나 자기 자신일 경우
+                Doors[i].SetActive(false);
+            else
+                Doors[i].SetActive(true);
+
+            if (Neighboirs[i].RoomType.Equals(RoomType.Boss))
+                Doors[i].GetComponent<Renderer>().material.color = Color.red;
+            else if (Neighboirs[i].RoomType.Equals(RoomType.Gold))
+                Doors[i].GetComponent<Renderer>().material.color = Color.yellow;
+            else
+                Doors[i].GetComponent<Renderer>().material.color = Color.white;
+        }
+        IsClearRoom();//방 진입시 출구 체크
+        roomsdic[PlayerV2].GetComponent<Room>().SetFiled(true);
+        roomsdic[PlayerV2].GetComponent<Room>().SetEnemy();
+        MiniMapMove();
+        D_calcuate.i.BattelStart();
+    }//맵상에서의 플레이어 노드 상 좌표 변경 [방 입장 판정]
+
     public void ViewRoom(int i)
     {
         Image alfa = roomsdic[SerchRoom(i)].GetComponent<Image>();

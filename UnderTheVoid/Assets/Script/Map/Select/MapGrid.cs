@@ -7,6 +7,7 @@ public class MapGrid : MonoBehaviour
 {
     SelectGrid _selectGrid;
     Vector2Int _coordinate;
+    [SerializeField]
     bool _isoccupancy = false;
     public GameObject player;
     public Vector2Int Coordinate { get { return _coordinate; } }
@@ -14,17 +15,22 @@ public class MapGrid : MonoBehaviour
     {
         if(_selectGrid==null)
             _selectGrid = transform.parent.GetComponent<SelectGrid>();
+        _selectGrid.CheckAction += ChangeColor;
     }
-    
-    private void OnMouseEnter()
+
+    private void Start()
     {
         ChangeColor();
     }
+    //private void OnMouseEnter()
+    //{
+    //    ChangeColor();
+    //}
 
-    public void isoccupancy(bool isoccupancy,PlayerBase pb)
+    public void isoccupancy(bool isoccupancy,GameObject pb)
     {
         _isoccupancy = isoccupancy;
-        player = pb.gameObject;
+        player = pb;
     }
     public bool occupanction()
     {
@@ -34,7 +40,7 @@ public class MapGrid : MonoBehaviour
     public void ChangeColor()
     {
         if (!_isoccupancy)
-            GetComponent<MeshRenderer>().material.color = Color.white;
+            GetComponent<MeshRenderer>().material.SetColor("EmissionColor", Color.red);
         else
             GetComponent<MeshRenderer>().material.color = Color.red;
     }
