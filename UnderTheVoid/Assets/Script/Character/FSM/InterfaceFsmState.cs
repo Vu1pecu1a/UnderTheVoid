@@ -31,7 +31,8 @@ public enum DamageType
     Stab,
     Fire,
     Freeze,
-    Ligthning
+    Ligthning,
+    Heal
 }
 
 public enum AI_TYPE
@@ -46,5 +47,6 @@ public enum AI_State
     Idel,
     Walk,
     Attack,
+    SpellCast,
     Die
 }

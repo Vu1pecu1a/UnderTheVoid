@@ -8,6 +8,7 @@ public class PlayerBase : MonsterBase
 {
 
     public List<MonsterBase> monsters = new List<MonsterBase>();
+    public List<PlayerBase> player = new List<PlayerBase>();
 
     protected override void Start()
     {
@@ -57,6 +58,15 @@ public class PlayerBase : MonsterBase
                 }
             }
         }
+
+        player.Clear();
+        player.Add(D_calcuate.i.PlayerList[0]);
+
+        if(aI == AI_TYPE.Heal)
+        {
+            target = player[0];
+        }
+        else
         target = monsters[0];
          // Debug.Log(target.name);
     }

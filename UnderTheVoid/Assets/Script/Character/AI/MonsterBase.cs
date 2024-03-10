@@ -8,9 +8,11 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 {
     public delegate void MoveAction();
     public delegate void AttackAction();
+    public delegate void SpellAction();
     public delegate void DieAction();
     public virtual event MoveAction MoveEvent;
     public virtual event AttackAction AttackEvent;
+    public virtual event SpellAction SpellEvent;
     protected virtual event DieAction DieEvent;
     [SerializeField]
     Renderer _HpBar;
@@ -109,7 +111,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
                     ChageState(RangeAttack.Instance);
                     break;
                 case AI_TYPE.Heal: 
-                    ChageState(Attack.Instance);
+                    ChageState(HealCast.Instance);
                     break;
                 default:
                     ChageState(Attack.Instance);
@@ -129,6 +131,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             ChageState(Attack.Instance);
             else if(aI == AI_TYPE.Range)
             ChageState(RangeAttack.Instance);
+            else if(aI == AI_TYPE.Heal)
+            ChageState(HealCast.Instance);
         }
     }
     
@@ -243,6 +247,19 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         effectSet(effecti);
         DamageController.DealDamage(target.GetComponent<HitModel>(), DM, target.transform);
     }
+
+    public void Heal()
+    {
+        if (target == null)
+            return;
+        this.SpellEvent();
+        DamageController.DealDamage(target.GetComponent<HitModel>(), D_calcuate.i.Heal(2), target.transform);
+    }
+
+
+
+
+
 
     public void DIe()//ªÁ∏¡¿Ã∫•∆Æ
     {
@@ -372,6 +389,30 @@ class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
     {
         if (e.State == AI_State.Attack)
             e.BowShot();
+    }
+}
+class HealCast : FSMSingleton<HealCast>, InterfaceFsmState<MonsterBase>
+{
+
+    public void Enter(MonsterBase e)
+    {
+        e.State = AI_State.SpellCast;
+        e._animator.SetTrigger("Cast");
+        e.attackCoolTime();
+    }
+
+    public void Execute(MonsterBase e)
+    {
+        e._targetDown();
+    }
+
+    public void Exit(MonsterBase e)
+    {
+        if (e.State == AI_State.SpellCast)
+        {
+            e._animator.SetTrigger("CastEnd");
+            e.Heal();
+        }
     }
 }
 class Stun : FSMSingleton<Stun>, InterfaceFsmState<MonsterBase>

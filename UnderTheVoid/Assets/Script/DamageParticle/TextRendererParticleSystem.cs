@@ -75,6 +75,8 @@ public class TextRendererParticleSystem  : MonoBehaviour
             return Color.cyan;
         case DamageType.Ligthning:
             return Color.blue;
+        case DamageType.Heal:
+            return Color.green;
         default:
             return Color.black;
         }

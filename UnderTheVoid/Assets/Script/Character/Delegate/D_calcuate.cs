@@ -37,13 +37,19 @@ public class D_calcuate : MonoBehaviour
     [SerializeField]
     List<EnemyBase> list = new List<EnemyBase>();
     [SerializeField]
-    List<MonsterBase> _playerList = new List<MonsterBase>();
+    List<PlayerBase> _playerList = new List<PlayerBase>();
     public List<EnemyBase> MonsterList { get { return list; } set { list = value; } }
-    public List<MonsterBase> PlayerList { get { return _playerList; } set { _playerList = value; } }
+    public List<PlayerBase> PlayerList { get { return _playerList; } set { _playerList = value; } }
 
     public Dictionary<string, DemageModel> D_C = new Dictionary<string, DemageModel>(); // 대미지 계산기
 
     public DemageModel Killer = new(9999, DamageType.Slash);
+
+
+    public DemageModel Heal(int i)
+    {
+        return new(-i, DamageType.Heal);
+    }
 
     public DemageModel BowShot(int a)
     {
