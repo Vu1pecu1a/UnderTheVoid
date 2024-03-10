@@ -43,6 +43,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         _objstacle.enabled= false;
         AttackEvent += Debug_log;
         DieEvent += Debug_Die;
+        SpellEvent += Debug_log;
         hp = MaxHp;
         _HpBar.gameObject.SetActive(true);
         gameObject.GetComponent<Collider>().enabled = true;
@@ -131,8 +132,11 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             ChageState(Attack.Instance);
             else if(aI == AI_TYPE.Range)
             ChageState(RangeAttack.Instance);
-            else if(aI == AI_TYPE.Heal)
-            ChageState(HealCast.Instance);
+            
+        }else if( State == AI_State.SpellCast)
+        {
+            if (aI == AI_TYPE.Heal)
+                ChageState(HealCast.Instance);
         }
     }
     
@@ -157,7 +161,12 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             target = null;
             ChageState(IDEL.Instance);
         }
+        if (attackRange < Vector3.Distance(transform.position, target.transform.position))
+        {
+            State= AI_State.Walk;
+            ChageState(Move.Instance);
             
+        }
 
         if (target == null)
             ChageState(IDEL.Instance);
@@ -187,7 +196,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     IEnumerator gotoPool(float time,GameObject alfa) //불러온 이펙트 삭제
     {
         yield return new WaitForSeconds(time);
-        if (alfa.activeSelf == false)
+        if (alfa.activeSelf != false)
             alfa.DestroyAPS();
     }
     public void BowShot()
@@ -220,7 +229,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         effecti.GetComponent<LineRenderer>().SetPosition(0, transform.position + Vector3.up);
         effecti.GetComponent<LineRenderer>().SetPosition(1, target.transform.position + Vector3.up);
         StartCoroutine(gotoPool(0.1f, effecti));
-    }
+    }//라인 랜더러 불러오기
+
     void Throwprojectile(GameObject effecti)
     {
         effecti.transform.position = this.gameObject.transform.position + Vector3.up;
@@ -253,7 +263,10 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         if (target == null)
             return;
         this.SpellEvent();
-        DamageController.DealDamage(target.GetComponent<HitModel>(), D_calcuate.i.Heal(2), target.transform);
+        GameObject effecti = ObjPoolManager.i.InstantiateAPS("bowShot", null);
+        effectSetLine(effecti);
+        effecti.GetComponent<LineRenderer>().material.color = Color.green;
+        DamageController.DealDamage(target.GetComponent<HitModel>(), D_calcuate.i.Heal(atk*20000), target.transform);
     }
 
 
@@ -280,6 +293,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
         if (hp > 0)
             hp -= damageModel.basedamage;
+        if (hp >= MaxHp)
+            hp = MaxHp;
 
         _HpBar.material.SetFloat("_FillAmount", (float)hp / MaxHp);
        // Debug.Log((float)hp / MaxHp);

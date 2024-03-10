@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91da76a1880d9ec4a868d12f804ec9b8, type: 3}
   m_Name: 3x3
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 21300136, guid: 1e627bcafe9e32d40ad554880f36b5eb, type: 3}
+  _sprite: {fileID: 21300152, guid: 1e627bcafe9e32d40ad554880f36b5eb, type: 3}
   _shape:
     _width: 4
-    _height: 3
-    _shape: 010100000101010101010101
+    _height: 1
+    _shape: 01010101
   _type: 0
   _canDrop: 1
   _position: {x: 0, y: 0}
+  _rotate: 0

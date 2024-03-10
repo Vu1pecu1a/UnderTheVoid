@@ -57,6 +57,7 @@ public class SelecPos : MonoBehaviour
         }
         else
         {
+            if(prevpos!=null)
             gameObject.transform.position = prevpos.position;//올바른 위치가 아니면 이전 위치로
         }
         _Sg.Check();

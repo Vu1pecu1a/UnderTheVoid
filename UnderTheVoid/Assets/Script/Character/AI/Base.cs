@@ -22,6 +22,10 @@ public abstract class Base : MonoBehaviour
     protected AI_TYPE aI;
     [SerializeField]
     protected AI_State state;
+
+    /// <summary>
+    /// AI의 현재 상태
+    /// </summary>
     public AI_State State { get { return state; } set { state = value; } }
     public int HP { get { return hp; } set { hp = value; } }
     public int ATK { get { return atk; } set { atk = value; } }

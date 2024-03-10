@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class InvenRender : MonoBehaviour
 {
-    [SerializeField, Tooltip("The size of the cells building up the inventory")]
+    [SerializeField, Tooltip("인벤토리 1칸의 크기")]
     private Vector2Int _cellSize = new Vector2Int(32, 32);
 
-    [SerializeField, Tooltip("The sprite to use for empty cells")]
+    [SerializeField, Tooltip("비어있는 셀의 스프라이트")]
     private Sprite _cellSpriteEmpty = null;
 
     [SerializeField, Tooltip("The sprite to use for selected cells")]
@@ -282,16 +282,63 @@ public class InvenRender : MonoBehaviour
                 {
                     for (var y = 0; y < item.height; y++)
                     {
-                        if (item.IsPartOfShape(new Vector2Int(x, y)))
-                        {
-                            var p = item.position + new Vector2Int(x, y);
-                            if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
-                            {
-                                var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
-                                _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
-                                _grids[index].color = color;
-                            }
-                        }
+                        IsShapeRotate(x, y, item, blocked, color);
+                    }
+                }
+                break;
+        }
+    }
+
+    void IsShapeRotate(int x,int y, IInventoryItem item, bool blocked, Color color)
+    {
+
+        switch(item.Rotate)
+        {
+            case itemRotae.up:
+                if (item.IsPartOfShape(new Vector2Int(x, y)))
+                {
+                    var p = item.position + new Vector2Int(x, y);
+                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
+                    {
+                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                        _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
+                        _grids[index].color = color;
+                    }
+                }
+                break;
+            case itemRotae.right:
+                if (item.IsPartOfShape(new Vector2Int(x, y)))
+                {
+                    var p = item.position + new Vector2Int(x, y);
+                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
+                    {
+                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                        _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
+                        _grids[index].color = color;
+                    }
+                }
+                break;
+            case itemRotae.down:
+                if (item.IsPartOfShape(new Vector2Int(x, y)))
+                {
+                    var p = item.position + new Vector2Int(x, y);
+                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
+                    {
+                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                        _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
+                        _grids[index].color = color;
+                    }
+                }
+                break;
+            case itemRotae.left:
+                if (item.IsPartOfShape(new Vector2Int(x, y)))
+                {
+                    var p = item.position + new Vector2Int(x, y);
+                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
+                    {
+                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                        _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
+                        _grids[index].color = color;
                     }
                 }
                 break;

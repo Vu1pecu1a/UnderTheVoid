@@ -58,7 +58,13 @@ public class TextRendererParticleSystem  : MonoBehaviour
     {
         SpawnParticle(transform.position, "G", DamageType.Ligthning);
     }
-        
+    
+    
+    /// <summary>
+    /// 대미지 타입에 따라 색 변경
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public Color colorSwitch(DamageType type)
     {   
         switch(type)
@@ -95,6 +101,14 @@ public class TextRendererParticleSystem  : MonoBehaviour
         if (amountInt > 0) str = "+" + str;
         SpawnParticle(position, str, color, startSize);
     }
+
+    /// <summary>
+    /// 파티클로 대미지 표기
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="message"></param>
+    /// <param name="type"></param>
+    /// <param name="startSize"></param>
 public void SpawnParticle(Vector3 position, string message, DamageType type, float? startSize = null)
 {
     var texCords = new Vector2[24];

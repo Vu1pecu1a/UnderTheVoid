@@ -50,3 +50,12 @@ public enum AI_State
     SpellCast,
     Die
 }
+
+public enum itemRotae
+{
+    up = 0,
+    right = 90,
+    down = 180,
+    left =270
+}
+

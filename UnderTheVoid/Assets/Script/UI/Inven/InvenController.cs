@@ -116,6 +116,10 @@ public class InvenController : MonoBehaviour,
         _currentEventData = eventData;
         if (_draggedItem != null)
         {
+            if(Input.GetKeyUp(KeyCode.R))
+            {
+                _draggedItem.item.RotateRight();
+            }
             // Update the items position
             //_draggedItem.Position = eventData.position;
         }

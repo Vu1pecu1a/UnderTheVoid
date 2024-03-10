@@ -9,7 +9,12 @@ public class DamageController
     public static void DealDamage(HitModel damageable, DemageModel damageModel,Transform targetPosition)
     {
         damageable.TakeDamege(damageModel);
-        TextRendererParticleSystem.i.SpawnParticle(targetPosition.position+Vector3.up*2,damageModel.basedamage.ToString(),damageModel.damageType);
+        if(damageModel.basedamage < 0)
+        TextRendererParticleSystem.i.SpawnParticle(targetPosition.position+Vector3.up*2,(damageModel.basedamage*-1).ToString(),damageModel.damageType);
+        else
+            TextRendererParticleSystem.i.SpawnParticle(targetPosition.position + Vector3.up * 2, damageModel.basedamage.ToString(), damageModel.damageType);
+
+
     }
 }
 public class D_calcuate : MonoBehaviour
@@ -48,7 +53,8 @@ public class D_calcuate : MonoBehaviour
 
     public DemageModel Heal(int i)
     {
-        return new(-i, DamageType.Heal);
+        DemageModel Heal = new(-i, DamageType.Heal);
+        return Heal;
     }
 
     public DemageModel BowShot(int a)
@@ -80,10 +86,19 @@ public class D_calcuate : MonoBehaviour
             MapGenerator.i.RoomClearTrue();
             isbattel = false;
             MapGenerator.i.Minimap(true);
+            playerTargetnull();
         }
         else
             StartCoroutine(BattelEnd());
     }
+
+    void playerTargetnull()
+    {
+        foreach(PlayerBase p in PlayerList)
+        {
+            p.target = null;
+        }
+    }//전투 종료 이후로 호출할 함수
 
     // Start is called before the first frame update
     void Start()

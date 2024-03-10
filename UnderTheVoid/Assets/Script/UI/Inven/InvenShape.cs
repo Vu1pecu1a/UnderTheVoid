@@ -66,17 +66,31 @@ public class InvenShape
         var index = GetIndex(localPoint.x, localPoint.y);
         return _shape[index];
     }
+    public bool IsPartOfShape90(Vector2Int localPoint)
+    {
+        if (localPoint.x < 0 || localPoint.x >= _width || localPoint.y < 0 || localPoint.y >= _height)
+        {
+            return false; // outside of shape width/height
+        }
 
-   
-    
+        var index = GetIndex90(localPoint.x, localPoint.y);
+        return _shape[index];
+    }
+
+
     /*
     Converts X & Y to an index to use with _shape
     */
     private int GetIndex(int x, int y)
     {
-        y = (_height - 1) - y;
+        y = (_height - 1) - y;//세로값
         return x + _width * y;
-    }
+    }//좌표 0,0 이면 0+(7-1)-0 0+6*5해서 30 1,0 이면 31 x가 5까지 올라가서 최종 적으로 35번째[34]는 4,0
+    private int GetIndex90(int x, int y)
+    {
+        y = (_height - (_height - 1)) + y;//세로값
+        return x + _width * y -width;
+    }//좌표 0,0 이면 0 + 7*4 
 }
 
 
@@ -91,6 +105,10 @@ public interface IInventoryItem
     bool IsPartOfShape(Vector2Int localPosition);
 
     bool canDrop { get; }
+
+    itemRotae Rotate { get; }
+
+    void RotateRight();
 }
 internal static class InventoryItemExtensions
 {
