@@ -10,17 +10,18 @@ public class InvenCreat : MonoBehaviour
     [SerializeField] private int _width = 8;
     [SerializeField] private int _height = 4;
     [SerializeField] private ItemDefinition[] _definitions = null;
-    [SerializeField] private bool _fillRandomly = true; // Should the inventory get filled with random items?
-    [SerializeField] private bool _fillEmpty = false; // Should the inventory get completely filled?
+    [SerializeField] private bool _fillRandomly = true; //랜덤으로 아이템 채우기
+    [SerializeField] private bool _fillEmpty = false; //꽉 채우기
+
 
     void Start()
     {
         var provider = new InventoryProvider(_slotType, _maximumAlowedItemCount, _allowedItem);
 
-        // Create inventory
+        // 인벤토리 생성
         var inventory = new InventoryManager(provider, _width, _height);
 
-        // Fill inventory with random items
+        // 랜덤하게 아이템 채우기
         if (_fillRandomly)
         {
             var tries = (_width * _height) / 3;
@@ -30,7 +31,7 @@ public class InvenCreat : MonoBehaviour
             }
         }
 
-        // Fill empty slots with first (1x1) item
+        // 빈 슬롯에 1x1 짜리로 채우기
         if (_fillEmpty)
         {
             for (var i = 0; i < _width * _height; i++)
@@ -39,25 +40,25 @@ public class InvenCreat : MonoBehaviour
             }
         }
 
-        // Sets the renderers's inventory to trigger drawing
+        //  렌더러의 인벤토리가 드로잉을 트리거하도록 설정합니다.
         GetComponent<InvenRender>().SetInventory(inventory, provider.invenSlotType);
 
-        // Log items being dropped on the ground
+        // 바닥에 떨어뜨린 아이템 기록
         inventory.onItemDropped += (item) =>
         {
-            Debug.Log((item as ItemDefinition).Name + " was dropped on the ground");
+            Debug.Log((item as ItemDefinition).Name + "(을)를 땅에 버렸다.");
         };
 
-        // Log when an item was unable to be placed on the ground (due to its canDrop being set to false)
+        // 아이템을 바닥에 놓을 수 없는 경우(캔드롭이 거짓으로 설정되어 있음) 기록합니다.
         inventory.onItemDroppedFailed += (item) =>
         {
-            Debug.Log($"You're not allowed to drop {(item as ItemDefinition).Name} on the ground");
+            Debug.Log($"이 아이템 {(item as ItemDefinition).Name}은(는) 버릴 수 없다");
         };
 
-        // Log when an item was unable to be placed on the ground (due to its canDrop being set to false)
+        // 아이템 추가가 실패했을 경우
         inventory.onItemAddedFailed += (item) =>
         {
-            Debug.Log($"You can't put {(item as ItemDefinition).Name} there!");
+            Debug.Log($"이 아이템{(item as ItemDefinition).Name} 는 인벤토리에 들어 갈 수 없습니다.");
         };
     }
 

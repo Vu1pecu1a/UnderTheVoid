@@ -27,10 +27,10 @@ public class TEstFOr : MonoBehaviour
             case 0:
                 wh(w, h);
                 break;
-            case 1:
+            case 1: //up
                 hw(w, h);
                 break;
-            case 2:
+            case 2: //down
                 hwq(w, h);
                 break;
             case 3:
@@ -108,6 +108,7 @@ public class TEstFOr : MonoBehaviour
 
     void wh(int w,int h)
     {
+        
         foreach (GameObject a in list)
         {
             Destroy(a);

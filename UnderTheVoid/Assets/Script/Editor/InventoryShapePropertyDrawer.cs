@@ -4,7 +4,7 @@ using UnityEngine;
 [CustomPropertyDrawer(typeof(InvenShape))]
 public class InvenShapePropertyDrawer : PropertyDrawer
 {
-    const int GridSize = 16; // The size between the boold-fields that make up the shape matrix
+    const int GridSize = 16; // 최대크기
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {

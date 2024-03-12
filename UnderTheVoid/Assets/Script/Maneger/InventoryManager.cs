@@ -90,15 +90,17 @@ public class InventoryManager : IinvenManager
         item.position = point;
         var padding = Vector2.one * 0.01f;
 
-        // Check if item is outside of inventory
+        // 인벤토리 크기보다 큰지 검사
         if (!_fullRect.Contains(item.GetMinPoint() + padding) || !_fullRect.Contains(item.GetMaxPoint() - padding))
         {
             item.position = previousPoint;
             return false;
         }
 
-        // Check if item overlaps another item already in the inventory
-        if (!allItems.Any(otherItem => item.Overlaps(otherItem))) return true; // Item can be added
+        // 아이템이 다른 인벤토리에 있는 아이템과 겹치는지 검사하기
+        if (!allItems.Any(otherItem => item.Overlaps(otherItem))) return true; // 항목 추가 가능
+
+        //실패했을 경우
         item.position = previousPoint;
         return false;
     }
@@ -319,7 +321,12 @@ public class InventoryManager : IinvenManager
         }
     }
 
-    private bool DoesItemFit(IInventoryItem item) => item.width <= width && item.height <= height;//아이템이 인벤토리크기를 넘어가지 않으면 true반환
+    /// <summary>
+    /// 아이템이 인벤토리크기를 넘어가지 않으면 true반환
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    private bool DoesItemFit(IInventoryItem item) => item.width <= width && item.height <= height;
 
     private bool GetFirstPointThatFitsItem(IInventoryItem item, out Vector2Int point)
     {

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "Item", menuName = "인벤토리/아이템 아키타입 생성", order = 1)]
 public class ItemDefinition : ScriptableObject, IInventoryItem
@@ -10,7 +12,6 @@ public class ItemDefinition : ScriptableObject, IInventoryItem
     [SerializeField] private ItemType _type = ItemType.relic;
     [SerializeField] private bool _canDrop = true;
     [SerializeField, HideInInspector] private Vector2Int _position = Vector2Int.zero;
-    [SerializeField] private itemRotae _rotate = itemRotae.up;
     /// <summary>
     /// 아이템 이름
     /// </summary>
@@ -43,52 +44,26 @@ public class ItemDefinition : ScriptableObject, IInventoryItem
         return _shape.IsPartOfShape(localPosition);
     }
 
-    public bool IspartOfShape90(Vector2Int localPosition)
+    public void RotateRight()
     {
-        return _shape.IsPartOfShape90(localPosition);
+       _shape.RotateRight();
     }
+
+    public void RotateOrigin(itemRotae _ro)
+    {
+        while(true)
+        {
+            _shape.RotateRight();
+            
+            if(_ro == _shape.rotate)
+            break;
+        }
+    }
+
     /// <inheritdoc />
     public bool canDrop => _canDrop;
 
-    public void RotateRight()
-    {
-        switch(_rotate)
-        {
-            case itemRotae.up:
-                _rotate = itemRotae.right;
-                break;
-            case (itemRotae)90:
-                _rotate = itemRotae.down;
-                break;
-            case (itemRotae)180:
-                _rotate = itemRotae.left;
-                break;
-            case (itemRotae)270:
-                _rotate = itemRotae.up;
-                break;
-        }
-    }
-
-    public void RotateLeft()
-    {
-        switch (_rotate)
-        {
-            case itemRotae.up:
-                _rotate = itemRotae.left;
-                break;
-            case (itemRotae)270:
-                _rotate = itemRotae.down;
-                break;
-            case (itemRotae)180:
-                _rotate = itemRotae.right;
-                break;
-            case (itemRotae)90:
-                _rotate = itemRotae.up;
-                break;
-        }
-    }
-
-    itemRotae IInventoryItem.Rotate => _rotate;
+    itemRotae IInventoryItem.Rotate { get => _shape.rotate; set => _shape.rotate = value; }
 
     /// <summary>
     /// Creates a copy if this scriptable object

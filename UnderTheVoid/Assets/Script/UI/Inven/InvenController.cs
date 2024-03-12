@@ -6,21 +6,39 @@ using UnityEngine.EventSystems;
 
 public interface IInventoryController
 {
+    /// <summary>
+    /// 들고있는 아이템
+    /// </summary>
     Action<IInventoryItem> onItemHovered { get; set; }
+    /// <summary>
+    /// 아이템을 들었을 때
+    /// </summary>
     Action<IInventoryItem> onItemPickedUp { get; set; }
+    /// <summary>
+    /// 아이템을 추가 하려고 했을 때
+    /// </summary>
     Action<IInventoryItem> onItemAdded { get; set; }
+    /// <summary>
+    /// 아이템을 교채하려고 할 때
+    /// </summary>
     Action<IInventoryItem> onItemSwapped { get; set; }
+    /// <summary>
+    /// 아이템이 원래 위치로 이동할 때
+    /// </summary>
     Action<IInventoryItem> onItemReturned { get; set; }
+    /// <summary>
+    /// 아이템을 버렸을 때
+    /// </summary>
     Action<IInventoryItem> onItemDropped { get; set; }
 }
 [RequireComponent(typeof(InvenRender))]
 public class InvenController : MonoBehaviour,
-        IPointerDownHandler, IBeginDragHandler, IDragHandler,IPointerUpHandler,
-        IEndDragHandler, IPointerExitHandler, IPointerEnterHandler,
-        IInventoryController
+IPointerDownHandler, IBeginDragHandler, IDragHandler,IPointerUpHandler,
+IEndDragHandler, IPointerExitHandler, IPointerEnterHandler,
+IInventoryController
 {
-    // The dragged item is static and shared by all controllers
-    // This way items can be moved between controllers easily
+    // 드래그한 항목은 정적이며 모든 컨트롤러가 공유합니다.
+    // 이렇게 하면 컨트롤러 간에 항목을 쉽게 이동할 수 있습니다.
     private static InventoryDraggedItem _draggedItem;
 
     /// <inheritdoc />
@@ -55,12 +73,13 @@ public class InvenController : MonoBehaviour,
     void Awake()
     {
         inventoryRenderer = GetComponent<InvenRender>();
-        if (inventoryRenderer == null) { throw new NullReferenceException("Could not find a renderer. This is not allowed!"); }
+        if (inventoryRenderer == null) { throw new NullReferenceException("인벤토리 랜더러가 없음"); }
 
         // Find the canvas
         var canvases = GetComponentsInParent<Canvas>();
-        if (canvases.Length == 0) { throw new NullReferenceException("Could not find a canvas."); }
+        if (canvases.Length == 0) { throw new NullReferenceException("캔버스를 찾을 수 없음"); }
         _canvas = canvases[canvases.Length - 1];
+        Managers.instance.RkeyInput += R;
     }
 
     /*
@@ -69,7 +88,7 @@ public class InvenController : MonoBehaviour,
     public void OnPointerDown(PointerEventData eventData)
     {
         if (_draggedItem != null) return;
-        // Get which item to drag (item will be null of none were found)
+        // 드래그할 항목을 가져옵니다(항목이 없으면 null이 됩니다).
         var grid = ScreenToGrid(eventData.position);
         _itemToDrag = inventory.GetAtPoint(grid);
     }
@@ -77,11 +96,9 @@ public class InvenController : MonoBehaviour,
     {
         if (_draggedItem != null) return; 
         var grid = ScreenToGrid(eventData.position);
-         
-        Debug.Log(inventory.GetAtPoint(grid));
     }
     /*
-     * Dragging started (IBeginDragHandler)
+     * 드래그 시작(IBeginDragHandler)
      */
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -93,7 +110,7 @@ public class InvenController : MonoBehaviour,
         var itemOffest = inventoryRenderer.GetItemOffset(_itemToDrag);
         var offset = itemOffest - localPosition;
 
-        // Create a dragged item 
+        // 드래그한 항목 만들기 
         _draggedItem = new InventoryDraggedItem(
             _canvas,
             this,
@@ -102,31 +119,27 @@ public class InvenController : MonoBehaviour,
             offset
         );
 
-        // Remove the item from inventory
+        // 인벤토리에서 아이템 제거
         inventory.TryRemove(_itemToDrag);
 
         onItemPickedUp?.Invoke(_itemToDrag);
     }
 
     /*
-     * Dragging is continuing (IDragHandler)
+     * 드래그가 계속 중(IDragHandler)
      */
     public void OnDrag(PointerEventData eventData)
     {
         _currentEventData = eventData;
         if (_draggedItem != null)
         {
-            if(Input.GetKeyUp(KeyCode.R))
-            {
-                _draggedItem.item.RotateRight();
-            }
             // Update the items position
             //_draggedItem.Position = eventData.position;
         }
     }
 
     /*
-     * Dragging stopped (IEndDragHandler)
+     * 드래그 중지(IEndDragHandler)
      */
     public void OnEndDrag(PointerEventData eventData)
     {
@@ -156,13 +169,13 @@ public class InvenController : MonoBehaviour,
     }
 
     /*
-     * Pointer left the inventory (IPointerExitHandler)
+     * 포인터가 인벤토리를 떠난 경우(IPointerExitHandler)
      */
     public void OnPointerExit(PointerEventData eventData)
     {
         if (_draggedItem != null)
         {
-            // Clear the item as it leaves its current controller
+            // 항목이 현재 컨트롤러를 떠날 때 지우기
             _draggedItem.currentController = null;
             inventoryRenderer.ClearSelection();
         }
@@ -171,13 +184,13 @@ public class InvenController : MonoBehaviour,
     }
 
     /*
-     * Pointer entered the inventory (IPointerEnterHandler)
+     * 포인터가 인벤토리에 진입했을 경우(IPointerEnterHandler).
      */
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (_draggedItem != null)
         {
-            // Change which controller is in control of the dragged item
+            // 드래그한 항목을 제어할 컨트롤러 변경하기
             _draggedItem.currentController = this;
         }
         _currentEventData = eventData;
@@ -206,6 +219,17 @@ public class InvenController : MonoBehaviour,
         }
     }
 
+    public void R()
+    {
+        _draggedItem.currentController.RotateGetKeyDown();
+    }
+
+    public void RotateGetKeyDown()
+    {
+        Debug.Log("아이템 회전");
+        _draggedItem.RotateItem();
+    }
+
     /* 
      * 
      */
@@ -219,7 +243,7 @@ public class InvenController : MonoBehaviour,
     }
 
     /*
-     * Get a point on the grid from a given screen point
+     * 지정된 화면 지점에서 그리드상의 점 가져오기
      */
     internal Vector2Int ScreenToGrid(Vector2 screenPoint)
     {

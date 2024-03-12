@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using UnityEngine.UIElements;
 
 [Serializable]
 public class InvenShape
@@ -11,7 +11,7 @@ public class InvenShape
     [SerializeField] int _width;
     [SerializeField] int _height;
     [SerializeField] bool[] _shape;
-
+    [SerializeField] itemRotae _rotate;
     /// <summary>
     /// CTOR
     /// </summary>
@@ -42,29 +42,99 @@ public class InvenShape
         }
        // _shape.ToArray().Reverse();
     }
+    public void RotateRight()
+    {
+        switch (_rotate)
+        {
+            case itemRotae.up:
+                _rotate = itemRotae.right;
+                ChangeWH();
+                break;
+            case (itemRotae)90:
+                _rotate = itemRotae.down;
+                ChangeWH();
+                break;
+            case (itemRotae)180:
+                _rotate = itemRotae.left;
+                ChangeWH();
+                break;
+            case (itemRotae)(-90):
+                _rotate = itemRotae.up;
+                ChangeWH();
+                break;
+        }
+    }
+
+    void ChangeWH()
+    {
+        int h = _height;
+        _height = _width;
+        _width = h;
+    }
+
+    //public void RotateLeft()
+    //{
+    //    switch (_rotate)
+    //    {
+    //        case itemRotae.up:
+    //            _rotate = itemRotae.left;
+    //            break;
+    //        case (itemRotae)270:
+    //            _rotate = itemRotae.down;
+    //            break;
+    //        case (itemRotae)180:
+    //            _rotate = itemRotae.right;
+    //            break;
+    //        case (itemRotae)90:
+    //            _rotate = itemRotae.up;
+    //            break;
+    //    }
+    //}
 
     /// <summary>
-    /// Returns the width of the shapes bounding box
+    /// 방향
+    /// </summary>
+    public itemRotae rotate { get=>_rotate; set=> _rotate = value; }
+
+    /// <summary>
+    /// 가로길이
     /// </summary>
     public int width => _width;
 
     /// <summary>
-    /// Returns the height of the shapes bounding box
+    /// 세로길이
     /// </summary>
     public int height => _height;
 
     /// <summary>
-    /// Returns true if given local point is part of this shape
+    /// 로컬 포인트가 도형과 겹치는 부분이 있다면 true반환
     /// </summary>
     public bool IsPartOfShape(Vector2Int localPoint)
     {
         if (localPoint.x < 0 || localPoint.x >= _width || localPoint.y < 0 || localPoint.y >= _height)
         {
-            return false; // outside of shape width/height
+            return false; // 가로 세로 길이를 벗어남
         }
-
-        var index = GetIndex(localPoint.x, localPoint.y);
-        return _shape[index];
+        int index = 0;
+        switch (_rotate)
+        {
+            case (itemRotae)90:
+                index = GetIndex90(localPoint.x, localPoint.y);
+                return _shape[index];
+            case (itemRotae)180:
+                index = GetIndex(localPoint.x, localPoint.y);
+                bool[] newShape = _shape.ToArray();
+                Array.Reverse(newShape);
+                return newShape[index];
+            case (itemRotae)(-90):
+                index = GetIndex90(localPoint.x, localPoint.y);
+                bool[] newShape90 = _shape.ToArray();
+                Array.Reverse(newShape90);
+                return newShape90[index];
+            default:
+                index = GetIndex(localPoint.x, localPoint.y);
+                return _shape[index];
+        }
     }
     public bool IsPartOfShape90(Vector2Int localPoint)
     {
@@ -79,7 +149,7 @@ public class InvenShape
 
 
     /*
-    Converts X & Y to an index to use with _shape
+    모양과 함께 사용할 인덱스로 X & Y를 변환
     */
     private int GetIndex(int x, int y)
     {
@@ -88,9 +158,8 @@ public class InvenShape
     }//좌표 0,0 이면 0+(7-1)-0 0+6*5해서 30 1,0 이면 31 x가 5까지 올라가서 최종 적으로 35번째[34]는 4,0
     private int GetIndex90(int x, int y)
     {
-        y = (_height - (_height - 1)) + y;//세로값
-        return x + _width * y -width;
-    }//좌표 0,0 이면 0 + 7*4 
+        return x *_height +  y ;
+    }//좌표 0,0 이면 0,3,1,4,2,5가 나와야 하는대 ? 
 }
 
 
@@ -102,19 +171,24 @@ public interface IInventoryItem
     int width { get; }
     int height { get; }
 
+
+    /// <summary>
+    /// 주어진 로컬 포인트가 이 도형의 일부인 경우 참을 반환합니다.
+    /// </summary>
     bool IsPartOfShape(Vector2Int localPosition);
 
     bool canDrop { get; }
 
-    itemRotae Rotate { get; }
+    itemRotae Rotate { get; set; }
 
     void RotateRight();
+
+    void RotateOrigin(itemRotae ro);
 }
 internal static class InventoryItemExtensions
 {
     /// <summary>
-    /// Returns the lower left corner position of an item 
-    /// within its inventory
+    /// 인벤토리의 왼쪽 하단 모서리 위치를 반환합니다. 
     /// </summary>
     internal static Vector2Int GetMinPoint(this IInventoryItem item)
     {
@@ -122,8 +196,7 @@ internal static class InventoryItemExtensions
     }
 
     /// <summary>
-    /// Returns the top right corner position of an item 
-    /// within its inventory
+    /// 인벤토리의 오른쪽 상단 모서리 위치를 반환합니다. 
     /// </summary>
     internal static Vector2Int GetMaxPoint(this IInventoryItem item)
     {
@@ -139,8 +212,11 @@ internal static class InventoryItemExtensions
         {
             for (var iY = 0; iY < item.height; iY++)
             {
-                var iPoint = item.position + new Vector2Int(iX, iY);
-                if (iPoint == inventoryPoint) { return true; }
+                if (item.IsPartOfShape(new Vector2Int(iX, iY)))
+                {
+                    var iPoint = item.position + new Vector2Int(iX, iY);
+                    if (iPoint == inventoryPoint) { return true; }
+                }
             }
         }
         return false;
@@ -158,6 +234,7 @@ internal static class InventoryItemExtensions
                 if (item.IsPartOfShape(new Vector2Int(iX, iY)))
                 {
                     var iPoint = item.position + new Vector2Int(iX, iY);
+
                     for (var oX = 0; oX < otherItem.width; oX++)
                     {
                         for (var oY = 0; oY < otherItem.height; oY++)
@@ -174,4 +251,6 @@ internal static class InventoryItemExtensions
         }
         return false; // 겹치는 부분이 없다면 false리턴
     }
+
+
 }

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sprite: {fileID: 21300152, guid: 1e627bcafe9e32d40ad554880f36b5eb, type: 3}
   _shape:
-    _width: 4
-    _height: 1
-    _shape: 01010101
+    _width: 5
+    _height: 3
+    _shape: 010101010101000000000100010101
+    _rotate: 0
   _type: 0
   _canDrop: 1
   _position: {x: 0, y: 0}
-  _rotate: 0

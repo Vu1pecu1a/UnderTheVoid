@@ -15,22 +15,22 @@ public class InventoryDraggedItem
     }
 
     /// <summary>
-    /// Returns the InventoryController this item originated from
+    /// 이 아이템이 생성된 인벤토리 컨트롤러를 반환합니다.
     /// </summary>
     public InvenController originalController { get; private set; }
 
     /// <summary>
-    /// Returns the point inside the inventory from which this item originated from
+    /// 이 아이템이 시작된 인벤토리 내 지점을 반환합니다.
     /// </summary>
     public Vector2Int originPoint { get; private set; }
 
     /// <summary>
-    /// Returns the item-instance that is being dragged
+    /// 드래그 중인 아이템 인스턴스를 반환합니다.
     /// </summary>
     public IInventoryItem item { get; private set; }
 
     /// <summary>
-    /// Gets or sets the InventoryController currently in control of this item
+    /// 현재 이 항목을 제어하고 있는 인벤토리 컨트롤러를 가져오거나 설정합니다.
     /// </summary>
     public InvenController currentController;
 
@@ -38,22 +38,18 @@ public class InventoryDraggedItem
     private readonly RectTransform _canvasRect;
     private readonly Image _image;
     private Vector2 _offset;
+    itemRotae _ro;
 
     /// <summary>
-    /// Constructor
+    /// 생성자
     /// </summary>
     /// <param name="canvas">The canvas</param>
-    /// <param name="originalController">The InventoryController this item originated from</param>
-    /// <param name="originPoint">The point inside the inventory from which this item originated from</param>
-    /// <param name="item">The item-instance that is being dragged</param>
-    /// <param name="offset">The starting offset of this item</param>
+    /// <param name="originalController">이 항목의 출처가 된 인벤토리 컨트롤러는 다음과 같습니다.</param>
+    /// <param name="originPoint">이 아이템의 출처가 된 인벤토리 내 지점입니다.</param>
+    /// <param name="item">드래그 중인 아이템 인스턴스</param>
+    /// <param name="offset">아이템의 시작 오프셋</param>
     [SuppressMessage("ReSharper", "Unity.InefficientPropertyAccess")]
-    public InventoryDraggedItem(
-        Canvas canvas,
-        InvenController originalController,
-        Vector2Int originPoint,
-        IInventoryItem item,
-        Vector2 offset)
+    public InventoryDraggedItem(Canvas canvas,InvenController originalController,Vector2Int originPoint,IInventoryItem item,Vector2 offset)
     {
         this.originalController = originalController;
         currentController = this.originalController;
@@ -65,30 +61,33 @@ public class InventoryDraggedItem
 
         _offset = offset;
 
-        // Create an image representing the dragged item
+        _ro = item.Rotate;
+
+        // 드래그한 항목을 나타내는 아이템 만들기
         _image = new GameObject("DraggedItem").AddComponent<Image>();
         _image.raycastTarget = false;
         _image.transform.SetParent(_canvas.transform);
         _image.transform.SetAsLastSibling();
         _image.transform.localScale = Vector3.one;
         _image.sprite = item.sprite;
+        _image.transform.rotation = Quaternion.Euler(0, 0, (float)item.Rotate);
         _image.SetNativeSize();
     }
 
     /// <summary>
-    /// Gets or sets the position of this dragged item
+    /// 드래그한 항목의 위치를 가져오거나 설정
     /// </summary>
     public Vector2 position
     {
         set
         {
-            // Move the image
+            // 이미지 이동
             var camera = _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, value + _offset, camera, out var newValue);
             _image.rectTransform.localPosition = newValue;
 
 
-            // Make selections
+            // 선택
             if (currentController != null)
             {
                 item.position = currentController.ScreenToGrid(value + _offset + GetDraggedItemOffset(currentController.inventoryRenderer, item));
@@ -96,9 +95,18 @@ public class InventoryDraggedItem
                 currentController.inventoryRenderer.SelectItem(item, !canAdd, Color.white);
             }
 
-            // Slowly animate the item towards the center of the mouse pointer
+            // 마우스 포인터의 중앙으로 천천히 이동
             _offset = Vector2.Lerp(_offset, Vector2.zero, Time.deltaTime * 10f);
         }
+    }
+
+    /// <summary>
+    /// 오른쪽으로 회전
+    /// </summary>
+    public void RotateItem()
+    {
+        item.RotateRight();
+        _image.transform.rotation = Quaternion.Euler(0, 0, (float)item.Rotate);
     }
 
     /// <summary>
@@ -114,7 +122,7 @@ public class InventoryDraggedItem
             // Try to add new item
             if (currentController.inventory.CanAddAt(item, grid))
             {
-                currentController.inventory.TryAddAt(item, grid); // Place the item in a new location
+                currentController.inventory.TryAddAt(item, grid); //새 위치에 항목 배치
                 mode = DropMode.Added;
             }
             // Adding did not work, try to swap
@@ -129,7 +137,9 @@ public class InventoryDraggedItem
             // Could not add or swap, return the item
             else
             {
-                originalController.inventory.TryAddAt(item, originPoint); // Return the item to its previous location
+                Debug.Log(originPoint);
+                item.RotateOrigin(_ro);
+                originalController.inventory.TryAddAt(item, originPoint); //항목을 이전 위치로 되돌리기
                 mode = DropMode.Returned;
 
             }
@@ -139,20 +149,20 @@ public class InventoryDraggedItem
         else
         {
             mode = DropMode.Dropped;
-            if (!originalController.inventory.TryForceDrop(item)) // Drop the item on the ground
+            if (!originalController.inventory.TryForceDrop(item)) // 아이템을 바닥에 떨어뜨리기
             {
                 originalController.inventory.TryAddAt(item, originPoint);
             }
         }
 
-        // Destroy the image representing the item
+        // 항목을 나타내는 이미지를 삭제
         Object.Destroy(_image.gameObject);
 
         return mode;
     }
 
     /*
-     * Returns the offset between dragged item and the grid 
+     * 드래그한 항목과 그리드 사이의 오프셋을 반환
      */
     private Vector2 GetDraggedItemOffset(InvenRender renderer, IInventoryItem item)
     {
@@ -166,7 +176,7 @@ public class InventoryDraggedItem
     }
 
     /* 
-     * Returns true if its possible to swap
+     * 스왑이 가능하면 true반환
      */
     private bool CanSwap()
     {

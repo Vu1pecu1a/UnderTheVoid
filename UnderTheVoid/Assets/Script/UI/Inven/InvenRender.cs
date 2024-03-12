@@ -12,10 +12,10 @@ public class InvenRender : MonoBehaviour
     [SerializeField, Tooltip("비어있는 셀의 스프라이트")]
     private Sprite _cellSpriteEmpty = null;
 
-    [SerializeField, Tooltip("The sprite to use for selected cells")]
+    [SerializeField, Tooltip("선택한 셀에 사용할 스프라이트")]
     private Sprite _cellSpriteSelected = null;
 
-    [SerializeField, Tooltip("The sprite to use for blocked cells")]
+    [SerializeField, Tooltip("차단된 셀에 사용할 스프라이트")]
     private Sprite _cellSpriteBlocked = null;
 
     internal IinvenManager inventory;
@@ -23,12 +23,12 @@ public class InvenRender : MonoBehaviour
     private bool _haveListeners;
     // private Pool<Image> _imagePool;
     [SerializeField]
-    Image _imagePool;
+    GameObject _imagePool;
     private Image[] _grids;
-    private Dictionary<IInventoryItem, Image> _items = new Dictionary<IInventoryItem, Image>();
+    private Dictionary<IInventoryItem, GameObject> _items = new Dictionary<IInventoryItem, GameObject>();
 
     /*
-     * Setup
+     * 시작
      */
     void Awake()
     {
@@ -52,7 +52,7 @@ public class InvenRender : MonoBehaviour
     }
 
     /// <summary>
-    /// Set what inventory to use when rendering
+    /// 렌더링할 때 사용할 인벤토리 설정
     /// </summary>
     public void SetInventory(IinvenManager inventoryManager, ItemSoltType renderMode)
     {
@@ -64,25 +64,25 @@ public class InvenRender : MonoBehaviour
 
 
     /// <summary>
-    /// Returns the RectTransform for this renderer
+    /// 이 렌더러에 대한 렉트 트랜스폼을 반환합니다.
     /// </summary>
     public RectTransform rectTransform { get; private set; }
 
     /// <summary>
-    /// Returns the size of this inventory's cells
+    /// 이 인벤토리의 셀 크기를 반환합니다.
     /// </summary>
     public Vector2 cellSize => _cellSize;
 
     /* 
-    Invoked when the inventory inventoryRenderer is enabled
+    인벤토리 인벤토리 렌더러가 활성화되면 호출됩니다.
     */
     void OnEnable()
     {
         if (inventory != null && !_haveListeners)
         {
-            if (_cellSpriteEmpty == null) { throw new NullReferenceException("Sprite for empty cell is null"); }
-            if (_cellSpriteSelected == null) { throw new NullReferenceException("Sprite for selected cells is null."); }
-            if (_cellSpriteBlocked == null) { throw new NullReferenceException("Sprite for blocked cells is null."); }
+            if (_cellSpriteEmpty == null) { throw new NullReferenceException("빈 셀에 대한 스프라이트가 없음"); }
+            if (_cellSpriteSelected == null) { throw new NullReferenceException("선택된 셀에 대한 스프라이트가 없음"); }
+            if (_cellSpriteBlocked == null) { throw new NullReferenceException("점유된 셀에 대한 스프라이트가 없음"); }
 
             inventory.onRebuilt += ReRenderAllItems;
             inventory.onItemAdded += HandleItemAdded;
@@ -98,7 +98,7 @@ public class InvenRender : MonoBehaviour
     }
 
     /* 
-    Invoked when the inventory inventoryRenderer is disabled
+    인벤토리 인벤토리 렌더러가 비활성화되었을 때 호출됩니다.
     */
     void OnDisable()
     {
@@ -114,29 +114,30 @@ public class InvenRender : MonoBehaviour
     }
 
     /*
-    Clears and renders the grid. This must be done whenever the size of the inventory changes
+    그리드를 지우고 렌더링합니다. 인벤토리의 크기가 변경될 때마다 이 작업을 수행해야 합니다.
     */
     private void ReRenderGrid()
     {
-        // Clear the grid
+        // 그리드 지우기
         if (_grids != null)
         {
             for (var i = 0; i < _grids.Length; i++)
             {
                 _grids[i].gameObject.SetActive(false);
-                RecycleImage(_grids[i]);
+                RecycleImage(_grids[i].gameObject);
                 _grids[i].transform.SetSiblingIndex(i);
             }
         }
         _grids = null;
 
-        // Render new grid
+        // 새 그리드 렌더링
         var containerSize = new Vector2(cellSize.x * inventory.width, cellSize.y * inventory.height);
+        
         Image grid;
         switch (_renderMode)
         {
-            case ItemSoltType.Single:
-                grid = CreateImage(_cellSpriteEmpty, true);
+            case ItemSoltType.Single:    
+                grid = CreateImage(_cellSpriteEmpty, true).GetComponent<Image>();
                 grid.rectTransform.SetAsFirstSibling();
                 grid.type = Image.Type.Sliced;
                 grid.rectTransform.localPosition = Vector3.zero;
@@ -144,7 +145,7 @@ public class InvenRender : MonoBehaviour
                 _grids = new[] { grid };
                 break;
             default:
-                // Spawn grid images
+                // 그리드 이미지 스폰
                 var topLeft = new Vector3(-containerSize.x / 2, -containerSize.y / 2, 0); // Calculate topleft corner
                 var halfCellSize = new Vector3(cellSize.x / 2, cellSize.y / 2, 0); // Calulcate cells half-size
                 _grids = new Image[inventory.width * inventory.height];
@@ -153,7 +154,7 @@ public class InvenRender : MonoBehaviour
                 {
                     for (int x = 0; x < inventory.width; x++)
                     {
-                        grid = CreateImage(_cellSpriteEmpty, true);
+                        grid = CreateImage(_cellSpriteEmpty, true).GetComponent<Image>();
                         grid.gameObject.name = "Grid " + c;
                         grid.rectTransform.SetAsFirstSibling();
                         grid.type = Image.Type.Sliced;
@@ -166,14 +167,14 @@ public class InvenRender : MonoBehaviour
                 break;
         }
 
-        // Set the size of the main RectTransform
-        // This is useful as it allowes custom graphical elements
-        // suchs as a border to mimic the size of the inventory.
+        //  메인 렉트 트랜스폼의 크기를 설정합니다.
+        // 이는 사용자 지정 그래픽 요소를 허용하므로 유용합니다.
+        // 인벤토리의 크기를 모방하는 테두리 등입니다.
         rectTransform.sizeDelta = containerSize;
     }
 
     /*
-    Clears and renders all items
+   모든 항목을 지우고 렌더링합니다.
     */
     private void ReRenderAllItems()
     {
@@ -193,7 +194,7 @@ public class InvenRender : MonoBehaviour
     }
 
     /*
-    Handler for when inventory.OnItemAdded is invoked
+    inventory.OnItemAdded가 호출될 때를 위한 핸들러
     */
     private void HandleItemAdded(IInventoryItem item)
     {
@@ -201,18 +202,19 @@ public class InvenRender : MonoBehaviour
 
         if (_renderMode == ItemSoltType.Single)
         {
-            img.rectTransform.localPosition = rectTransform.rect.center;
+            img.GetComponent<Image>().rectTransform.localPosition = rectTransform.rect.center;
         }
         else
         {
-            img.rectTransform.localPosition = GetItemOffset(item);
+            img.GetComponent<Image>().rectTransform.localPosition = GetItemOffset(item);
+            img.transform.rotation = Quaternion.Euler(0, 0, (float)item.Rotate);
         }
 
         _items.Add(item, img);
     }
 
     /*
-    Handler for when inventory.OnItemRemoved is invoked
+    inventory.OnItemRemoved가 호출될 때를 위한 핸들러
     */
     private void HandleItemRemoved(IInventoryItem item)
     {
@@ -226,7 +228,7 @@ public class InvenRender : MonoBehaviour
     }
 
     /*
-    Handler for when inventory.OnResized is invoked
+    inventory.OnResized가 호출될 때를 위한 핸들러
     */
     private void HandleResized()
     {
@@ -235,25 +237,25 @@ public class InvenRender : MonoBehaviour
     }
 
     /*
-     * Create an image with given sprite and settings
-     
+     * 주어진 스프라이트와 설정으로 이미지 만들기
     */
-    private Image CreateImage(Sprite sprite, bool raycastTarget)
+    private GameObject CreateImage(Sprite sprite, bool raycastTarget)
     {
-        var img = Instantiate(_imagePool,transform);
+        var gameObject = Instantiate(_imagePool, transform.GetChild(0));
+        var img = gameObject.GetComponent<Image>();
         img.gameObject.SetActive(true);
         img.sprite = sprite;
         img.rectTransform.sizeDelta = new Vector2(img.sprite.rect.width, img.sprite.rect.height);
-        img.transform.SetAsLastSibling();
+        img.transform.SetAsLastSibling(); // 하이라이키 순위 맨 뒤로 이동
         img.type = Image.Type.Simple;
         img.raycastTarget = raycastTarget;
-        return img;
+        return gameObject;
     }
 
     /*
-     * Recycles given image 
+     * 주어진 이미지 재활용 
      */
-    private void RecycleImage(Image image)
+    private void RecycleImage(GameObject image)
     {
         image.gameObject.name = "Image";
         image.gameObject.SetActive(false);
@@ -261,11 +263,11 @@ public class InvenRender : MonoBehaviour
     }
 
     /// <summary>
-    /// Selects a given item in the inventory
+    /// 인벤토리에서 지정된 항목을 선택합니다.
     /// </summary>
-    /// <param name="item">Item to select</param>
-    /// <param name="blocked">Should the selection be rendered as blocked</param>
-    /// <param name="color">The color of the selection</param>
+    /// <param name="item">아이템 선택</param>
+    /// <param name="blocked">인벤토리에서 점유된 블록일 경우</param>
+    /// <param name="color">선택 항목의 색상</param>
     public void SelectItem(IInventoryItem item, bool blocked, Color color)
     {
         if (item == null) { return; }
@@ -274,15 +276,19 @@ public class InvenRender : MonoBehaviour
         switch (_renderMode)
         {
             case ItemSoltType.Single:
-                _grids[0].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
-                _grids[0].color = color;
+                _grids[0].GetComponent<Image>().sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
+                _grids[0].GetComponent<Image>().color = color;
                 break;
             default:
                 for (var x = 0; x < item.width; x++)
                 {
-                    for (var y = 0; y < item.height; y++)
+                    for (var y = 0; y < item.height; y++)//아이템 크기만큼 반복
                     {
-                        IsShapeRotate(x, y, item, blocked, color);
+                        if (item.Rotate == itemRotae.right || item.Rotate == itemRotae.left)
+                            IsShapeRotate90(x, y, item, blocked, color);
+                        else
+                            IsShapeRotate(x, y, item, blocked, color);
+
                     }
                 }
                 break;
@@ -291,62 +297,32 @@ public class InvenRender : MonoBehaviour
 
     void IsShapeRotate(int x,int y, IInventoryItem item, bool blocked, Color color)
     {
-
-        switch(item.Rotate)
+        if (item.IsPartOfShape(new Vector2Int(x, y)))
         {
-            case itemRotae.up:
-                if (item.IsPartOfShape(new Vector2Int(x, y)))
-                {
-                    var p = item.position + new Vector2Int(x, y);
-                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
-                    {
-                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
-                        _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
-                        _grids[index].color = color;
-                    }
-                }
-                break;
-            case itemRotae.right:
-                if (item.IsPartOfShape(new Vector2Int(x, y)))
-                {
-                    var p = item.position + new Vector2Int(x, y);
-                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
-                    {
-                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
-                        _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
-                        _grids[index].color = color;
-                    }
-                }
-                break;
-            case itemRotae.down:
-                if (item.IsPartOfShape(new Vector2Int(x, y)))
-                {
-                    var p = item.position + new Vector2Int(x, y);
-                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
-                    {
-                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
-                        _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
-                        _grids[index].color = color;
-                    }
-                }
-                break;
-            case itemRotae.left:
-                if (item.IsPartOfShape(new Vector2Int(x, y)))
-                {
-                    var p = item.position + new Vector2Int(x, y);
-                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
-                    {
-                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
-                        _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
-                        _grids[index].color = color;
-                    }
-                }
-                break;
+            var p = item.position + new Vector2Int(x, y);
+            if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
+            {
+                var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
+                _grids[index].color = color;
+            }
         }
     }
-
+    void IsShapeRotate90(int x, int y, IInventoryItem item, bool blocked, Color color)
+    {
+        if (item.IsPartOfShape(new Vector2Int(x, y)))
+        {
+            var p = item.position + new Vector2Int(x, y);
+            if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
+            {
+                var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                _grids[index].sprite = blocked ? _cellSpriteBlocked : _cellSpriteSelected;
+                _grids[index].color = color;
+            }
+        }
+    }
     /// <summary>
-    /// Clears all selections made in this inventory
+    /// 이 인벤토리에서 선택한 모든 항목을 지웁니다.
     /// </summary>
     public void ClearSelection()
     {
@@ -358,7 +334,7 @@ public class InvenRender : MonoBehaviour
     }
 
     /*
-    Returns the appropriate offset of an item to make it fit nicely in the grid
+    그리드에 잘 맞도록 항목의 적절한 오프셋을 반환합니다. 
     */
     internal Vector2 GetItemOffset(IInventoryItem item)
     {
