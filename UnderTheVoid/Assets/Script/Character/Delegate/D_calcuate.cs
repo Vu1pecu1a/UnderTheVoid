@@ -100,11 +100,14 @@ public class D_calcuate : MonoBehaviour
         }
     }//전투 종료 이후로 호출할 함수
 
+    private void Awake()
+    {
+        i = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        i = this;
-        
         // mb.AttackEvent += IceBallInstance;
     }
     

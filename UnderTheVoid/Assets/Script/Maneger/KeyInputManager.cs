@@ -8,6 +8,7 @@ public class KeyInputManager
     // Delegate 
     public Action keyaction = null;
 
+    
     // InputMangers will detect inputs in OnUdate()
     public void OnUpdate()
     {

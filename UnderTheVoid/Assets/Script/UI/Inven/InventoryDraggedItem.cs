@@ -137,7 +137,6 @@ public class InventoryDraggedItem
             // Could not add or swap, return the item
             else
             {
-                Debug.Log(originPoint);
                 item.RotateOrigin(_ro);
                 originalController.inventory.TryAddAt(item, originPoint); //항목을 이전 위치로 되돌리기
                 mode = DropMode.Returned;

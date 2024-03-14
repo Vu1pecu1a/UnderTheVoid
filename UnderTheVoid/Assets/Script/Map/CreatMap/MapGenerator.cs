@@ -40,7 +40,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     private List<Vector2Int> takenPositions = new List<Vector2Int>(); // 이미 배치된 위치 목록
     [SerializeField]
     private List<Vector2Int> endrooms = new List<Vector2Int>(); //엔드룸
-    private List<Vector2Int> specialrooms = new List<Vector2Int>(); //엔드룸
+    private List<Vector2Int> specialrooms = new List<Vector2Int>(); //스페셜룸
     [SerializeField]
     private Dictionary<Vector2Int, GameObject> roomsdic = new Dictionary<Vector2Int, GameObject>();//미니맵 딕셔너리 목록 
     [SerializeField]
@@ -202,7 +202,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
 
     void Debug_error_Event()
     {
-        Debug.Log("이벤트 시작");
+        Debug.Log("맵 생성 종료 이벤트 호출");
     }
 
     

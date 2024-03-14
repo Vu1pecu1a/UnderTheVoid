@@ -79,6 +79,10 @@ IInventoryController
         var canvases = GetComponentsInParent<Canvas>();
         if (canvases.Length == 0) { throw new NullReferenceException("캔버스를 찾을 수 없음"); }
         _canvas = canvases[canvases.Length - 1];
+    }
+
+    void Start()
+    {
         Managers.instance.RkeyInput += R;
     }
 
@@ -221,6 +225,7 @@ IInventoryController
 
     public void R()
     {
+        if(_draggedItem.currentController == this)
         _draggedItem.currentController.RotateGetKeyDown();
     }
 
