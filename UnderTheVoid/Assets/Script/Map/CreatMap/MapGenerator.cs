@@ -51,6 +51,10 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     public static MapGenerator i;
 
     public delegate void MapInstance();
+
+    /// <summary>
+    /// 맵 생성이 끝난 이후 호출되는 이벤트
+    /// </summary>
     public event MapInstance mapInstanceEvent;
 
     int Pathcount = 0;
@@ -193,9 +197,10 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         Room.GetComponent<Room>().Endroom = true;
         specialrooms.Add(endrooms[Vi2]);
         endrooms.Remove(endrooms[Vi2]);
-        mapInstanceEvent();
         Debug.Log("황금방");
+        mapInstanceEvent();
         PlayerVector2Set(_grid[mapWidth/2,mapWidth/2]);//중앙지점
+        D_calcuate.i.PlayerSpawn();
         Minimap(true);
         Loding.SetActive(false);
     }//황금방으로 변경

@@ -7,11 +7,17 @@ public class DCCheck : MonoBehaviour
     public MonsterBase onwer;
     [SerializeField]
     MonsterBase tartr;
-
+    IEnumerator gotoPool(float time, GameObject alfa) //불러온 이펙트 삭제
+    {
+        yield return new WaitForSeconds(time);
+        if (alfa.activeSelf != false)
+            alfa.DestroyAPS();
+    }
     private void OnEnable()
     {
         onwer = null;
         tartr = null;
+        StartCoroutine(gotoPool(1f, gameObject));
     }
 
     public void TargetLockOn()
@@ -23,9 +29,7 @@ public class DCCheck : MonoBehaviour
 
     private void OnDisable()
     {
-    //    Rigidbody rb = this.GetComponent<Rigidbody>();
-    //    rb.velocity= Vector3.zero;
-    //    rb.angularVelocity= Vector3.zero;
+        StopAllCoroutines();
         tartr = null;
     }
 

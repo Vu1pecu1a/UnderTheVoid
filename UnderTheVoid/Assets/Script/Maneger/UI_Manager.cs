@@ -23,13 +23,13 @@ public class UI_Manager : MonoBehaviour
         if (isOn)
         {
             UI_Char.SetActive(true);
-            UI_inven.SetActive(true);
+            UI_inven.transform.localPosition = new Vector2(1560, -475);
             Char.SetActive(true);
             isOn= false;
         }else
         {
             UI_Char.SetActive(false);
-            UI_inven.SetActive(false);
+            UI_inven.transform.localPosition = new Vector2(3560, -475);
             Char.SetActive(false);
             isOn = true;
         }

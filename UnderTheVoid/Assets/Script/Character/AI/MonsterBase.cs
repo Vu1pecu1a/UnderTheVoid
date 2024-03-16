@@ -237,7 +237,6 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         //effecti.GetComponent<Rigidbody>().AddForce((target.transform.position+Vector3.up).normalized * 1);
         effecti.GetComponent<DCCheck>().onwer = this;
         effecti.GetComponent<DCCheck>().TargetLockOn();
-        StartCoroutine(gotoPool(1f, effecti));
     }//투사체 발사
     void effectSet(GameObject effecti)
     {
@@ -268,11 +267,6 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         effecti.GetComponent<LineRenderer>().material.color = Color.green;
         DamageController.DealDamage(target.GetComponent<HitModel>(), D_calcuate.i.Heal(atk*20000), target.transform);
     }
-
-
-
-
-
 
     public void DIe()//사망이벤트
     {

@@ -108,9 +108,17 @@ public class D_calcuate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // mb.AttackEvent += IceBallInstance;
     }
     
+    public void PlayerSpawn()
+    {
+        if (ScenecManeger.i != null)
+        foreach (GameObject p in ScenecManeger.i.ChoseCharicterList)
+        {
+            Instantiate(p);
+        }
+    }
+
     bool PlayerReady()
     {
         int p = 0;
