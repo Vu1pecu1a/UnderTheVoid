@@ -14,7 +14,7 @@ public abstract class Base : MonoBehaviour
     public NavMeshObstacle _objstacle;
     [SerializeField]
     public MonsterBase target;
-    [SerializeField]
+    [SerializeField,Tooltip("초당 공격하는 횟수")]
     public float attackRange = 2.8f, attackSpeed = 3f;
     [SerializeField]
     protected int MaxHp ,hp, atk, def, agi;

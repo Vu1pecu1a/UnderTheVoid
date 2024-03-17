@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 6986038205899761506}
   m_Layer: 0
   m_Name: Healer
-  m_TagString: Monster
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,7 +113,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 306973846651827686}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.8
   m_Speed: 3.5
@@ -162,7 +162,7 @@ MonoBehaviour:
   target: {fileID: 0}
   attackRange: 3
   attackSpeed: 1
-  MaxHp: 2000
+  MaxHp: 20
   hp: 10
   atk: 1
   def: 0

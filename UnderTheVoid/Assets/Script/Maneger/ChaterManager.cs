@@ -23,12 +23,15 @@ public class ChaterManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i<D_calcuate.i.PlayerList.Count; i++)
+       
+    }
+    public void playerSpawn()
+    {
+        for (int i = 0; i < D_calcuate.i.PlayerList.Count; i++)
         {
             UI_Set(D_calcuate.i.PlayerList[i]);
         }
     }
-
     
     void UI_Set(PlayerBase playerBase)
     {
@@ -49,6 +52,7 @@ public class ChaterManager : MonoBehaviour
             playerUI.GetComponent<Toggle>().onValueChanged.AddListener(delegate { a.SetIsOnWithoutNotify(false); });
         }
         eQ.transform.GetChild(4).GetComponent<Toggle>().onValueChanged.AddListener(Stat.gameObject.SetActive);
+        playerUI.GetComponent<Toggle>().onValueChanged.AddListener(delegate { eQ.transform.GetChild(4).GetComponent<Toggle>().SetIsOnWithoutNotify(false); });
     }
 
     void SkillStatReSet(bool ina)

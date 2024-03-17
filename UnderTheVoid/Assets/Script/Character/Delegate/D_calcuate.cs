@@ -117,8 +117,12 @@ public class D_calcuate : MonoBehaviour
         {
             Instantiate(p);
         }
+        Managers.instance._C.playerSpawn();
     }
-
+    /// <summary>
+    /// 모든 플레이어가 무대 위로 올라왔는지 확인하는 종류의 함수
+    /// </summary>
+    /// <returns></returns>
     bool PlayerReady()
     {
         int p = 0;

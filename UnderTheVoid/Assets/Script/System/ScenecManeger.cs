@@ -28,15 +28,22 @@ public class ScenecManeger : MonoBehaviour
         i = this;
         excleSystem = GetComponent<ExcelParsingSystem>();
         DontDestroyOnLoad(gameObject);
-        SetUP();
     }
 
-    void SetUP()
+
+
+    public void SetUP(ChoseYourChar sh)
     {
-        for(int i = 0; i < Char.Length;i++)
+        List<int> index = new List<int>();
+        foreach(GameObject a in sh.EmpltChar)
         {
-            ChoseCharicterList.Add(Char[i]);
+            index.Add(a.GetComponent<SetChar>()._index);
         }
+        for (int i = 0; i < index.Count;i++)
+        {
+            ChoseCharicterList.Add(Char[index[i]]);
+        }
+        GoScene(1);
     }//남은 캐릭터 리스트
     
 

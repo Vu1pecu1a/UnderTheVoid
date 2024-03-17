@@ -90,7 +90,15 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         FsmUpdate();
     }
 
-   public void AttackRange()
+    public IEnumerator CheckRange()
+    {
+        yield return new WaitForSeconds(1f);
+        Search();
+        StartCoroutine(CheckRange());
+    }
+
+
+   public void AttackRange()//사거리 체크
     {
         
         if (target.gameObject.GetComponent<MonsterBase>().HP <= 0)
@@ -156,16 +164,18 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         Debug.DrawLine(gameObject.transform.position, target.gameObject.transform.position, Color.blue);
 
         transform.LookAt(target.transform);
+
         if (target.gameObject.GetComponent<MonsterBase>().HP <= 0)
         {
             target = null;
             ChageState(IDEL.Instance);
+            return;
         }
-        if (attackRange < Vector3.Distance(transform.position, target.transform.position))
+
+        if (attackRange < Vector3.Distance(transform.position, target.transform.position)&& target != null)
         {
             State= AI_State.Walk;
             ChageState(Move.Instance);
-            
         }
 
         if (target == null)
@@ -335,6 +345,7 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
         e._agent.enabled = true;
         e.State = AI_State.Walk;
         e._animator.SetBool("Walk", true);
+        e.StartCoroutine(e.CheckRange());
     }
 
     public void Execute(MonsterBase e)
@@ -351,6 +362,7 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
 
     public void Exit(MonsterBase e)
     {
+        e.StopCoroutine(e.CheckRange());
         e._animator.SetBool("Walk", false);
         e._agent.enabled= false;
         e._objstacle.enabled = true;

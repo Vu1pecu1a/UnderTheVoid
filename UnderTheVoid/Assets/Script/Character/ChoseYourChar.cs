@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class ChoseYourChar : MonoBehaviour
 {
-    [SerializeField]GameObject[] EmpltChar; 
+    public GameObject[] EmpltChar; 
     private void OnEnable()
     {
         int b = 0;
         foreach(GameObject a in EmpltChar)
         {
+            if (a.GetComponent<SetChar>().a==null)
             a.GetComponent<SetChar>().SetIMage(b);
-                b++;
         }
     }
-
 }

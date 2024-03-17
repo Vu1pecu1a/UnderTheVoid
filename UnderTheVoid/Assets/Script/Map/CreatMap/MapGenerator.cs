@@ -22,7 +22,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     #region[설정값]
     [SerializeField]
     Sprite[] images;
-    public GameObject[] roomPrefabs,Room,SpecialRoom,Monstergen; // 방 프리팹 배열
+    public GameObject[] roomPrefabs,Room,SpecialRoom,Monstergen,BossMonster; // 방 프리팹 배열
     [SerializeField]
     public static Vector2Int PlayerV2;//플레이어 위치
     [SerializeField]
@@ -77,30 +77,30 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         GenerateMap();
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            PlayerMoveToMap(2);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            PlayerMoveToMap(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            PlayerMoveToMap(3);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            PlayerMoveToMap(0);
-        }
+    //private void Update()
+    //{
+    //    if(Input.GetKeyDown(KeyCode.UpArrow))
+    //    {
+    //        PlayerMoveToMap(2);
+    //    }
+    //    else if (Input.GetKeyDown(KeyCode.DownArrow))
+    //    {
+    //        PlayerMoveToMap(1);
+    //    }
+    //    else if (Input.GetKeyDown(KeyCode.RightArrow))
+    //    {
+    //        PlayerMoveToMap(3);
+    //    }
+    //    else if (Input.GetKeyDown(KeyCode.LeftArrow))
+    //    {
+    //        PlayerMoveToMap(0);
+    //    }
 
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            RoomClearTrue();
-        }
-    }
+    //    if(Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        RoomClearTrue();
+    //    }
+    //}
 
     public void RoomClearTrue()
     {
@@ -183,6 +183,10 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         EndroomToGoldenRoom(Random.Range(0, endrooms.Count));
     }//보스룸으로 변경
 
+    /// <summary>
+    /// 방생성의 마지막 단계
+    /// </summary>
+    /// <param name="Vi2"></param>
     void EndroomToGoldenRoom(int Vi2)
     {
         _grid[endrooms[Vi2].x, endrooms[Vi2].y].RoomType = RoomType.Gold;
@@ -302,7 +306,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
                 }
             }
         }
-    }//방생성 마지막 단계
+    }//Node생성
     public Node NodeFormCanvas(Vector2Int alfa)
     {
         return _grid[alfa.x,alfa.y ] ;

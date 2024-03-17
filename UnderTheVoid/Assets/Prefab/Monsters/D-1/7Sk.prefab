@@ -1008,6 +1008,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1026520052447708258}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &1873024852397159912
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175158956457762220}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.48
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!208 &1026520053552078533
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1073,20 +1087,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
---- !u!136 &1873024852397159912
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175158956457762220}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.48
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!1001 &1026520052948625415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1194,6 +1194,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1026520052948625415}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &573121244858296370
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175158956019937737}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.48
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!208 &1026520053485580056
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1259,20 +1273,6 @@ MonoBehaviour:
   state: 0
   _HpBar: {fileID: 1026520054187025174}
   players: []
---- !u!136 &573121244858296370
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175158956019937737}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.48
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!1001 &1026520053141347784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1380,6 +1380,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1026520053141347784}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &6812179110581826317
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175158955827037190}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.48
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!208 &1026520053595125295
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1445,20 +1459,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
---- !u!136 &6812179110581826317
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175158955827037190}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.48
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!1001 &1026520053742245299
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1566,6 +1566,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1026520053742245299}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &8182104170501972419
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175158955217882237}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.48
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!208 &1026520053434877377
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1631,20 +1645,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
---- !u!136 &8182104170501972419
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175158955217882237}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.48
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!1001 &1026520053871501601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1752,6 +1752,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1026520053871501601}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &7948611149329936501
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175158955029952751}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.48
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!208 &1026520052443376833
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1817,20 +1831,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
---- !u!136 &7948611149329936501
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175158955029952751}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.48
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!1001 &1026520054155859167
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1938,6 +1938,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1026520054155859167}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &7014860486747052212
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175158954812558609}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.48
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!208 &1026520054324188412
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -2003,20 +2017,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
---- !u!136 &7014860486747052212
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175158954812558609}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.48
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!1001 &1026520054409897234
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2124,6 +2124,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1026520054409897234}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &2762906013094915873
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175158954495589596}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.48
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!208 &1026520052553993965
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -2189,17 +2203,3 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
---- !u!136 &2762906013094915873
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175158954495589596}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.48
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.61, z: 0}

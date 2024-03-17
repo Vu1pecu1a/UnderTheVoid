@@ -13,7 +13,7 @@ public class InvenShape
     [SerializeField] bool[] _shape;
     [SerializeField] itemRotae _rotate;
     /// <summary>
-    /// CTOR
+    /// 생성자
     /// </summary>
     /// <param name="높이">The maximum width of the shape</param>
     /// <param name="넓이">The maximum height of the shape</param>
@@ -42,6 +42,10 @@ public class InvenShape
         }
        // _shape.ToArray().Reverse();
     }
+
+    /// <summary>
+    /// 오른쪽으로 돌리는 함수
+    /// </summary>
     public void RotateRight()
     {
         switch (_rotate)
@@ -65,31 +69,15 @@ public class InvenShape
         }
     }
 
+    /// <summary>
+    /// 높이와 넓이를 교환
+    /// </summary>
     void ChangeWH()
     {
         int h = _height;
         _height = _width;
         _width = h;
     }
-
-    //public void RotateLeft()
-    //{
-    //    switch (_rotate)
-    //    {
-    //        case itemRotae.up:
-    //            _rotate = itemRotae.left;
-    //            break;
-    //        case (itemRotae)270:
-    //            _rotate = itemRotae.down;
-    //            break;
-    //        case (itemRotae)180:
-    //            _rotate = itemRotae.right;
-    //            break;
-    //        case (itemRotae)90:
-    //            _rotate = itemRotae.up;
-    //            break;
-    //    }
-    //}
 
     /// <summary>
     /// 방향
