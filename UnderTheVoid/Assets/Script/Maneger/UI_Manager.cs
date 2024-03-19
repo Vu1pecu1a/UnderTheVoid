@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject UI_inven;
     [SerializeField] GameObject Char;
     [SerializeField] GameObject ButtonUI;
+    [SerializeField] GameObject GameOver_UI;
+
+    [SerializeField] Transform overButton;
 
     bool isOn = false;
 
@@ -16,6 +20,13 @@ public class UI_Manager : MonoBehaviour
     {
         Managers.instance.Tab += UI_on;
         MapGenerator.i.mapInstanceEvent += UI_on;//맵 생성 종료 이벤트(로딩 종료시)
+        overButton.GetComponent<Button>().onClick.AddListener(delegate { ScenecManeger.i.GoScene(0); });
+    }
+
+
+    public void UIManager_GameOver()
+    {
+        GameOver_UI.SetActive(true);
     }
 
     public void UI_on()

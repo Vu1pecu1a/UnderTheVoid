@@ -10,7 +10,10 @@ public class EnemyBase : MonsterBase
     protected override void Start()
     {
         base.Start();
+        
     }
+
+
     private void OnEnable()
     {
         ResetState();
@@ -19,6 +22,16 @@ public class EnemyBase : MonsterBase
         if (this._agent != null)
             this.agent.enabled = true;
     }
+
+    protected override void Update()
+    {
+        base.Update();
+        if(target != null)
+        {
+            Debug.DrawLine(gameObject.transform.position, target.transform.position, Color.red);
+        }
+    }
+
     public override void Search()
     {
         if (D_calcuate.i.PlayerList.Count == 0)
@@ -39,21 +52,20 @@ public class EnemyBase : MonsterBase
             {
                 for (int j = 1; j < players.Count; j++)
                 {
-                    float alfa = Vector3.Distance(this.transform.position, players[players.Count - j].transform.position);//바꾸고 있는 객체
-                    float beta = Vector3.Distance(this.transform.position, players[players.Count - j - 1].transform.position);
+                    float alfa = Vector3.Distance(this.transform.position, players[players.Count - j - 1].transform.position);//바꾸고 있는 객체
+                    float beta = Vector3.Distance(this.transform.position, players[players.Count - j ].transform.position);
 
-                    if (alfa > beta)
+                    if (alfa < beta)
                         break;
                     MonsterBase tmp = players[players.Count - j];//바꿔야할 대상
                     players[players.Count - j] = players[players.Count - j-1];
-                    players[players.Count - j] = tmp;
+                    players[players.Count - j-1] = tmp;
                     //여기까지가 스왑
                     
                 }
             }
         }
         target = players[0];
-        //Debug.Log(target.name);
     }
 
     void RemoveListthis()

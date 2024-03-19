@@ -23,6 +23,14 @@ public class PlayerBase : MonsterBase
         this.agent.enabled = true;
     }
 
+    protected override void Update()
+    {
+        base.Update();
+        if (target != null && state != AI_State.Attack)
+        {
+            Debug.DrawLine(gameObject.transform.position, target.transform.position, Color.green);
+        }
+    }
 
 
     public override void Search()
@@ -59,6 +67,8 @@ public class PlayerBase : MonsterBase
             }
         }
 
+        if (D_calcuate.i.PlayerList.Count == 0)
+            return;
         player.Clear();
         player.Add(D_calcuate.i.PlayerList[0]);
 

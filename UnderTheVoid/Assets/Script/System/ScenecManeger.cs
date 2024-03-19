@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ScenecManeger : MonoBehaviour
+public class ScenecManeger : Tsingleton<ScenecManeger>
 {
     public ExcelParsingSystem excleSystem { get; set; }
 
@@ -18,18 +18,18 @@ public class ScenecManeger : MonoBehaviour
 
     private void Awake()
     {
-        
-        if (i != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         i = this;
         excleSystem = GetComponent<ExcelParsingSystem>();
-        DontDestroyOnLoad(gameObject);
-    }
+        //if (i != null)
+        //{
+        //    Destroy(gameObject);
+        //    return;
+        //}
 
+        //
+        //excleSystem = GetComponent<ExcelParsingSystem>();
+        //DontDestroyOnLoad(gameObject);
+    }
 
 
     public void SetUP(ChoseYourChar sh)
@@ -55,14 +55,15 @@ public class ScenecManeger : MonoBehaviour
     public void GoScene(int Alfa)
     {
         SceneManager.LoadScene(Alfa);
+        Time.timeScale = 1;
     }
 
     public void GameExit()
     {
-#if UNITY_EDITOR
+    #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-#else
+    #else
         Application.Quit();
-#endif
+    #endif
     }
 }

@@ -33,6 +33,8 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     Node[,] _grid;
     [SerializeField]
     GameObject[] Doors;
+    [SerializeField]
+    GameObject stairs;
 
     [SerializeField]
     int tilex = 100, tiley=100;
@@ -247,9 +249,18 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     public void IsClearRoom()
     {
         if (roomsdic[PlayerV2].GetComponent<Room>().isClear == false)
+        {
             Doors[0].transform.parent.gameObject.SetActive(false);
+            stairs.SetActive(false);
+        }
         else
+        {
             Doors[0].transform.parent.gameObject.SetActive(true);
+            if(roomsdic[PlayerV2].GetComponent<Room>().RoomCode == 1 && roomsdic[PlayerV2].GetComponent<Room>().Endroom==true)
+            {
+                stairs.SetActive(true);
+            }
+        }
     }
     public void PlayerMoveToMap(int i)
     {

@@ -10,11 +10,9 @@ public class DamageController
     {
         damageable.TakeDamege(damageModel);
         if(damageModel.basedamage < 0)
-        TextRendererParticleSystem.i.SpawnParticle(targetPosition.position+Vector3.up*2,(damageModel.basedamage*-1).ToString(),damageModel.damageType);
+            TextRendererParticleSystem.i.SpawnParticle(targetPosition.position+Vector3.up*2,(damageModel.basedamage*-1).ToString(),damageModel.damageType);
         else
             TextRendererParticleSystem.i.SpawnParticle(targetPosition.position + Vector3.up * 2, damageModel.basedamage.ToString(), damageModel.damageType);
-
-
     }
 }
 public class D_calcuate : MonoBehaviour
@@ -29,15 +27,11 @@ public class D_calcuate : MonoBehaviour
 
     public static bool isbattel=false;
 
-
     public delegate void RoomClear();
     public RoomClear roomClear;
     delegate void CallintD(int d);
     public delegate int PlayerHit(MonsterBase A,int B);
     public delegate void PlayerDie();
-
-
-
 
     [SerializeField]
     List<EnemyBase> list = new List<EnemyBase>();
@@ -65,8 +59,11 @@ public class D_calcuate : MonoBehaviour
 
     public void BattleStart()
     {
-        if (PlayerReady())
+        if (!PlayerReady())
+        {
+            isbattel = false;
             return;
+        }
         Debug.Log("전투 시작");
         isbattel = true;
         MapGenerator.i.Minimap(0);
@@ -75,6 +72,7 @@ public class D_calcuate : MonoBehaviour
 
     public void BattelStart()
     {
+        isbattel = false;
         SelectGrid.i.gameObject.SetActive(true);
         StartCoroutine(BattelEnd()); 
     }
@@ -88,7 +86,11 @@ public class D_calcuate : MonoBehaviour
             MapGenerator.i.Minimap(true);
             playerTargetnull();
         }
-        else
+        else if(PlayerList.Count==0)
+        {
+            Time.timeScale = 0;
+            Managers.instance._UI.UIManager_GameOver();
+        }else
             StartCoroutine(BattelEnd());
     }
 
@@ -112,7 +114,7 @@ public class D_calcuate : MonoBehaviour
     
     public void PlayerSpawn()
     {
-        if (ScenecManeger.i != null)
+        //if (ScenecManeger.i != null)
         foreach (GameObject p in ScenecManeger.i.ChoseCharicterList)
         {
             Instantiate(p);
@@ -128,7 +130,7 @@ public class D_calcuate : MonoBehaviour
         int p = 0;
         foreach (MonsterBase a in PlayerList)
         {
-            if (a.GetComponent<SelecPos>().prevpos == null)
+            if (a.GetComponent<SelecPos>().prevpos != null)//현재 위치가 있으면 
                 p++;
         }
         return p == PlayerList.Count;

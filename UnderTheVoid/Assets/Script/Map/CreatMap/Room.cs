@@ -34,11 +34,8 @@ public class Room : MonoBehaviour
         {
             newRoom = Instantiate(MapGenerator.i.SpecialRoom[RoomCode], MapGenerator.i.transform);
             if(RoomCode==1)//보스방일 경우
-                Instantiate(MapGenerator.i.BossMonster[UnityEngine.Random.Range(0, MapGenerator.i.BossMonster.Length)],
-                    newRoom.transform);
-
+                Instantiate(MapGenerator.i.BossMonster[UnityEngine.Random.Range(0, MapGenerator.i.BossMonster.Length)],newRoom.transform);
         }
-
         newRoom.SetActive(false);
     }
 

@@ -27,6 +27,9 @@ public class SelecPos : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (D_calcuate.isbattel == true)
+            return;
+
         distance = Vector3.zero;
         objectHitPostion = newPos;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -64,6 +67,8 @@ public class SelecPos : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        if (D_calcuate.isbattel == true)
+            return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitLayerMask;
         int layerMask = 1 << LayerMask.NameToLayer("ROAD");
@@ -77,6 +82,8 @@ public class SelecPos : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        if (D_calcuate.isbattel == true)
+            return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         RaycastHit hitLayerMask;

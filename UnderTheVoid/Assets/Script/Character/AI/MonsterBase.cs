@@ -85,7 +85,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         ChageState(IDEL.Instance);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         FsmUpdate();
     }
@@ -105,10 +105,16 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             target = null;
 
         if (target == null)
+        {
             ChageState(IDEL.Instance);
+            return;
+        }
 
         if (isAttack() == true)
+        {
+            _agent.SetDestination(target.transform.position);
             return;
+        }
         else
         {
             switch (aI)
@@ -189,13 +195,18 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
     bool isAttack()//사거리 체크용
     {
-        if (target == null)
-            return false;
-        if (Vector3.Distance(gameObject.transform.position, target.transform.position) >= attackRange)
+        //if (target == null)
+        //    return false;
+
+        if (Vector3.Distance(gameObject.transform.position, target.transform.position) > attackRange)
         {
+            Debug.Log("사거리 부족");
             return true;
         }
-        else return false;
+        else
+        {
+            return false;
+        }
     }
 
     public void AttackToTarget()//공격 이벤트용 
@@ -350,14 +361,15 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
 
     public void Execute(MonsterBase e)
     {
-        if(e.target == null)
+        if (e.target != null)
+        {
+            e.AttackRange();
+        }
+        else
         {
             e.ChageState(IDEL.Instance);
             return;
         }
-        if(e._agent!=null)
-        e._agent.SetDestination(e.target.transform.position);
-        e.AttackRange();
     }
 
     public void Exit(MonsterBase e)
