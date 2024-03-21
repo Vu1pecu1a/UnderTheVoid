@@ -5,7 +5,7 @@ using UnityEngine;
 public class SelectGrid : MonoBehaviour
 {
 
-    MapGrid[,] _grids= null;
+    public MapGrid[,] _grids= null;
     [SerializeField]
     int gridx, girdy,Scale = 1;
     [SerializeField]

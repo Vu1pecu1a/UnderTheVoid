@@ -120,7 +120,16 @@ public class D_calcuate : MonoBehaviour
             Instantiate(p);
         }
         Managers.instance._C.playerSpawn();
+
+        for(int i=0; i < PlayerList.Count; i++)
+        {
+            if(PlayerList[i].GetComponent<SelecPos>().prevpos == null)
+            PlayerList[i].GetComponent<SelecPos>().prevpos = SelectGrid.i._grids[i,i].transform;//최초 위치 체크
+            PlayerList[i].gameObject.transform.position = PlayerList[i].GetComponent<SelecPos>().prevpos.position;
+            SelectGrid.i.Check();
+        }//최초 위치 배정
     }
+
     /// <summary>
     /// 모든 플레이어가 무대 위로 올라왔는지 확인하는 종류의 함수
     /// </summary>

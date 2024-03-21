@@ -12,14 +12,14 @@ public class InvenCreat : MonoBehaviour
     [SerializeField] private ItemDefinition[] _definitions = null;
     [SerializeField] private bool _fillRandomly = true; //랜덤으로 아이템 채우기
     [SerializeField] private bool _fillEmpty = false; //꽉 채우기
-
+    InventoryManager inventory;
 
     void Start()
     {
         var provider = new InventoryProvider(_slotType, _maximumAlowedItemCount, _allowedItem);
 
         // 인벤토리 생성
-        var inventory = new InventoryManager(provider, _width, _height);
+        inventory = new InventoryManager(provider, _width, _height);
 
         // 랜덤하게 아이템 채우기
         if (_fillRandomly)
@@ -46,19 +46,29 @@ public class InvenCreat : MonoBehaviour
         // 바닥에 떨어뜨린 아이템 기록
         inventory.onItemDropped += (item) =>
         {
-            Debug.Log((item as ItemDefinition).Name + "(을)를 땅에 버렸다.");
+            if (item is ItemDefinition)
+                Debug.Log((item as ItemDefinition ).Name + "(을)를 땅에 버렸다.");
+            else
+            Debug.Log((item as LoadItem).Name + "(을)를 땅에 버렸다.");
         };
 
-        // 아이템을 바닥에 놓을 수 없는 경우(캔드롭이 거짓으로 설정되어 있음) 기록합니다.
+        // 아이템을 바닥에 놓을 수 없는 경우(드랍 불가 체크되어있을 경우) 기록.
         inventory.onItemDroppedFailed += (item) =>
         {
+            if(item is ItemDefinition)
             Debug.Log($"이 아이템 {(item as ItemDefinition).Name}은(는) 버릴 수 없다");
+            else
+            Debug.Log($"이 아이템 {(item as LoadItem).Name} + 은(는) 버릴 수 없다");
         };
 
         // 아이템 추가가 실패했을 경우
         inventory.onItemAddedFailed += (item) =>
         {
-            Debug.Log($"이 아이템{(item as ItemDefinition).Name} 는 인벤토리에 들어 갈 수 없습니다.");
+
+            if (item is ItemDefinition)
+                Debug.Log($"이 아이템{(item as ItemDefinition).Name} 는 인벤토리에 들어 갈 수 없습니다.");
+            else
+            Debug.Log($"이 아이템{(item as LoadItem).Name} + 는 인벤토리에 들어 갈 수 없습니다.");
         };
     }
 
@@ -67,7 +77,12 @@ public class InvenCreat : MonoBehaviour
     {
         GetComponent<InvenRender>().inventory.DropAll();
     }
+    public void _LoadItem()
+    {
+        PlayerData data = SaveData.Load(Application.streamingAssetsPath + "/1.bin");
 
+        inventory.TryAdd(new LoadItem(data));
+    }
     public void A2()
     {
         Debug.Log(GetComponent<InvenRender>().inventory.allItems.Length);

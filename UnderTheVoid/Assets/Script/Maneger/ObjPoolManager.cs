@@ -63,7 +63,7 @@ public class ObjPoolManager : MonoBehaviour
     {
         newItem.name = suffix;
         newItem.SetActive(false);
-        newItem.transform.parent = transform;
+        newItem.transform.SetParent(transform);
 
         _poolobjList[idx].Add(newItem);
     }
@@ -87,7 +87,7 @@ public class ObjPoolManager : MonoBehaviour
                 {
                     GameObject tmpobj = Instantiate(_poolobj[i]._prefobj);
                     
-                    string sffix = "_" + listIdx.ToString() + "(" + (listIdx - _poolobj[i].CurAmount+1).ToString() + ")";
+                    string sffix = Code + "_" + listIdx.ToString() + "(" + (listIdx - _poolobj[i].CurAmount+1).ToString() + ")";
 
                     AddTOPoolObjList(i, tmpobj, sffix);
                     return tmpobj;
@@ -133,6 +133,17 @@ public class ObjPoolManager : MonoBehaviour
         GameObject tmpObj = GetPoolItem(pooledObjName);
 
         tmpObj.SetActive(true);
+
+        return tmpObj;
+
+    }
+    public GameObject InstantiateAPSTr(string pooledObjName, Transform parent )
+    {
+        GameObject tmpObj = GetPoolItem(pooledObjName);
+
+        tmpObj.SetActive(true);
+
+        tmpObj.transform.SetParent(parent);  
 
         return tmpObj;
 

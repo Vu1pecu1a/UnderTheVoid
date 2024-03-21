@@ -44,7 +44,8 @@ public class InventoryProvider : IinvenProvider
     public bool CanAddInventoryItem(IInventoryItem item)
     {
         if (_allowedItem == ItemType.Any) return true;
-        return (item as ItemDefinition).Type == _allowedItem;
+        return (item is ItemDefinition) ?
+            (item as ItemDefinition).Type == _allowedItem : (item as LoadItem).Type == _allowedItem;
     }
 
     public bool CanDropInventoryItem(IInventoryItem item)

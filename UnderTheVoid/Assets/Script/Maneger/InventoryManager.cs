@@ -275,15 +275,6 @@ public class InventoryManager : IinvenManager
         onItemDropped?.Invoke(item);
         return true;
     }//강제 삭제 함수
-    // Update is called once per frame
-    void Update()
-    {
-
-    } // Start is called before the first frame update
-    void Start()
-    {
-
-    }
     private void RebuildRect()
     {
         _fullRect = new Rect(0, 0, _size.x, _size.y);

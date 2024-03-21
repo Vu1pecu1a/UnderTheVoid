@@ -151,28 +151,7 @@ public class InvenShape
 }
 
 
-public interface IInventoryItem
-{
-    Sprite sprite { get; }
-    Vector2Int position { get; set; }
 
-    int width { get; }
-    int height { get; }
-
-
-    /// <summary>
-    /// 주어진 로컬 포인트가 이 도형의 일부인 경우 참을 반환합니다.
-    /// </summary>
-    bool IsPartOfShape(Vector2Int localPosition);
-
-    bool canDrop { get; }
-
-    itemRotae Rotate { get; set; }
-
-    void RotateRight();
-
-    void RotateOrigin(itemRotae ro);
-}
 internal static class InventoryItemExtensions
 {
     /// <summary>

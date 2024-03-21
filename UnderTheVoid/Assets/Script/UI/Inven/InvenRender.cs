@@ -39,17 +39,8 @@ public class InvenRender : MonoBehaviour
         imageContainer.transform.SetParent(transform);
         imageContainer.transform.localPosition = Vector3.zero;
         imageContainer.transform.localScale = Vector3.one;
-
-        // Create pool of images
-        //_imagePool = new Pool<Image>(
-        //    delegate
-        //    {
-        //        var image = new GameObject("Image").AddComponent<Image>();
-        //        image.transform.SetParent(imageContainer);
-        //        image.transform.localScale = Vector3.one;
-        //        return image;
-        //    });
     }
+
 
     /// <summary>
     /// 렌더링할 때 사용할 인벤토리 설정
@@ -124,7 +115,7 @@ public class InvenRender : MonoBehaviour
             for (var i = 0; i < _grids.Length; i++)
             {
                 _grids[i].gameObject.SetActive(false);
-                RecycleImage(_grids[i].gameObject);
+                //RecycleImage(_grids[i].gameObject);
                 _grids[i].transform.SetSiblingIndex(i);
             }
         }
@@ -193,24 +184,47 @@ public class InvenRender : MonoBehaviour
         }
     }
 
+    public void SaveItemS()
+    {
+        foreach (var item in inventory.allItems)
+        {
+            SaveData.Save(new PlayerData(item), Application.streamingAssetsPath + "/1.bin");
+        }
+    }
+
     /*
     inventory.OnItemAdded가 호출될 때를 위한 핸들러
     */
     private void HandleItemAdded(IInventoryItem item)
     {
-        var img = CreateImage(item.sprite, false);
-
-        if (_renderMode == ItemSoltType.Single)
+        if(ObjPoolManager.i == null)
         {
-            img.GetComponent<Image>().rectTransform.localPosition = rectTransform.rect.center;
+            var img = CreateImage(item.sprite, false);
+            if (_renderMode == ItemSoltType.Single)
+            {
+                img.GetComponent<Image>().rectTransform.localPosition = rectTransform.rect.center;
+            }
+            else
+            {
+                img.GetComponent<Image>().rectTransform.localPosition = GetItemOffset(item);
+                img.transform.rotation = Quaternion.Euler(0, 0, (float)item.Rotate);
+            }
+            _items.Add(item, img);
         }
         else
         {
-            img.GetComponent<Image>().rectTransform.localPosition = GetItemOffset(item);
-            img.transform.rotation = Quaternion.Euler(0, 0, (float)item.Rotate);
+            var img = CreateImageAPS(item.sprite, false);
+            if (_renderMode == ItemSoltType.Single)
+            {
+                img.GetComponent<Image>().rectTransform.localPosition = rectTransform.rect.center;
+            }
+            else
+            {
+                img.GetComponent<Image>().rectTransform.localPosition = GetItemOffset(item);
+                img.transform.rotation = Quaternion.Euler(0, 0, (float)item.Rotate);
+            }
+            _items.Add(item, img);
         }
-
-        _items.Add(item, img);
     }
 
     /*
@@ -251,15 +265,32 @@ public class InvenRender : MonoBehaviour
         img.raycastTarget = raycastTarget;
         return gameObject;
     }
-
+    private GameObject CreateImageAPS(Sprite sprite, bool raycastTarget)
+    {
+        var gameObject = ObjPoolManager.i.InstantiateAPSTr("스프라이트", transform.GetChild(0));
+        var img = gameObject.GetComponent<Image>();
+        img.gameObject.SetActive(true);
+        img.sprite = sprite;
+        img.rectTransform.sizeDelta = new Vector2(img.sprite.rect.width, img.sprite.rect.height);
+        img.transform.SetAsLastSibling(); // 하이라이키 순위 맨 뒤로 이동
+        img.type = Image.Type.Simple;
+        img.raycastTarget = raycastTarget;
+        return gameObject;
+    }
     /*
      * 주어진 이미지 재활용 
      */
     private void RecycleImage(GameObject image)
     {
-        image.gameObject.name = "Image";
-        image.gameObject.SetActive(false);
-        //_imagePool.Recycle(image);
+        if(ObjPoolManager.i== null)
+        {
+            image.gameObject.SetActive(false);
+            //_imagePool.Recycle(image);
+        }else
+        {
+            image.DestroyAPS();
+            image.transform.SetParent(ObjPoolManager.i.gameObject.transform);
+        }
     }
 
     /// <summary>

@@ -200,7 +200,6 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
         if (Vector3.Distance(gameObject.transform.position, target.transform.position) > attackRange)
         {
-            Debug.Log("사거리 부족");
             return true;
         }
         else
