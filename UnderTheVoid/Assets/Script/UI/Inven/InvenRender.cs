@@ -210,6 +210,8 @@ public class InvenRender : MonoBehaviour
                 img.transform.rotation = Quaternion.Euler(0, 0, (float)item.Rotate);
             }
             _items.Add(item, img);
+            //아이템 추가 이벤트 발동 (테스트용) 
+            
         }
         else
         {
@@ -238,6 +240,13 @@ public class InvenRender : MonoBehaviour
             image.gameObject.SetActive(false);
             RecycleImage(image);
             _items.Remove(item);
+            if (D_calcuate.i.PlayerData.ContainsKey(this))
+            {
+                //대상이 될 캐릭터
+                //발동해야할 효과 
+                Debug.Log("아이템 제거");
+                D_calcuate.i.ab.ADMinus(D_calcuate.i.PlayerData[this]._pb);
+            }
         }
     }
 

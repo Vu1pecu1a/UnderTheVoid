@@ -13,10 +13,18 @@ public class ItemDefinition : ScriptableObject, IInventoryItem
     [SerializeField] private ItemType _type = ItemType.relic;
     [SerializeField] private bool _canDrop = true;
     [SerializeField, HideInInspector] private Vector2Int _position = Vector2Int.zero;
+    string _ItemAbility;
+
     /// <summary>
     /// 아이템 이름
     /// </summary>
     public string Name => this.name;
+
+    public string Itemability
+    {
+        get => _ItemAbility;
+        set => _ItemAbility = value;
+    }
 
     /// <summary>
     /// 아이템 타입
@@ -65,8 +73,7 @@ public class ItemDefinition : ScriptableObject, IInventoryItem
     /// <inheritdoc />
     public bool canDrop => _canDrop;
 
-    itemRotae IInventoryItem.Rotate { get => _shape.rotate; set => _shape.rotate = value; }
-
+    itemRotae IInventoryItem.Rotate { get => _shape.rotate; set => _shape.rotate = value; }  
     /// <summary>
     /// Creates a copy if this scriptable object
     /// </summary>
@@ -85,12 +92,17 @@ public class LoadItem : IInventoryItem
     [SerializeField] private bool _canDrop = true;
     [SerializeField, HideInInspector] private Vector2Int _position = Vector2Int.zero;
 
+    string _ItemAbility;
     string _name;
     /// <summary>
     /// 아이템 이름
     /// </summary>
     public string Name => _name;
-
+    public string Itemability
+    {
+        get => _ItemAbility;
+        set => _ItemAbility = value;
+    }
     /// <summary>
     /// 아이템 타입
     /// </summary>

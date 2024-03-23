@@ -6,7 +6,10 @@ using UnityEngine;
 
 public class ExcelParsingSystem : MonoBehaviour
 {
+    
+
     public List<string> strings= new List<string>();
+    public Sprite[] sprites = null;
 
     void Awake()
     {
@@ -14,6 +17,10 @@ public class ExcelParsingSystem : MonoBehaviour
         strings.Add("전사");
         strings.Add("궁수");
         strings.Add("성직자");
+
+        sprites = Resources.LoadAll<Sprite>("HellCon");
+
+        Debug.Log(sprites.Length);
     }
 
     void SetData()

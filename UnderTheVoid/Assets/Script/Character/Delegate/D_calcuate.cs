@@ -4,6 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
+public class PlayerofData
+{
+    public PlayerBase _pb { get; private set; }
+    public InvenRender _InvenRender { get; private set; }
+    public GameObject _Equipment { get; private set; }
+    public GameObject _portrait { get; private set; }
+
+    //스킬 하고 무기 방어구 구현하기
+
+    public PlayerofData(PlayerBase playerBase,InvenRender invenRender, GameObject equipment, GameObject portrait)
+    {
+        _pb = playerBase;
+        _InvenRender = invenRender;
+        _Equipment = equipment;
+        _portrait = portrait;
+    }
+}
+
 public class DamageController
 {
     public static void DealDamage(HitModel damageable, DemageModel damageModel,Transform targetPosition)
@@ -24,6 +43,7 @@ public class D_calcuate : MonoBehaviour
 
     public GameObject UI_Canvas;
     public static D_calcuate i;
+    public AbilityEffect ab = new AbilityEffect();
 
     public static bool isbattel=false;
 
@@ -40,9 +60,12 @@ public class D_calcuate : MonoBehaviour
     public List<EnemyBase> MonsterList { get { return list; } set { list = value; } }
     public List<PlayerBase> PlayerList { get { return _playerList; } set { _playerList = value; } }
 
+    public Dictionary<InvenRender, PlayerofData> PlayerData = new Dictionary<InvenRender, PlayerofData>();//플레이어 데이터 참조용
+
     public Dictionary<string, DemageModel> D_C = new Dictionary<string, DemageModel>(); // 대미지 계산기
 
     public DemageModel Killer = new(9999, DamageType.Slash);
+
 
 
     public DemageModel Heal(int i)
@@ -119,6 +142,7 @@ public class D_calcuate : MonoBehaviour
         {
             Instantiate(p);
         }
+        
         Managers.instance._C.playerSpawn();
 
         for(int i=0; i < PlayerList.Count; i++)

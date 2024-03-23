@@ -43,6 +43,29 @@ public class InvenCreat : MonoBehaviour
         //  렌더러의 인벤토리가 드로잉을 트리거하도록 설정합니다.
         GetComponent<InvenRender>().SetInventory(inventory, provider.invenSlotType);
 
+        // 추가된 아이템
+        inventory.onItemAdded += (item) =>
+        {
+            if (item is ItemDefinition)
+            {
+                if (D_calcuate.i.PlayerData.ContainsKey(GetComponent<InvenRender>()))
+                {
+                    D_calcuate.i.ab.ADPlus(D_calcuate.i.PlayerData[GetComponent<InvenRender>()]._pb);
+                    Debug.Log((item as ItemDefinition).Name + "(을)를 인벤토리에 추가했다." + (item as ItemDefinition).Name +"의 효과가 발동했다");
+                }else
+                    Debug.Log((item as ItemDefinition).Name + "(을)를 인벤토리에 추가했다.");
+            }
+            else
+            {
+                if (D_calcuate.i.PlayerData.ContainsKey(GetComponent<InvenRender>()))
+                {
+                    D_calcuate.i.ab.ADPlus(D_calcuate.i.PlayerData[GetComponent<InvenRender>()]._pb);
+                    Debug.Log((item as ItemDefinition).Name + "(을)를 인벤토리에 추가했다." + (item as ItemDefinition).Name + "의 효과가 발동했다");
+                }else
+                Debug.Log((item as LoadItem).Name + "(을)를 인벤토리에 추가했다.");
+            }
+        };
+
         // 바닥에 떨어뜨린 아이템 기록
         inventory.onItemDropped += (item) =>
         {

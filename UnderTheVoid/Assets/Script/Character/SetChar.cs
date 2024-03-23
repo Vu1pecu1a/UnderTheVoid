@@ -6,15 +6,22 @@ using UnityEngine.UI;
 
 public class SetChar : MonoBehaviour
 {
-    public Image a;
+    public Image sprite;
     public TextMeshProUGUI text;
 
     public int _index { get; private set; }
+
+    public void Start()
+    {
+        if(sprite==null)
+            sprite = transform.GetChild(0).GetComponent<Image>();
+    }
 
     public void SetIMage(int a)
     {
        text.text = ScenecManeger.i.excleSystem.strings[a];
         _index = a;
+        sprite.sprite = ScenecManeger.i.excleSystem.sprites[a];
     }
 
     public void SetImage(bool PM)

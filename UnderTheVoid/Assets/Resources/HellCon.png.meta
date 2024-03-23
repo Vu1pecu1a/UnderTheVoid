@@ -1,0 +1,1949 @@
+fileFormatVersion: 2
+guid: 398923fa58998554e880fa6a2301a546
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: HellCon_0
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 709
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0fd465b1a0724140afedd0a7808c2d7
+      internalID: 1690360111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_1
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19c7f982f4e89eb428956967e38ccbf5
+      internalID: -2010144522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_2
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2a982da6566e2a4eac5e74b3eca3315
+      internalID: -602102544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_3
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c864f2aa58e685428e2dca3b6bed185
+      internalID: -1108763013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_4
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17a63a1911af40b468e9c6f522ade4c8
+      internalID: 1668297552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_5
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 709
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abe91a21d13a5aa45acdd37293840e9a
+      internalID: 1738114295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_6
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81c5eb6cfbfb2dd4da6d8e54867a7b47
+      internalID: -1624810218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_7
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 709
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ba9671fb75d0054e9cc5c3fd0866a1a
+      internalID: 249593591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_8
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f541aa39be9045b47becda8de98594fe
+      internalID: 962306877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_9
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8ffdc160114fef4e9880169afe102fe
+      internalID: 698866718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_10
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df2f8938285f2ba45be84e9784f7d228
+      internalID: 1331166826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_11
+      rect:
+        serializedVersion: 2
+        x: 1132
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e440fdc32567a7e46a457f4ca8948b69
+      internalID: -766795072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_12
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 709
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f29a63831d6101d41a54d00d7e5289b7
+      internalID: -98966968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_13
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 587
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc5249d1d8f330c46939fb1a2bb1c01b
+      internalID: -1329280274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_14
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21fef260dfb83864a9be6dde1ce7c1fa
+      internalID: -137756612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_15
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7a38d15b66a7fb45b16656b6dfc9bc6
+      internalID: -2111069280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_16
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83c249c956ac369439803cb52d52bebd
+      internalID: 1246610128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_17
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4da92fc59a7b7c43aef7a68fa98dde2
+      internalID: -1706496901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_18
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 587
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f8695a341c1d0f4da61d23d70e10f6a
+      internalID: -557803870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_19
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abfddef8241a8bd42987e640a9d500b1
+      internalID: 1682155488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_20
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 587
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 675784233b46b5744b8cc4cb26940a9c
+      internalID: -550847013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_21
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a0c792c99e01ca41b6626fb05982f54
+      internalID: 1037883052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_22
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38004569ad7177046beba739b071574e
+      internalID: 248439720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_23
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be73034da8d157949a3c6b333bcfa523
+      internalID: 252386395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_24
+      rect:
+        serializedVersion: 2
+        x: 1132
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c52d03bf07709894c96045b992779c39
+      internalID: 62501337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_25
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 587
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff075f1d7b80c1a4a895031fb4311b11
+      internalID: -1935817427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_26
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 479
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62b5a8a5fb691894c8787f48ceea6e78
+      internalID: 485252017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_27
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 090bc56b2ba5b8f4a835be5f0f2331f8
+      internalID: -640372032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_28
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c24eff2a29dd7034f890d71eae12833a
+      internalID: -1615395601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_29
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f67d5c761438864d8e34a629bbfc5c7
+      internalID: -524092067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_30
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa46823c492a77e4a9ebedf709f88e0d
+      internalID: 726698564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_31
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 479
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fc4c6672d1344d4ea2713039dd80a70
+      internalID: 1463113609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_32
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b323e5ff03a4d664fa3d9261c95ab43a
+      internalID: 76177312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_33
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 479
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: accc5e2025735af48b42538635e14f8e
+      internalID: 1846444315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_34
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8a1938a0021fed49ba39c9b5c2ea4be
+      internalID: -975959561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_35
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00c76ee475bd43947a30dadc832f1f37
+      internalID: 935366116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_36
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b81672c50ac2cb47b43bc5adf9b9625
+      internalID: 494673302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_37
+      rect:
+        serializedVersion: 2
+        x: 1132
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed202d9fc6d33bc49a086b38563a48b9
+      internalID: 1919936746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_38
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 479
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74c056882b80c6a489205fdd1f00155e
+      internalID: 914068568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_39
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 371
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 348f4061c0d7922449e495eb509cd2f7
+      internalID: -179837894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_40
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 178d9f9dc100e1d488b86c75ea674c5a
+      internalID: 520328783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_41
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51485367071c2504bb99f4469844d32d
+      internalID: -390189609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_42
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9398050bdab96a4ea029a72ff375036
+      internalID: -997242703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_43
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40e3eab8b05d3a340a09cae2e1aa55d6
+      internalID: 209752425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_44
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 371
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee08bd5f72ff47744b3539901ec45c7f
+      internalID: 1622398932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_45
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f1b4eb669dccad4bb2561ab75b3a5fe
+      internalID: -1332442756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_46
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 371
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61cf1c53e99915b4dac4a0aed1e3e1f8
+      internalID: 724304084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_47
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44ae3efe7c04147459a8781f5b0034fc
+      internalID: 1721817519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_48
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d19061f35f6d6b44a886598e4e5a85f0
+      internalID: -1628358918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_49
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 293a52bdf4cbdd04abcbd4d320d4c2eb
+      internalID: 1729502365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_50
+      rect:
+        serializedVersion: 2
+        x: 1132
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b667c3e182b6b1d45b2b24fa38fbcb56
+      internalID: 2059854549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_51
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 371
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 344887f7eacb5ea4cbef215357b7d44c
+      internalID: -737327872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_52
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 263
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d8c1b9971fab8944b047224df1b888b
+      internalID: 1742286329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_53
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5aa4d136109b9734e943cddfbe06c8d8
+      internalID: 1899217933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_54
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3aab6fcac899d814a9e9af8dab9d83eb
+      internalID: -1485967637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_55
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71ea5cd9149a0de42a25834111d79d24
+      internalID: -81521071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_56
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d47fb073fccbd94f898b5c5d24f1514
+      internalID: 768458256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_57
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 263
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61167c19438eba5408a5d86b2d9dea3a
+      internalID: -1604275992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_58
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de68de722a0ff23488bce27b5bd91afd
+      internalID: -506920498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_59
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 263
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 293dabc931b4b2e41bd4bc0694aded0d
+      internalID: -1544454835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_60
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a8cb63e77ae3ed4d9d163ab9b119f30
+      internalID: -12029666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_61
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 112c6aef34453e247aa522ce247c9252
+      internalID: 393998447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_62
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4761753b3728ce48a0527e127218708
+      internalID: 1918639080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_63
+      rect:
+        serializedVersion: 2
+        x: 1132
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2eed89eb71e63d3438eb09d43419c7bf
+      internalID: 1507276353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_64
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 263
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 075074212b83a724889f7f8887229a35
+      internalID: 1433188370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_65
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 142
+        width: 86
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbf405b3406e01241b115177a6720ad4
+      internalID: -935127441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_66
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 571b491e96b2cf84cb2e1e8f7c12340c
+      internalID: 322049395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_67
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51829805b6ba427418ab4e77a6a87222
+      internalID: 163026301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_68
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7111aa69a311e1d4cab9f0b65683e5df
+      internalID: 2137105752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_69
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e707f2ecf5997a48846c380efa907bd
+      internalID: 1725261508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_70
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 142
+        width: 86
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 237bb358c058c9742bed25d9fca77f92
+      internalID: 1570055299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_71
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d3e16192a7627940babc51654030448
+      internalID: 122676617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_72
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 142
+        width: 86
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 036ec06ba00aea74f8060089f8057ca9
+      internalID: -200235370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_73
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f48d71473b26e44895edd043bf1408a
+      internalID: -865959088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_74
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1368a4a79cdfd204abd2d6c76ade7ec6
+      internalID: 767233568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_75
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 449828640eb55ed4e89c0ec19c3a40aa
+      internalID: 857477451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_76
+      rect:
+        serializedVersion: 2
+        x: 1132
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0165b77b51445d419d8a20633b22ff4
+      internalID: 761614769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_77
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 142
+        width: 87
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 895324f6677822a4c945e72d7018602a
+      internalID: -948294171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_78
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 20
+        width: 86
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e1499102ff1a3c419eff5b5997221a0
+      internalID: -1764320346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_79
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 20
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f2ce9c44e0bab047a9c727c06d3b464
+      internalID: -741134960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_80
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 20
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0178ffe0046a01d4a86e43e0e1812068
+      internalID: -850515956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_81
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 20
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 875a627fd355b0b43a8afd039e7c4aaf
+      internalID: -1147420621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HellCon_82
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 20
+        width: 87
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee0092bb031b55840b5c84d7229f75f7
+      internalID: 537771492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 61a1de2f0a2ecb14484e06c888f36282
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      HellCon_28: -1615395601
+      HellCon_76: 761614769
+      HellCon_81: -1147420621
+      HellCon_13: -1329280274
+      HellCon_64: 1433188370
+      HellCon_33: 1846444315
+      HellCon_1: -2010144522
+      HellCon_19: 1682155488
+      HellCon_65: -935127441
+      HellCon_66: 322049395
+      HellCon_14: -137756612
+      HellCon_42: -997242703
+      HellCon_57: -1604275992
+      HellCon_15: -2111069280
+      HellCon_38: 914068568
+      HellCon_70: 1570055299
+      HellCon_31: 1463113609
+      HellCon_75: 857477451
+      HellCon_0: 1690360111
+      HellCon_39: -179837894
+      HellCon_24: 62501337
+      HellCon_30: 726698564
+      HellCon_23: 252386395
+      HellCon_8: 962306877
+      HellCon_18: -557803870
+      HellCon_6: -1624810218
+      HellCon_51: -737327872
+      HellCon_54: -1485967637
+      HellCon_77: -948294171
+      HellCon_80: -850515956
+      HellCon_60: -12029666
+      HellCon_40: 520328783
+      HellCon_34: -975959561
+      HellCon_27: -640372032
+      HellCon_10: 1331166826
+      HellCon_4: 1668297552
+      HellCon_46: 724304084
+      HellCon_82: 537771492
+      HellCon_59: -1544454835
+      HellCon_52: 1742286329
+      HellCon_63: 1507276353
+      HellCon_41: -390189609
+      HellCon_47: 1721817519
+      HellCon_61: 393998447
+      HellCon_71: 122676617
+      HellCon_16: 1246610128
+      HellCon_25: -1935817427
+      HellCon_29: -524092067
+      HellCon_35: 935366116
+      HellCon_50: 2059854549
+      HellCon_26: 485252017
+      HellCon_36: 494673302
+      HellCon_67: 163026301
+      HellCon_5: 1738114295
+      HellCon_79: -741134960
+      HellCon_53: 1899217933
+      HellCon_21: 1037883052
+      HellCon_9: 698866718
+      HellCon_55: -81521071
+      HellCon_12: -98966968
+      HellCon_56: 768458256
+      HellCon_32: 76177312
+      HellCon_62: 1918639080
+      HellCon_2: -602102544
+      HellCon_11: -766795072
+      HellCon_72: -200235370
+      HellCon_20: -550847013
+      HellCon_44: 1622398932
+      HellCon_48: -1628358918
+      HellCon_22: 248439720
+      HellCon_78: -1764320346
+      HellCon_3: -1108763013
+      HellCon_68: 2137105752
+      HellCon_73: -865959088
+      HellCon_69: 1725261508
+      HellCon_17: -1706496901
+      HellCon_49: 1729502365
+      HellCon_43: 209752425
+      HellCon_7: 249593591
+      HellCon_45: -1332442756
+      HellCon_37: 1919936746
+      HellCon_58: -506920498
+      HellCon_74: 767233568
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -12,7 +12,10 @@ public interface IInventoryItem
     int height { get; }
     bool canDrop { get; }
     itemRotae Rotate { get; set; }
-
+    /// <summary>
+    /// 아이템 효과
+    /// </summary>
+    string Itemability { get; set; }
     /// <summary>
     /// 주어진 로컬 포인트가 이 도형의 일부인 경우 참을 반환합니다.
     /// </summary>
