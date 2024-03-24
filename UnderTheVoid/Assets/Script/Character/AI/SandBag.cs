@@ -4,23 +4,11 @@ using UnityEngine;
 
 public class SandBag : MonoBehaviour,HitModel
 {
-    [SerializeField]
-    private InvenShape _shape;
-    [SerializeField]
-    public bool[] israck; 
     public void TakeDamege(DemageModel damageModel)
     {
         Debug.Log(damageModel.basedamage);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Èú");
-        if (other.GetComponent<HitModel>() != null)
-        {//other.GetComponent<HitModel>().TakeDamege(D_calcuate.i.Heal(1));
-            DamageController.DealDamage(other.GetComponent<HitModel>(), D_calcuate.i.Heal(1), other.transform);
-        }
-    }
 
     // Update is called once per frame
     void Update()

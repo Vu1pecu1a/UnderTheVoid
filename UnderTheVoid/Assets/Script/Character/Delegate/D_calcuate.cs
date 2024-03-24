@@ -36,11 +36,6 @@ public class DamageController
 }
 public class D_calcuate : MonoBehaviour
 {
-    [SerializeField]
-    GameObject iceball;
-    [SerializeField]
-    MonsterBase mb;
-
     public GameObject UI_Canvas;
     public static D_calcuate i;
     public AbilityEffect ab = new AbilityEffect();
@@ -49,6 +44,10 @@ public class D_calcuate : MonoBehaviour
 
     public delegate void RoomClear();
     public RoomClear roomClear;
+
+    public delegate void Tic();
+    public Tic tic;
+
     delegate void CallintD(int d);
     public delegate int PlayerHit(MonsterBase A,int B);
     public delegate void PlayerDie();
@@ -66,7 +65,28 @@ public class D_calcuate : MonoBehaviour
 
     public DemageModel Killer = new(9999, DamageType.Slash);
 
+    public Dictionary<string, IAbility> bufflist = new Dictionary<string, IAbility>();
 
+    public void Buff(MonsterBase MB,MonsterBase PB)
+    {
+        // 버프 지정
+        IAbility buff = new DotHeal(PB,MB, 10, 0.5f);
+        // 버프 시작
+        buff.Enchant();
+        // 버프 종료
+        StartCoroutine(buffCor(buff));
+    }
+
+    IEnumerator buffCor(IAbility ab)
+    {
+        yield return new WaitForSeconds(ab._tic);
+        ab.EnchantingEffect();
+
+        if (ab._duration <= 0)
+            ab.DisEnchant();
+        else
+            StartCoroutine(buffCor(ab));
+    }
 
     public DemageModel Heal(int i)
     {
@@ -128,13 +148,25 @@ public class D_calcuate : MonoBehaviour
     private void Awake()
     {
         i = this;
+       // bufflist.Add("DotHeal", new DotHeal());
+        tic += Debugaaaa;
+    }
+
+    void Debugaaaa()
+    {
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
     }
-    
+
+    private void Update()
+    {
+        tic();
+    }
+
     public void PlayerSpawn()
     {
         //if (ScenecManeger.i != null)
@@ -175,14 +207,6 @@ public class D_calcuate : MonoBehaviour
         {
             a.gameObject.transform.position = a.GetComponent<SelecPos>().prevpos.position;
         }
-    }
-
-    // Update is called once per frame
-
-    void IceBallInstance()
-    {
-        GameObject a = Instantiate(iceball,mb.target.transform.position,Quaternion.identity);
-        a.GetComponent<DCCheck>().onwer = mb;
     }
 
     public int bowshot(int a)

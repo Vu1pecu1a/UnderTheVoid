@@ -12,7 +12,7 @@ public interface HitModel
     void TakeDamege(DemageModel damageModel);
 }
 
-public class DemageModel
+public struct DemageModel
 {
     public int basedamage;
     public DamageType damageType;

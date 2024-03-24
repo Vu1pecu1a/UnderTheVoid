@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4753529556081852533}
   - component: {fileID: 4753529556081852532}
   - component: {fileID: 4753529556081852535}
-  - component: {fileID: 4753529556081852531}
   - component: {fileID: 4753529556081852528}
+  - component: {fileID: 8782917626722326366}
   m_Layer: 0
   m_Name: DamageCollider
   m_TagString: Untagged
@@ -99,19 +99,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4753529556081852531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4753529556081852534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51009c11d70a1214c93d459eb06080a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onwer: {fileID: 0}
 --- !u!54 &4753529556081852528
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,3 +115,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8782917626722326366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4753529556081852534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92868f413a6d80b4ebf34a040f539949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

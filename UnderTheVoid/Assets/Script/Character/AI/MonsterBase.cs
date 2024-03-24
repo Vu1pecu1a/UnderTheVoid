@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,6 +15,9 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     public virtual event AttackAction AttackEvent;
     public virtual event SpellAction SpellEvent;
     protected virtual event DieAction DieEvent;
+
+    public List<IAbility> buff = new List<IAbility>();
+    
     [SerializeField]
     Renderer _HpBar;
     private void Awake()
@@ -39,7 +43,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         }
         if(_objstacle== null)_objstacle = gameObject.GetComponent<NavMeshObstacle>();
         _agent = agent;
-        _agent.stoppingDistance = attackRange;
+        _agent.stoppingDistance = attackRange -0.5f;
         _objstacle.enabled= false;
         AttackEvent += Debug_log;
         DieEvent += Debug_Die;
@@ -204,6 +208,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         }
         else
         {
+            Debug.Log(Vector3.Distance(gameObject.transform.position, target.transform.position));
             return false;
         }
     }
