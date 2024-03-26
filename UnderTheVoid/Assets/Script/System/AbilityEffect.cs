@@ -1,6 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+public enum BuffType
+{
+    DotHeal,
+    AdBuff,
+    AdSpeedBuff,
+    Max
+}
+public enum DeBuffType
+{
+    Bleeding,
+    Max
+}
+
 
 
 public interface IAbility
@@ -19,28 +29,22 @@ public interface IAbility
     /// </summary>
     public float _tic { get; }
 
-    /// <summary>
-    /// 버프가 추가 됬을때 효과
-    /// </summary>
-    public void Enchant();
-
-    /// <summary>
-    /// 버프가 지속 되는 동안 효과
-    /// </summary>
-    public void EnchantingEffect();
-
-    /// <summary>
-    /// 버프가 종료 되었을 때 효과
-    /// </summary>
-    public void DisEnchant();
+    public void SetData(MonsterBase pb, MonsterBase mb, float dur = 10, float tic = 0.5f);
 }
 
-
+/// <summary>
+/// 효과 모음집
+/// </summary>
 public class AbilityEffect
 {
     public void ADPlus(MonsterBase pb)
     {
         pb.ATK += 1;
+    }
+
+    public void ADPlus(MonsterBase pb, float BuffIntensity)
+    {
+        pb.ATK += (int)(pb.ATK * BuffIntensity);
     }
 
     public void ADMinus(MonsterBase pb)
@@ -52,4 +56,15 @@ public class AbilityEffect
     {
         DamageController.DealDamage(pb, D_calcuate.i.Heal(pb.ATK), pb.transform);
     }
+
+    public void DotDamage(MonsterBase pb,MonsterBase mb)//도트딜
+    {
+        DamageController.DealDamage(mb, D_calcuate.i.Bleeding(pb.ATK), mb.transform);
+    }
+
+    public void ADSpeedUP(MonsterBase pb,float BuffIntensity)
+    {
+        pb.attackSpeed += pb.attackSpeed * BuffIntensity;
+    }
+
 }

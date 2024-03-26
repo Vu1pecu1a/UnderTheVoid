@@ -45,8 +45,8 @@ public class D_calcuate : MonoBehaviour
     public delegate void RoomClear();
     public RoomClear roomClear;
 
-    public delegate void Tic();
-    public Tic tic;
+    //public delegate void Tic();
+    //public Tic tic;
 
     delegate void CallintD(int d);
     public delegate int PlayerHit(MonsterBase A,int B);
@@ -65,8 +65,10 @@ public class D_calcuate : MonoBehaviour
 
     public DemageModel Killer = new(9999, DamageType.Slash);
 
-    public Dictionary<string, IAbility> bufflist = new Dictionary<string, IAbility>();
+    public Dictionary<BuffType, Buff> bufflist = new Dictionary<BuffType, Buff>();
+    public Dictionary<BuffType, Buff> Debufflist = new Dictionary<BuffType, Buff>();
 
+    /*
     public void Buff(MonsterBase MB,MonsterBase PB)
     {
         // 버프 지정
@@ -86,6 +88,21 @@ public class D_calcuate : MonoBehaviour
             ab.DisEnchant();
         else
             StartCoroutine(buffCor(ab));
+    }*/
+
+    void BuffSet()
+    {
+        bufflist.Add(0,new DotHeal());
+    }
+    void DebuffSet()
+    {
+        Debufflist.Add(0,new Bleeding());
+    }
+
+    public DemageModel Bleeding(int i)
+    {
+        DemageModel Bleeding = new(i, DamageType.Slash);
+        return Bleeding;
     }
 
     public DemageModel Heal(int i)
@@ -148,15 +165,10 @@ public class D_calcuate : MonoBehaviour
     private void Awake()
     {
         i = this;
+        BuffSet();
+        DebuffSet();
        // bufflist.Add("DotHeal", new DotHeal());
-        tic += Debugaaaa;
     }
-
-    void Debugaaaa()
-    {
-        
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -164,7 +176,6 @@ public class D_calcuate : MonoBehaviour
 
     private void Update()
     {
-        tic();
     }
 
     public void PlayerSpawn()

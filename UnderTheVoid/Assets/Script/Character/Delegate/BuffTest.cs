@@ -8,7 +8,8 @@ public class BuffTest : MonoBehaviour
     {
         if (other.GetComponent<HitModel>() != null)
         {
-            D_calcuate.i.Buff(other.GetComponent<MonsterBase>(), other.GetComponent<MonsterBase>());
+          // other.GetComponent<MonsterBase>().AddBuff(other.GetComponent<MonsterBase>(), other.GetComponent<MonsterBase>(),0,10,0.5f);
+            other.GetComponent<MonsterBase>().AddDeBuff(other.GetComponent<MonsterBase>(), other.GetComponent<MonsterBase>(), 0, 10, 0.1f);
             gameObject.DestroyAPS();
         }
     }

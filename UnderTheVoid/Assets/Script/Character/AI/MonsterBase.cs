@@ -16,8 +16,9 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     public virtual event SpellAction SpellEvent;
     protected virtual event DieAction DieEvent;
 
-    public List<IAbility> buff = new List<IAbility>();
-    
+    public List<Buff> _Buff = new List<Buff>();
+    public List<Buff> _DeBuff = new List<Buff>();
+
     [SerializeField]
     Renderer _HpBar;
     private void Awake()
@@ -29,6 +30,46 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         ResetState();
         InitState(this, IDEL.Instance);
+    }
+
+    public void AddBuff(MonsterBase MB, MonsterBase PB,BuffType type,float _dur,float _tic)
+    {
+        Buff buff = D_calcuate.i.bufflist[type];
+
+        buff.SetData(PB, MB, _dur, _tic);
+        StartCoroutine(buff.Tic());
+        StartCoroutine(buff.TicofEffect());
+        buff._BuffEvent += RemoveBuff;
+        DieEvent += buff.EndofDuration;
+        _Buff.Add(buff);
+    }
+    public void AddDeBuff(MonsterBase MB, MonsterBase PB, BuffType type, float _dur, float _tic)
+    {
+        Buff buff = D_calcuate.i.Debufflist[type];
+
+        buff.SetData(PB, MB, _dur, _tic);
+        StartCoroutine(buff.Tic());
+        StartCoroutine(buff.TicofEffect());
+        buff._BuffEvent += RemoveDeBuff;
+        DieEvent += buff.EndofDuration;
+        _DeBuff.Add(buff);
+    }
+    public void RemoveDeBuff(Buff buff)
+    {
+        buff._BuffEvent -= RemoveDeBuff;
+        DieEvent -= buff.EndofDuration;
+        Debug.Log("디버프 종료");
+        if (_DeBuff.Contains(buff))
+            _DeBuff.Remove(buff);
+    }
+
+    public void RemoveBuff(Buff buff)
+    {
+        buff._BuffEvent -= RemoveBuff;
+        DieEvent -= buff.EndofDuration;
+        Debug.Log("버프 종료");
+        if (_Buff.Contains(buff))
+            _Buff.Remove(buff);
     }
 
     protected void ResetState()
@@ -295,9 +336,9 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
     public void DIe()//사망이벤트
     {
+        DieEvent();
         State = AI_State.Die;
         ChageState(Die.Instance);
-        DieEvent();
     }
 
     public void UIOFF()
