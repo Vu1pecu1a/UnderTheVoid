@@ -31,7 +31,7 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     public int mapHeight = 10; // 맵의 세로 길이
     public int MaxRoom,MinRoom; // 최대값 최소값
     Node[,] _grid;
-    [SerializeField]
+    [SerializeField,Tooltip("[0 : Left],[1 : down],[2 : Up],[3 : Right]")]
     GameObject[] Doors;
     [SerializeField]
     GameObject stairs;
@@ -79,31 +79,6 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         GenerateMap();
     }
 
-    //private void Update()
-    //{
-    //    if(Input.GetKeyDown(KeyCode.UpArrow))
-    //    {
-    //        PlayerMoveToMap(2);
-    //    }
-    //    else if (Input.GetKeyDown(KeyCode.DownArrow))
-    //    {
-    //        PlayerMoveToMap(1);
-    //    }
-    //    else if (Input.GetKeyDown(KeyCode.RightArrow))
-    //    {
-    //        PlayerMoveToMap(3);
-    //    }
-    //    else if (Input.GetKeyDown(KeyCode.LeftArrow))
-    //    {
-    //        PlayerMoveToMap(0);
-    //    }
-
-    //    if(Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        RoomClearTrue();
-    //    }
-    //}
-
     public void RoomClearTrue()
     {
         i.roomsdic[PlayerV2].GetComponent<Room>().isClear = true;
@@ -123,10 +98,6 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         Loding.transform.GetChild(0).GetComponent<TMP_Text>().text = "로딩중" + new string('.',i);
         StartCoroutine(LodingText(i));
     }
-
-    
-
-
     void GenerateMap()
     {
         endrooms.Clear();

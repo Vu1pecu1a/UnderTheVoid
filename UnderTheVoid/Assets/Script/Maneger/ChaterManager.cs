@@ -17,7 +17,8 @@ public class ChaterManager : MonoBehaviour
     [SerializeField, Tooltip("플레이어 UI")] GameObject Player_UI;
     [SerializeField, Tooltip("장비 UI")] GameObject Player_EQ;
     [SerializeField, Tooltip("스탯 UI")] GameObject StatTextMeshPro;
-    
+    [SerializeField, Tooltip("스킬 버튼")] GameObject SkillButton;
+
     [SerializeField, Tooltip("공용 인벤토리 위치")] Transform Inven;
     [SerializeField, Tooltip("스킬 선택 UI 위치")] Transform Skill;
     [SerializeField, Tooltip("스탯 UI위치")] Transform Stat;
@@ -33,7 +34,12 @@ public class ChaterManager : MonoBehaviour
     /// </summary>
     public void playerSpawn()
     {
-        
+        for (int j = 0; j < D_calcuate.i.AllPassiveSkill.Count + D_calcuate.i.AllActiveSKill.Count; j++)
+        {
+            Transform skill = Skill.transform.GetComponentInChildren<GridLayoutGroup>().transform;
+            Instantiate(SkillButton, skill);    
+        }
+
         for (int i = 0; i < D_calcuate.i.PlayerList.Count; i++)
         {
             UI_Set(D_calcuate.i.PlayerList[i]);
@@ -57,19 +63,37 @@ public class ChaterManager : MonoBehaviour
         {
             a.onValueChanged.AddListener(Skill.gameObject.SetActive);
             playerUI.GetComponent<Toggle>().onValueChanged.AddListener(delegate { a.SetIsOnWithoutNotify(false); });
+            a.onValueChanged.AddListener(delegate { SKillCreat(playerBase, a); });
         }
         eQ.transform.GetChild(4).GetComponent<Toggle>().onValueChanged.AddListener(Stat.gameObject.SetActive);//스탯칸
         eQ.transform.GetChild(4).GetComponent<Toggle>().onValueChanged.AddListener(delegate { StatView(playerBase); });
         playerUI.GetComponent<Toggle>().onValueChanged.AddListener(delegate { eQ.transform.GetChild(4).GetComponent<Toggle>().SetIsOnWithoutNotify(false); });
 
+        StartCoroutine(CorStatPortrait(playerBase, playerUI));
+
         D_calcuate.i.PlayerData.Add(eQ.transform.GetComponentInChildren<InvenRender>(), new PlayerofData(playerBase,eQ.transform.GetComponentInChildren<InvenRender>(), eQ, playerUI));
         //  Debug.Log(eQ.transform.GetComponentInChildren<InvenRender>());
     }
+
+    
 
     void SkillStatReSet(bool ina)
     {
         Skill.gameObject.SetActive(false);
         Stat.gameObject.SetActive(false);
+    }
+
+    void SKillCreat(PlayerBase playerbase, Toggle playerUI)
+    {
+        Transform skill = Skill.transform.GetComponentInChildren<GridLayoutGroup>().transform;
+        foreach (Button tmp in skill.GetComponentsInChildren<Button>())
+        {
+            tmp.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = D_calcuate.i.AllPassiveSkill[0].ToString();
+            tmp.transform.GetChild(1).GetComponent<Image>().sprite = D_calcuate.i.AllPassiveSkill[0].SkillImage;
+            tmp.GetComponent<SKillbutton>().togglebu = playerUI;
+            tmp.GetComponent<SKillbutton>().skill = D_calcuate.i.AllPassiveSkill[0];
+            tmp.GetComponent<SKillbutton>().playerbase = playerbase;
+        }
     }
 
     void StatView(PlayerBase playerBase)
@@ -86,4 +110,25 @@ public class ChaterManager : MonoBehaviour
         stat.GetChild(1).gameObject.SetActive(true);
         stat.GetChild(1).GetComponent<TextMeshProUGUI>().text = "공격력 :" + playerBase.ATK.ToString();
     }
+
+    IEnumerator CorStatPortrait(PlayerBase playerBase,GameObject PlayerUI)
+    {
+        while(playerBase != null)
+        {
+            Transform Portrait = PlayerUI.transform.GetChild(0).GetChild(1); // 플레이어 초상화 관련
+            Transform Data = PlayerUI.transform.GetChild(0).GetChild(2); // 플레이어 데이터
+
+            Portrait.GetChild(0).GetComponent<Image>().color = Color.white;
+            TextMeshProUGUI[] DataList = Data.GetComponentsInChildren<TextMeshProUGUI>();
+            DataList[0].text = playerBase.name;
+            DataList[1].text = "체력 :"+ playerBase.HP.ToString();
+            DataList[2].text = "공격력 :" + playerBase.ATK.ToString();
+            DataList[3].text = "방어력 :" + playerBase.DEF.ToString();
+            DataList[4].text = "공격 속도 :" + playerBase.ATKSpeed.ToString();
+            DataList[5].text = "이동 속도 :" + playerBase.MoveSpeed.ToString();
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
 }

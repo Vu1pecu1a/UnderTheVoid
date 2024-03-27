@@ -64,7 +64,19 @@ public class AbilityEffect
 
     public void ADSpeedUP(MonsterBase pb,float BuffIntensity)
     {
-        pb.attackSpeed += pb.attackSpeed * BuffIntensity;
+        pb.buffattackSpeed += BuffIntensity;
     }
 
+    /// <summary>
+    /// 모든 배율 버프 제거
+    /// </summary>
+    /// <param name="pb"></param>
+    public void BuffOut(MonsterBase pb)
+    {
+        pb.buffattackSpeed = 0;
+        pb.buffatk = 0;
+        pb.buffagi = 0;
+        pb.buffdef = 0;
+        pb.buffmoveSpeed = 0;
+    }
 }

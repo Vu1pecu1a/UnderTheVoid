@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 473783870780252887}
   - component: {fileID: 473783870780252872}
   - component: {fileID: 166024825507738872}
+  - component: {fileID: 8114813718773316794}
   m_Layer: 5
   m_Name: Nomarl_UI
   m_TagString: MapPicea
@@ -95,6 +96,19 @@ MonoBehaviour:
   roomVector2: {x: 0, y: 0}
   RoomCode: 0
   isClear: 0
+--- !u!114 &8114813718773316794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473783870780252874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &4434356306725923314
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,16 +272,16 @@ RectTransform:
   m_GameObject: {fileID: 9040617241644425038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.72603, y: 0.72603, z: 0.72603}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 473783870780252873}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 3, y: -2}
+  m_SizeDelta: {x: 6, y: 4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9077237496856638774
 CanvasRenderer:

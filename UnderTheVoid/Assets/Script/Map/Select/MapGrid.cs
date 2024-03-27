@@ -42,7 +42,7 @@ public class MapGrid : MonoBehaviour
         if (!_isoccupancy)
             GetComponent<MeshRenderer>().material.SetColor("EmissionColor", Color.red);
         else
-            GetComponent<MeshRenderer>().material.color = Color.red;
+            GetComponent<MeshRenderer>().material.color = Color.white;
     }
    
     public void coordinateReturn(int x,int y)

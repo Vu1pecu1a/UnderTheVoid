@@ -9,6 +9,7 @@ public class PlayerBase : MonsterBase
 
     public List<MonsterBase> monsters = new List<MonsterBase>();
     public List<PlayerBase> player = new List<PlayerBase>();
+    public Skill[] Skills = new Skill[8];
 
     protected override void Start()
     {
@@ -23,6 +24,15 @@ public class PlayerBase : MonsterBase
         this.agent.enabled = true;
     }
 
+    public void SkillON()
+    {
+        if (D_calcuate.isbattel)
+            return;
+        foreach (Skill skil in Skills)
+        {
+            skil?.SkillOn(this);
+        }
+    }
     protected override void Update()
     {
         base.Update();

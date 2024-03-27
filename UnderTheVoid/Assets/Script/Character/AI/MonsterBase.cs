@@ -40,7 +40,9 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         StartCoroutine(buff.Tic());
         StartCoroutine(buff.TicofEffect());
         buff._BuffEvent += RemoveBuff;
+
         DieEvent += buff.EndofDuration;
+        D_calcuate.i.roomClear += buff.EndofDuration;
         _Buff.Add(buff);
     }
     public void AddDeBuff(MonsterBase MB, MonsterBase PB, BuffType type, float _dur, float _tic)
@@ -51,13 +53,17 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         StartCoroutine(buff.Tic());
         StartCoroutine(buff.TicofEffect());
         buff._BuffEvent += RemoveDeBuff;
+
         DieEvent += buff.EndofDuration;
+        D_calcuate.i.roomClear += buff.EndofDuration;
         _DeBuff.Add(buff);
     }
     public void RemoveDeBuff(Buff buff)
     {
         buff._BuffEvent -= RemoveDeBuff;
         DieEvent -= buff.EndofDuration;
+        D_calcuate.i.roomClear -= buff.EndofDuration;
+
         Debug.Log("디버프 종료");
         if (_DeBuff.Contains(buff))
             _DeBuff.Remove(buff);
@@ -67,6 +73,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         buff._BuffEvent -= RemoveBuff;
         DieEvent -= buff.EndofDuration;
+        D_calcuate.i.roomClear -= buff.EndofDuration;
+
         Debug.Log("버프 종료");
         if (_Buff.Contains(buff))
             _Buff.Remove(buff);
@@ -84,7 +92,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         }
         if(_objstacle== null)_objstacle = gameObject.GetComponent<NavMeshObstacle>();
         _agent = agent;
-        _agent.stoppingDistance = attackRange -0.5f;
+        _agent.stoppingDistance = ATKRANGE - 0.5f;
         _objstacle.enabled= false;
         AttackEvent += Debug_log;
         DieEvent += Debug_Die;
@@ -135,6 +143,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         FsmUpdate();
     }
 
+
     public IEnumerator CheckRange()
     {
         yield return new WaitForSeconds(1f);
@@ -183,7 +192,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         if (target == null || target.State == AI_State.Die)
             ChageState(IDEL.Instance);
-        yield return new WaitForSeconds(1/attackSpeed);
+        yield return new WaitForSeconds(1/ATKSpeed);
 
         if (State == AI_State.Attack)
         {
@@ -223,7 +232,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             return;
         }
 
-        if (attackRange < Vector3.Distance(transform.position, target.transform.position)&& target != null)
+        if (ATKRANGE < Vector3.Distance(transform.position, target.transform.position)&& target != null)
         {
             State= AI_State.Walk;
             ChageState(Move.Instance);
@@ -243,13 +252,12 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         //if (target == null)
         //    return false;
 
-        if (Vector3.Distance(gameObject.transform.position, target.transform.position) > attackRange)
+        if (Vector3.Distance(gameObject.transform.position, target.transform.position) > ATKRANGE)
         {
             return true;
         }
         else
         {
-            Debug.Log(Vector3.Distance(gameObject.transform.position, target.transform.position));
             return false;
         }
     }
@@ -268,7 +276,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     public void BowShot()
     {
         this.AttackEvent();
-        _animator.SetFloat("AttackSpeed", attackSpeed);
+        _animator.SetFloat("AttackSpeed", ATKSpeed);
         if (target == null)
             return;
         GameObject effecti = ObjPoolManager.i.InstantiateAPS("Arrow_01", null);
@@ -278,7 +286,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     public void BowAttack()
     {
         this.AttackEvent();
-        _animator.SetFloat("AttackSpeed", attackSpeed);
+        _animator.SetFloat("AttackSpeed", ATKSpeed);
         DM.basedamage = D_calcuate.i.bowshot(atk);
         DM.damageType = DamageType.Stab;
         if (target == null)
@@ -399,6 +407,7 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
     {
         e._objstacle.enabled = false;
         e._agent.enabled = true;
+        e._agent.speed = e.MoveSpeed;
         e.State = AI_State.Walk;
         e._animator.SetBool("Walk", true);
         e.StartCoroutine(e.CheckRange());
@@ -433,7 +442,7 @@ class Attack : FSMSingleton<Attack>, InterfaceFsmState<MonsterBase>
     {
         e.State = AI_State.Attack;
         e._animator.SetTrigger("Attack");
-        e._animator.SetFloat("AttackSpeed", e.attackSpeed);
+        e._animator.SetFloat("AttackSpeed", e.ATKSpeed);
         e.attackCoolTime();
     }
 

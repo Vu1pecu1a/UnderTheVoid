@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static D_calcuate;
 
 
 public class PlayerofData
@@ -43,14 +44,11 @@ public class D_calcuate : MonoBehaviour
     public static bool isbattel=false;
 
     public delegate void RoomClear();
+    /// <summary>
+    /// 방 클리어시 호출할 이벤트
+    /// </summary>
     public RoomClear roomClear;
 
-    //public delegate void Tic();
-    //public Tic tic;
-
-    delegate void CallintD(int d);
-    public delegate int PlayerHit(MonsterBase A,int B);
-    public delegate void PlayerDie();
 
     [SerializeField]
     List<EnemyBase> list = new List<EnemyBase>();
@@ -65,38 +63,30 @@ public class D_calcuate : MonoBehaviour
 
     public DemageModel Killer = new(9999, DamageType.Slash);
 
-    public Dictionary<BuffType, Buff> bufflist = new Dictionary<BuffType, Buff>();
-    public Dictionary<BuffType, Buff> Debufflist = new Dictionary<BuffType, Buff>();
-
-    /*
-    public void Buff(MonsterBase MB,MonsterBase PB)
-    {
-        // 버프 지정
-        IAbility buff = new DotHeal(PB,MB, 10, 0.5f);
-        // 버프 시작
-        buff.Enchant();
-        // 버프 종료
-        StartCoroutine(buffCor(buff));
-    }
-
-    IEnumerator buffCor(IAbility ab)
-    {
-        yield return new WaitForSeconds(ab._tic);
-        ab.EnchantingEffect();
-
-        if (ab._duration <= 0)
-            ab.DisEnchant();
-        else
-            StartCoroutine(buffCor(ab));
-    }*/
+    public Dictionary<BuffType, Buff> bufflist = new Dictionary<BuffType, Buff>(); // 버프 리스트
+    public Dictionary<BuffType, Buff> Debufflist = new Dictionary<BuffType, Buff>(); // 디버프 리스트
+    public List<Skill> AllPassiveSkill = new List<Skill>();//패시브
+    public List<Skill> AllActiveSKill = new List<Skill>();//액티브
 
     void BuffSet()
     {
         bufflist.Add(0,new DotHeal());
+        bufflist.Add(BuffType.AdBuff, new ADbuff());
+        bufflist.Add(BuffType.AdSpeedBuff, new ADSpeedBuff());
     }
     void DebuffSet()
     {
         Debufflist.Add(0,new Bleeding());
+    }
+
+    void PassiveSKillSet()
+    {
+        AllPassiveSkill.Add(new RapidFire(60f, Resources.LoadAll<Sprite>("HellCon")[0]));
+    }
+
+    void ActiveSkillSet()
+    {
+
     }
 
     public DemageModel Bleeding(int i)
@@ -124,6 +114,10 @@ public class D_calcuate : MonoBehaviour
             isbattel = false;
             return;
         }
+        foreach(PlayerBase pb in  PlayerList)
+        {
+            pb.SkillON();
+        }
         Debug.Log("전투 시작");
         isbattel = true;
         MapGenerator.i.Minimap(0);
@@ -142,6 +136,7 @@ public class D_calcuate : MonoBehaviour
         if(MonsterList.Count == 0)
         {
             MapGenerator.i.RoomClearTrue();
+            roomClear();
             isbattel = false;
             MapGenerator.i.Minimap(true);
             playerTargetnull();
@@ -167,6 +162,8 @@ public class D_calcuate : MonoBehaviour
         i = this;
         BuffSet();
         DebuffSet();
+        PassiveSKillSet();
+        ActiveSkillSet();
        // bufflist.Add("DotHeal", new DotHeal());
     }
     // Start is called before the first frame update

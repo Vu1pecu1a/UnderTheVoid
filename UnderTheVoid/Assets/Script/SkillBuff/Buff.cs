@@ -73,7 +73,10 @@ public abstract class Buff
     /// </summary>
     public abstract void EnchantingEffect();
 
-    public virtual void RemoveEffect() // 자연적으로 0초가 되었을때 발생하는 분기점
+    /// <summary>
+    /// 자연적으로 0초가 되었을때 발생하는 분기점
+    /// </summary>
+    public virtual void RemoveEffect() 
     {
         Debug.Log("상태 종료 이벤트 발생 분기");
         DisEnchant();
@@ -141,15 +144,19 @@ public class ADSpeedBuff : Buff, IAbility
 
     public override void Enchant()
     {
-        Debug.Log("도트 딜 시작");
+        Debug.Log("공속 버프 시작");
+
+        D_calcuate.i.ab.ADSpeedUP(_PB, 0.3f);
     }
     public override void EnchantingEffect()
     {
-        Debug.Log("도트 딜 하는중");
+        Debug.Log("공속 버프 적용중");
     }
     public override void DisEnchant()
     {
-        Debug.Log("도트 딜 종료");
+        Debug.Log("공속 버프 종료");
+
+        D_calcuate.i.ab.BuffOut(_PB);
     }
 }
 
