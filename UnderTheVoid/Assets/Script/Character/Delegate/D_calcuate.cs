@@ -63,6 +63,7 @@ public class D_calcuate : MonoBehaviour
 
     public DemageModel Killer = new(9999, DamageType.Slash);
 
+    #region[버프/디버프/스킬]
     public Dictionary<BuffType, Buff> bufflist = new Dictionary<BuffType, Buff>(); // 버프 리스트
     public Dictionary<BuffType, Buff> Debufflist = new Dictionary<BuffType, Buff>(); // 디버프 리스트
     public List<Skill> AllPassiveSkill = new List<Skill>();//패시브
@@ -81,12 +82,26 @@ public class D_calcuate : MonoBehaviour
 
     void PassiveSKillSet()
     {
-        AllPassiveSkill.Add(new RapidFire(60f, Resources.LoadAll<Sprite>("HellCon")[0]));
+        AllPassiveSkill.Add(new RapidFireReinforce(Resources.LoadAll<Sprite>("HellCon")[1]));
     }
 
     void ActiveSkillSet()
     {
+        AllActiveSKill.Add(new RapidFire(60f, Resources.LoadAll<Sprite>("HellCon")[0]));
+        AllActiveSKill.Add(new FireBall(1f, Resources.LoadAll<Sprite>("HellCon")[2]));
+    }
+    #endregion[버프/디버프/스킬]
 
+    #region[스킬 대미지 ]
+    public DemageModel FireBallHit(int i)
+    {
+        DemageModel FireBallHit = new(i, DamageType.Fire);
+        return FireBallHit;
+    }
+    public DemageModel FireBallExplosion(int i)
+    {
+        DemageModel FireBallExplosion = new(i * 5, DamageType.Fire);
+        return FireBallExplosion;
     }
 
     public DemageModel Bleeding(int i)
@@ -106,6 +121,7 @@ public class D_calcuate : MonoBehaviour
        DemageModel Bowshot = new(a*2, DamageType.Stab);
         return Bowshot;
     }
+    #endregion[스킬 대미지]
 
     public void BattleStart()
     {
@@ -139,7 +155,6 @@ public class D_calcuate : MonoBehaviour
             roomClear();
             isbattel = false;
             MapGenerator.i.Minimap(true);
-            playerTargetnull();
         }
         else if(PlayerList.Count==0)
         {
@@ -153,7 +168,10 @@ public class D_calcuate : MonoBehaviour
     {
         foreach(PlayerBase p in PlayerList)
         {
+          //  Debug.Log(p.HP + p.name);
             p.target = null;
+            p.HP = p.MAXHP;
+            p.SetHpBar();
         }
     }//전투 종료 이후로 호출할 함수
 
@@ -169,6 +187,7 @@ public class D_calcuate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        roomClear += playerTargetnull;
     }
 
     private void Update()
@@ -217,9 +236,4 @@ public class D_calcuate : MonoBehaviour
         }
     }
 
-    public int bowshot(int a)
-    {
-        int b = a * 2;
-        return b;
-    }
 }

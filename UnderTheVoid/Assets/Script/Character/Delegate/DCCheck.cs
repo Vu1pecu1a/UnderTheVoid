@@ -1,12 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static MonsterBase;
 
 public class DCCheck : MonoBehaviour
 {
     public MonsterBase onwer;
     [SerializeField]
     MonsterBase tartr;
+    public DemageModel DM;
+
+    public bool Penetrate = false;
+
+    public delegate void GetHit<T>(T t);
+    public virtual event GetHit<GameObject> Hit;
+
     IEnumerator gotoPool(float time, GameObject alfa) //불러온 이펙트 삭제
     {
         yield return new WaitForSeconds(time);
@@ -18,11 +26,19 @@ public class DCCheck : MonoBehaviour
         onwer = null;
         tartr = null;
         StartCoroutine(gotoPool(1f, gameObject));
+        Hit += DebugDemage;
+    }
+
+
+    void DebugDemage(GameObject gm)
+    {
+        Debug.Log(DM.basedamage);
     }
 
     public void TargetLockOn()
     {
         tartr = onwer.target;
+        if (onwer.target == null) return;
         transform.LookAt(tartr.transform.position+Vector3.up);
         transform.Rotate(90, 0, 0);
     }
@@ -30,6 +46,7 @@ public class DCCheck : MonoBehaviour
     private void OnDisable()
     {
         StopAllCoroutines();
+        Hit -= DebugDemage;
         tartr = null;
     }
 
@@ -45,9 +62,9 @@ public class DCCheck : MonoBehaviour
     {
         if (other.GetComponent<HitModel>() != null && other.tag != onwer.tag)
         {
-             DamageController.DealDamage(other.GetComponent<HitModel>(),
-               D_calcuate.i.BowShot(onwer.ATK) , other.transform);
-            gameObject.DestroyAPS();
+            DamageController.DealDamage(other.GetComponent<HitModel>(),DM , other.transform);
+            Hit(other.gameObject);
+            if(!Penetrate)gameObject.DestroyAPS();
         }
     }
 

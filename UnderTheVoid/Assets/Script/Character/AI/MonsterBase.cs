@@ -7,6 +7,22 @@ using static UnityEngine.GraphicsBuffer;
 
 public class MonsterBase : FSM<MonsterBase> ,HitModel
 {
+
+    #region[UI]
+    [SerializeField]
+    Renderer _HpBar;
+    public void UIOFF()
+    {
+        _HpBar.gameObject.SetActive(false);
+    }
+
+    public void SetHpBar()
+    {
+        _HpBar.material.SetFloat("_FillAmount", (float)hp / MaxHp);
+    }
+
+    #endregion[UI]
+    #region[이벤트]
     public delegate void MoveAction();
     public delegate void AttackAction();
     public delegate void SpellAction();
@@ -16,22 +32,29 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     public virtual event SpellAction SpellEvent;
     protected virtual event DieAction DieEvent;
 
+
+    public void AttackToTarget()//공격 이벤트용 
+    {
+        this.AttackEvent();
+    }
+    public void StopMove()//이동이 종료되면 호출되는 이벤트
+    {
+        MoveEvent();
+    }
+    public void DIe()//사망이벤트
+    {
+        DieEvent();
+        State = AI_State.Die;
+        ChageState(Die.Instance);
+    }
+    public void TargetlockOn()//타겟확정 
+    {
+        target.GetComponent<MonsterBase>().DieEvent += TargetisNull;
+    }
+    #endregion[이벤트]
+    #region[버프/디버프]
     public List<Buff> _Buff = new List<Buff>();
     public List<Buff> _DeBuff = new List<Buff>();
-
-    [SerializeField]
-    Renderer _HpBar;
-    private void Awake()
-    {
-       
-    }
-    // Start is called before the first frame update
-    protected virtual void Start()
-    {
-        ResetState();
-        InitState(this, IDEL.Instance);
-    }
-
     public void AddBuff(MonsterBase MB, MonsterBase PB,BuffType type,float _dur,float _tic)
     {
         Buff buff = D_calcuate.i.bufflist[type];
@@ -79,70 +102,34 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         if (_Buff.Contains(buff))
             _Buff.Remove(buff);
     }
+    #endregion[버프/디버프]
+    #region[유니티 함수]
+    protected virtual void Update()
+    {
+        FsmUpdate();
+    }
+    private void Awake()
+    {
 
-    protected void ResetState()
-    {
-        if (agent == null)
-        {
-            agent = this.gameObject.GetComponent<NavMeshAgent>();
-        }
-        if (_animator == null)
-        {
-            _animator = transform.GetChild(1).GetComponent<Animator>();
-        }
-        if(_objstacle== null)_objstacle = gameObject.GetComponent<NavMeshObstacle>();
-        _agent = agent;
-        _agent.stoppingDistance = ATKRANGE - 0.5f;
-        _objstacle.enabled= false;
-        AttackEvent += Debug_log;
-        DieEvent += Debug_Die;
-        SpellEvent += Debug_log;
-        hp = MaxHp;
-        _HpBar.gameObject.SetActive(true);
-        gameObject.GetComponent<Collider>().enabled = true;
     }
-    void Debug_log()
+    private void OnEnable()
     {
+        //D_calcuate.playerDie += playerDie;
     }
-
-    public void TargetlockOn()//타겟확정 
+    // Start is called before the first frame update
+    protected virtual void Start()
     {
-        target.GetComponent<MonsterBase>().DieEvent += TargetisNull;
+        ResetState();
+        InitState(this, IDEL.Instance);
     }
-
-    public virtual void Search()
-    {
-        
-    }
+    #endregion[유니티 함수]
+    #region[체크 함수]
 
     void TargetisNull()
     {
         Debug.Log(" 상대 사망 ");
         target = null;
     }
-
-    void Debug_Die()
-    {
-        if(state.Equals(AI_State.Die))
-        {
-            Debug.Log("DIE");
-        }
-    }
-
-    private void OnEnable()
-    {
-        //D_calcuate.playerDie += playerDie;
-    }
-    void playerDie()
-    {
-        ChageState(IDEL.Instance);
-    }
-
-    protected virtual void Update()
-    {
-        FsmUpdate();
-    }
-
 
     public IEnumerator CheckRange()
     {
@@ -152,9 +139,9 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     }
 
 
-   public void AttackRange()//사거리 체크
+    public void AttackRange()//사거리 체크
     {
-        
+
         if (target.gameObject.GetComponent<MonsterBase>().HP <= 0)
             target = null;
 
@@ -179,7 +166,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
                 case AI_TYPE.Range:
                     ChageState(RangeAttack.Instance);
                     break;
-                case AI_TYPE.Heal: 
+                case AI_TYPE.Heal:
                     ChageState(HealCast.Instance);
                     break;
                 default:
@@ -192,25 +179,44 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         if (target == null || target.State == AI_State.Die)
             ChageState(IDEL.Instance);
-        yield return new WaitForSeconds(1/ATKSpeed);
+        yield return new WaitForSeconds(1 / ATKSpeed);
+
+        if (D_calcuate.isbattel == false)
+            ChageState(IDEL.Instance);
 
         if (State == AI_State.Attack)
         {
             if (aI == AI_TYPE.Melee)
-            ChageState(Attack.Instance);
-            else if(aI == AI_TYPE.Range)
-            ChageState(RangeAttack.Instance);
-            
-        }else if( State == AI_State.SpellCast)
+                ChageState(Attack.Instance);
+            else if (aI == AI_TYPE.Range)
+                ChageState(RangeAttack.Instance);
+        }
+        else if (State == AI_State.SpellCast)
         {
             if (aI == AI_TYPE.Heal)
                 ChageState(HealCast.Instance);
         }
     }
-    
+
     public void attackCoolTime()
     {
         StartCoroutine(CountAttackSpeed());
+    }
+
+    public void SkillCoolTime(ActiveSkill skill)
+    {
+        StartCoroutine(CoolTime(skill));
+    }
+    public IEnumerator CoolTime(ActiveSkill skill)
+    {
+        skill.isReady = false;
+        float i = 0;
+        while(skill.CoolTIme > i )
+        {
+            i += 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+        skill.isReady = true;
     }
 
     public void _Attack()
@@ -232,19 +238,14 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             return;
         }
 
-        if (ATKRANGE < Vector3.Distance(transform.position, target.transform.position)&& target != null)
+        if (ATKRANGE < Vector3.Distance(transform.position, target.transform.position) && target != null)
         {
-            State= AI_State.Walk;
+            State = AI_State.Walk;
             ChageState(Move.Instance);
         }
 
         if (target == null)
             ChageState(IDEL.Instance);
-    }
-
-    public void StopMove()//이동이 종료되면 호출되는 이벤트
-    {
-        MoveEvent();
     }
 
     bool isAttack()//사거리 체크용
@@ -261,18 +262,63 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             return false;
         }
     }
-
-    public void AttackToTarget()//공격 이벤트용 
+    public virtual void Search()
     {
-        this.AttackEvent();
-    }
 
-    IEnumerator gotoPool(float time,GameObject alfa) //불러온 이펙트 삭제
+    }
+    #endregion[체크 함수]
+    #region[동작 기반 함수]
+    IEnumerator gotoPool(float time, GameObject alfa) //불러온 이펙트 삭제
     {
         yield return new WaitForSeconds(time);
         if (alfa.activeSelf != false)
             alfa.DestroyAPS();
     }
+    public void effectSetLine(GameObject effecti)
+    {
+        effecti.GetComponent<LineRenderer>().SetPosition(0, transform.position + Vector3.up);
+        effecti.GetComponent<LineRenderer>().SetPosition(1, target.transform.position + Vector3.up);
+        StartCoroutine(gotoPool(0.1f, effecti));
+    }//라인 랜더러 불러오기
+
+    public void Throwprojectile(GameObject effecti,DemageModel DM)
+    {
+        effecti.transform.position = this.gameObject.transform.position + Vector3.up;
+        effecti.GetComponent<DCCheck>().onwer = this;
+        effecti.GetComponent<DCCheck>().TargetLockOn();
+        effecti.GetComponent<DCCheck>().DM = DM;
+    }//투사체 발사
+    public void effectSet(GameObject effecti)
+    {
+        if (target != null)
+            effecti.transform.position = target.transform.position + Vector3.up;
+        StartCoroutine(gotoPool(0.5f, effecti));
+    }//타격 이팩트 삭제 코루틴
+    public void effectSet(GameObject effecti,GameObject target,DemageModel DM)
+    {
+        if (target != null)
+            effecti.transform.position = target.transform.position + Vector3.up;
+        effecti.GetComponent<DCCheck>().onwer = this;
+        effecti.GetComponent<DCCheck>().DM = DM;
+        StartCoroutine(gotoPool(1f, effecti));
+    }
+    public virtual void TakeDamege(DemageModel damageModel) // 대미지 계산 파츠
+    {
+        if (state == AI_State.Die)
+            return;
+
+        if (hp > 0)
+            hp -= damageModel.basedamage;
+
+        if (hp >= MaxHp)//힐을 받아서 오버할 경우
+            hp = MaxHp;
+        SetHpBar();
+
+        if (hp <= 0)
+            DIe();
+    }
+    #endregion[동작 기반 함수]
+    #region[공격 타입 함수]
     public void BowShot()
     {
         this.AttackEvent();
@@ -280,44 +326,21 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         if (target == null)
             return;
         GameObject effecti = ObjPoolManager.i.InstantiateAPS("Arrow_01", null);
-        Throwprojectile(effecti);
+        Throwprojectile(effecti,D_calcuate.i.BowShot(ATK));
     }
 
     public void BowAttack()
     {
         this.AttackEvent();
         _animator.SetFloat("AttackSpeed", ATKSpeed);
-        DM.basedamage = D_calcuate.i.bowshot(atk);
-        DM.damageType = DamageType.Stab;
         if (target == null)
             return;
         GameObject effecti = ObjPoolManager.i.InstantiateAPS("bowShot", null);
         GameObject effectj = ObjPoolManager.i.InstantiateAPS("CFXR3 Hit Misc A", null);
         effectSetLine(effecti);
         effectSet(effectj);
-        DamageController.DealDamage(target.GetComponent<HitModel>(), DM, target.transform);
+        DamageController.DealDamage(target.GetComponent<HitModel>(), D_calcuate.i.BowShot(ATK), target.transform);
     }//라인렌더러 기준
-
-    void effectSetLine(GameObject effecti)
-    {
-        effecti.GetComponent<LineRenderer>().SetPosition(0, transform.position + Vector3.up);
-        effecti.GetComponent<LineRenderer>().SetPosition(1, target.transform.position + Vector3.up);
-        StartCoroutine(gotoPool(0.1f, effecti));
-    }//라인 랜더러 불러오기
-
-    void Throwprojectile(GameObject effecti)
-    {
-        effecti.transform.position = this.gameObject.transform.position + Vector3.up;
-        //effecti.GetComponent<Rigidbody>().AddForce((target.transform.position+Vector3.up).normalized * 1);
-        effecti.GetComponent<DCCheck>().onwer = this;
-        effecti.GetComponent<DCCheck>().TargetLockOn();
-    }//투사체 발사
-    void effectSet(GameObject effecti)
-    {
-        if (target != null)
-            effecti.transform.position = target.transform.position + Vector3.up;
-        StartCoroutine(gotoPool(0.5f, effecti));
-    }//타격 이팩트 삭제 코루틴
 
     public void MeleeAttack()
     {
@@ -339,39 +362,49 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         GameObject effecti = ObjPoolManager.i.InstantiateAPS("bowShot", null);
         effectSetLine(effecti);
         effecti.GetComponent<LineRenderer>().material.color = Color.green;
-        DamageController.DealDamage(target.GetComponent<HitModel>(), D_calcuate.i.Heal(atk*20000), target.transform);
+        DamageController.DealDamage(target.GetComponent<HitModel>(), D_calcuate.i.Heal(atk * 20000), target.transform);
+    }
+    #endregion[공격 타입 함수]
+    protected void ResetState()
+    {
+        if (agent == null)
+        {
+            agent = this.gameObject.GetComponent<NavMeshAgent>();
+        }
+        if (_animator == null)
+        {
+            _animator = transform.GetChild(1).GetComponent<Animator>();
+        }
+        if(_objstacle== null)_objstacle = gameObject.GetComponent<NavMeshObstacle>();
+        _agent = agent;
+        _agent.stoppingDistance = ATKRANGE - 0.5f;
+        _objstacle.enabled= false;
+        AttackEvent += Debug_log;
+        DieEvent += Debug_Die;
+        SpellEvent += Debug_log;
+        hp = MaxHp;
+        _HpBar.gameObject.SetActive(true);
+        gameObject.GetComponent<Collider>().enabled = true;
+    }//생성된 후 스탯 리셋
+
+    void playerDie()
+    {
+        ChageState(IDEL.Instance);
+    }
+    void Debug_log()
+    {
     }
 
-    public void DIe()//사망이벤트
+    void Debug_Die()
     {
-        DieEvent();
-        State = AI_State.Die;
-        ChageState(Die.Instance);
-    }
-
-    public void UIOFF()
-    {
-        _HpBar.gameObject.SetActive(false);
-    }
-
-    public virtual void TakeDamege(DemageModel damageModel) // 대미지 계산 파츠
-    {
-        if (state == AI_State.Die)
-            return;
-
-        if (hp > 0)
-            hp -= damageModel.basedamage;
-        if (hp >= MaxHp)
-            hp = MaxHp;
-
-        _HpBar.material.SetFloat("_FillAmount", (float)hp / MaxHp);
-       // Debug.Log((float)hp / MaxHp);
-
-        if (hp <= 0)
-            DIe();
+        if(state.Equals(AI_State.Die))
+        {
+            Debug.Log("DIE");
+        }
     }
 }
 
+#region[FSM]
 class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
 {
 
@@ -387,8 +420,9 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
 
         if (e.target == null)
         {
-           e.Search();
-        }else
+            e.Search();
+        }
+        else
         {
             e.ChageState(Move.Instance);
         }
@@ -396,13 +430,13 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
 
     public void Exit(MonsterBase e)
     {
-        if(e.target!=null)
-        e.TargetlockOn();
+        if (e.target != null)
+            e.TargetlockOn();
     }
 }
- class Move :FSMSingleton<Move>, InterfaceFsmState<MonsterBase>
+class Move : FSMSingleton<Move>, InterfaceFsmState<MonsterBase>
 {
-    
+
     public void Enter(MonsterBase e)
     {
         e._objstacle.enabled = false;
@@ -430,10 +464,33 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
     {
         e.StopCoroutine(e.CheckRange());
         e._animator.SetBool("Walk", false);
-        e._agent.enabled= false;
+        e._agent.enabled = false;
         e._objstacle.enabled = true;
     }
 }
+class OnSkill : FSMSingleton<OnSkill>, InterfaceFsmState<MonsterBase>
+{
+    public void Enter(MonsterBase e)
+    {
+        e.State = AI_State.OnSkill;
+        e._animator.SetTrigger("Cast");
+        e.attackCoolTime();
+    }
+
+    public void Execute(MonsterBase e)
+    {
+        e._targetDown();
+    }
+
+    public void Exit(MonsterBase e)
+    {
+        if(e.State == AI_State.OnSkill && e is PlayerBase)
+        {
+            
+        }
+    }
+}
+
 
 class Attack : FSMSingleton<Attack>, InterfaceFsmState<MonsterBase>
 {
@@ -453,13 +510,12 @@ class Attack : FSMSingleton<Attack>, InterfaceFsmState<MonsterBase>
 
     public void Exit(MonsterBase e)
     {
-        if(e.State == AI_State.Attack)
-        e.MeleeAttack();
+        if (e.State == AI_State.Attack)
+            e.MeleeAttack();
     }
 }
 class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
 {
-
     public void Enter(MonsterBase e)
     {
         e.State = AI_State.Attack;
@@ -528,8 +584,8 @@ class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
         e._animator.SetTrigger("Die");
         e._agent.enabled = false;
         e._objstacle.enabled = false;
-        e.GetComponent<Collider>().enabled= false;
-       // e.StopAllCoroutines();
+        e.GetComponent<Collider>().enabled = false;
+        // e.StopAllCoroutines();
         e.UIOFF();
     }
 
@@ -540,7 +596,9 @@ class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
 
     public void Exit(MonsterBase e)
     {
-        e._agent.isStopped = false;
+        //e._agent.isStopped = false;
         Debug.Log("사망상태 탈출");
     }
 }
+
+#endregion[FSM]

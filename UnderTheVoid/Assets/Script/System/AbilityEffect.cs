@@ -67,6 +67,11 @@ public class AbilityEffect
         pb.buffattackSpeed += BuffIntensity;
     }
 
+    public void ADSpeedPlus(MonsterBase pb,float BuffIntensity)
+    {
+        pb.ATKSpeed += BuffIntensity;
+    }
+
     /// <summary>
     /// 모든 배율 버프 제거
     /// </summary>

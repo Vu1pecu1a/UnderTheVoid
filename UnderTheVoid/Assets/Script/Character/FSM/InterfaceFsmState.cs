@@ -48,6 +48,7 @@ public enum AI_State
     Walk,
     Attack,
     SpellCast,
+    OnSkill,
     Die
 }
 

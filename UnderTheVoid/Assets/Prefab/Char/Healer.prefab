@@ -162,11 +162,20 @@ MonoBehaviour:
   target: {fileID: 0}
   attackRange: 3
   attackSpeed: 1
+  moveSpeed: 3.5
+  buffattackRange: 0
+  buffattackSpeed: 0
+  buffmoveSpeed: 0
   MaxHp: 20
   hp: 10
   atk: 1
   def: 0
   agi: 0
+  buffMaxHp: 0
+  buffhp: 0
+  buffatk: 0
+  buffdef: 0
+  buffagi: 0
   aI: 2
   state: 0
   _HpBar: {fileID: 6986038206825204322}

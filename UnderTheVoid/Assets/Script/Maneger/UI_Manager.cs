@@ -10,6 +10,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject Char;
     [SerializeField] GameObject ButtonUI;
     [SerializeField] GameObject GameOver_UI;
+    [SerializeField] GameObject[] Skill_button;
 
     [SerializeField] Transform overButton;
 
@@ -21,6 +22,9 @@ public class UI_Manager : MonoBehaviour
         Managers.instance.Tab += UI_on;
         MapGenerator.i.mapInstanceEvent += UI_on;//맵 생성 종료 이벤트(로딩 종료시)
         overButton.GetComponent<Button>().onClick.AddListener(delegate { ScenecManeger.i.GoScene(0); });
+        Skill_button[0].GetComponent<Button>().onClick.AddListener(delegate { D_calcuate.i.PlayerList[0].ActiveSkillOn(); });
+        Skill_button[1].GetComponent<Button>().onClick.AddListener(delegate { D_calcuate.i.PlayerList[1].ActiveSkillOn(); });
+        Skill_button[2].GetComponent<Button>().onClick.AddListener(delegate { D_calcuate.i.PlayerList[2].ActiveSkillOn(); });
     }
 
 

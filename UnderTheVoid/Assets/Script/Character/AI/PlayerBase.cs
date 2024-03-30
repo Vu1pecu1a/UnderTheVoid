@@ -9,8 +9,8 @@ public class PlayerBase : MonsterBase
 
     public List<MonsterBase> monsters = new List<MonsterBase>();
     public List<PlayerBase> player = new List<PlayerBase>();
-    public Skill[] Skills = new Skill[8];
-
+    public Skill[] Skills = new Skill[2];
+    public Skill[] PasiveSkills = new Skill[6];
     protected override void Start()
     {
         base.Start();
@@ -24,15 +24,30 @@ public class PlayerBase : MonsterBase
         this.agent.enabled = true;
     }
 
-    public void SkillON()
+    public void ActiveSkillOn()
     {
-        if (D_calcuate.isbattel)
+        if (!D_calcuate.isbattel)
             return;
-        foreach (Skill skil in Skills)
-        {
-            skil?.SkillOn(this);
-        }
+
+        Skills[0].SkillOn(this);
     }
+    public void SkillON() // 버프 스킬
+    {
+        if (!D_calcuate.isbattel || Skills[1] is not ActiveSkill)
+            return;
+
+        Skills[1].SkillOn(this);
+    }
+
+    public void SetPassiveSkill(int i, Skill skil)
+    {
+        if(PasiveSkills[i] is PassiveSkill)
+        PasiveSkills[i].SKillOff(this);
+
+        PasiveSkills[i] = skil;
+        PasiveSkills[i].SkillOn(this);
+    }
+
     protected override void Update()
     {
         base.Update();

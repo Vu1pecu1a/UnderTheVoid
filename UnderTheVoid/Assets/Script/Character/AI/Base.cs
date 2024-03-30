@@ -39,8 +39,8 @@ public abstract class Base : MonoBehaviour
 
     public int MAXHP { get { return MaxHp+(int)(MaxHp * buffMaxHp); } set { MaxHp = value; } }
 
-    public float ATKSpeed { get { return attackSpeed + (int)(attackSpeed * buffattackSpeed);} }
+    public float ATKSpeed { get { return attackSpeed + attackSpeed * buffattackSpeed; } set { attackSpeed = value; } }
     public float ATKRANGE { get { return attackRange; } }
-    public float MoveSpeed { get { return moveSpeed + (moveSpeed * buffmoveSpeed); }}
+    public float MoveSpeed { get { return moveSpeed + (moveSpeed * buffmoveSpeed); }set { moveSpeed = value; } }
 
 }

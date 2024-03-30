@@ -59,11 +59,16 @@ public class ChaterManager : MonoBehaviour
         playerUI.GetComponent<Toggle>().onValueChanged.AddListener(eQ.SetActive);
         playerUI.GetComponent<Toggle>().onValueChanged.AddListener(SkillStatReSet);
         playerUI.GetComponent<Toggle>().group = Player.GetComponent<ToggleGroup>();
-        foreach (Toggle a in eQ.transform.GetChild(1).GetComponentsInChildren<Toggle>())
-        {
-            a.onValueChanged.AddListener(Skill.gameObject.SetActive);
-            playerUI.GetComponent<Toggle>().onValueChanged.AddListener(delegate { a.SetIsOnWithoutNotify(false); });
-            a.onValueChanged.AddListener(delegate { SKillCreat(playerBase, a); });
+
+        Toggle[] a = eQ.transform.GetChild(1).GetComponentsInChildren<Toggle>();
+        foreach(Toggle b in a)
+        { 
+            b.onValueChanged.AddListener(Skill.gameObject.SetActive);
+            playerUI.GetComponent<Toggle>().onValueChanged.AddListener(delegate { b.SetIsOnWithoutNotify(false); });
+            if(b == a[0] || b == a[1])
+                b.onValueChanged.AddListener(delegate { ActiveSKillCreat(playerBase, b); });
+            else
+                b.onValueChanged.AddListener(delegate { PassiveSKillCreat(playerBase, b); });
         }
         eQ.transform.GetChild(4).GetComponent<Toggle>().onValueChanged.AddListener(Stat.gameObject.SetActive);//스탯칸
         eQ.transform.GetChild(4).GetComponent<Toggle>().onValueChanged.AddListener(delegate { StatView(playerBase); });
@@ -82,8 +87,12 @@ public class ChaterManager : MonoBehaviour
         Skill.gameObject.SetActive(false);
         Stat.gameObject.SetActive(false);
     }
-
-    void SKillCreat(PlayerBase playerbase, Toggle playerUI)
+    /// <summary>
+    /// 패시브 스킬 추가
+    /// </summary>
+    /// <param name="playerbase"></param>
+    /// <param name="playerUI"></param>
+    void PassiveSKillCreat(PlayerBase playerbase, Toggle playerUI)
     {
         Transform skill = Skill.transform.GetComponentInChildren<GridLayoutGroup>().transform;
         foreach (Button tmp in skill.GetComponentsInChildren<Button>())
@@ -93,6 +102,25 @@ public class ChaterManager : MonoBehaviour
             tmp.GetComponent<SKillbutton>().togglebu = playerUI;
             tmp.GetComponent<SKillbutton>().skill = D_calcuate.i.AllPassiveSkill[0];
             tmp.GetComponent<SKillbutton>().playerbase = playerbase;
+        }
+    }
+    /// <summary>
+    /// 액티브 스킬 추가
+    /// </summary>
+    /// <param name="playerbase"></param>
+    /// <param name="playerUI"></param>
+    void ActiveSKillCreat(PlayerBase playerbase, Toggle playerUI)
+    {
+        Transform skill = Skill.transform.GetComponentInChildren<GridLayoutGroup>().transform;
+        Button[] tmp = skill.GetComponentsInChildren<Button>();
+        //foreach (Button tmp in skill.GetComponentsInChildren<Button>())
+        for(int i = 0; i < D_calcuate.i.AllActiveSKill.Count; i++)
+        {
+            tmp[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = D_calcuate.i.AllActiveSKill[i].ToString();
+            tmp[i].transform.GetChild(1).GetComponent<Image>().sprite = D_calcuate.i.AllActiveSKill[i].SkillImage;
+            tmp[i].GetComponent<SKillbutton>().togglebu = playerUI;
+            tmp[i].GetComponent<SKillbutton>().skill = D_calcuate.i.AllActiveSKill[i];
+            tmp[i].GetComponent<SKillbutton>().playerbase = playerbase;
         }
     }
 
