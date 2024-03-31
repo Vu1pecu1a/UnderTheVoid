@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,18 +38,23 @@ public class ActiveSkill : Skill
 
     }
 }
-public abstract class Skill
+public abstract class Skill:ICloneable
 {
     public abstract float CoolTIme { get; }
     public abstract Sprite SkillImage { get; }
     public abstract void SkillOn(MonsterBase pb);//스킬 사용 효과
 
     public abstract void SKillOff(MonsterBase pb);//스킬 종료 효과
+
+    public virtual object Clone()
+    {
+        throw new NotImplementedException();
+    }
 }
 #endregion[스킬 베이스]
 
 #region[액티브 스킬]
-public class RapidFire : ActiveSkill
+public class RapidFire : ActiveSkill,ICloneable
 {
     public RapidFire(float coolTime, Sprite sprite)
     {
@@ -63,6 +69,11 @@ public class RapidFire : ActiveSkill
     public override void SKillOff(MonsterBase pb)
     {
 
+    }
+    public override object Clone()
+    {
+        RapidFire rp = new RapidFire(_coolTime, _sprite);
+        return rp;
     }
 }
 public class FireBall : ActiveSkill
@@ -98,6 +109,11 @@ public class FireBall : ActiveSkill
 
     public override void SKillOff(MonsterBase pb)
     {
+    }
+    public override object Clone()
+    {
+        FireBall rp = new FireBall(_coolTime, _sprite);
+        return rp;
     }
 }
 #endregion[액티브 스킬]

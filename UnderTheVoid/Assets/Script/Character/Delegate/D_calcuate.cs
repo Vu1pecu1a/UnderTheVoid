@@ -130,15 +130,16 @@ public class D_calcuate : MonoBehaviour
             isbattel = false;
             return;
         }
-        foreach(PlayerBase pb in  PlayerList)
-        {
-            pb.SkillON();
-        }
         Debug.Log("전투 시작");
         isbattel = true;
+        Managers.instance._UI.UI_on();
         MapGenerator.i.Minimap(0);
         Managers.instance._UI.BattelUIOn(true);
         SelectGrid.i.gameObject.SetActive(false);
+        foreach (PlayerBase pb in PlayerList)
+        {
+            pb.SkillON();
+        }
     }
 
     public void BattelStart()

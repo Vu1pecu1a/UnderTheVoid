@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static MonsterBase;
 
-public abstract class Buff
+public abstract class Buff :ICloneable
 {   /// <summary>
     /// 버프 내용
     /// </summary>
@@ -93,6 +94,8 @@ public abstract class Buff
         }
         Debug.Log("상태 이상 종료");
     }
+
+    public abstract object Clone();
 }
 public class DotHeal : Buff, IAbility
 {
@@ -114,6 +117,12 @@ public class DotHeal : Buff, IAbility
         base.DisEnchant();
         Debug.Log("도트 힐 종료");
     }
+
+    public override object Clone()
+    {
+        DotHeal dotheal = new DotHeal();
+        return dotheal;
+    }
 }
 
 public class ADbuff : Buff, IAbility
@@ -133,6 +142,11 @@ public class ADbuff : Buff, IAbility
     {
         base.DisEnchant();
         Debug.Log("도트 딜 종료");
+    }
+    public override object Clone()
+    {
+        ADbuff buff = new();
+        return buff;
     }
 }
 
@@ -155,8 +169,13 @@ public class ADSpeedBuff : Buff, IAbility
     public override void DisEnchant()
     {
         Debug.Log("공속 버프 종료");
-
-        D_calcuate.i.ab.BuffOut(_PB);
+        D_calcuate.i.ab.ADSpeedUP(_PB, -0.3f);
+       // D_calcuate.i.ab.BuffOut(_PB);
+    }
+    public override object Clone()
+    {
+        ADSpeedBuff buff = new();
+        return buff;
     }
 }
 
@@ -184,5 +203,10 @@ public class Bleeding : Buff, IAbility
     {
         base.DisEnchant();
         Debug.Log("도트 딜 종료");
+    }
+    public override object Clone()
+    {
+        Bleeding buff = new();
+        return buff;
     }
 }

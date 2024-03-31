@@ -26,7 +26,7 @@ public class PlayerBase : MonsterBase
 
     public void ActiveSkillOn()
     {
-        if (!D_calcuate.isbattel)
+        if (!D_calcuate.isbattel || Skills[0] is not ActiveSkill)
             return;
 
         Skills[0].SkillOn(this);

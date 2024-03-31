@@ -13,10 +13,11 @@ public class SKillbutton : MonoBehaviour
     {
         Count = togglebu.transform.GetSiblingIndex();
         togglebu.transform.GetChild(0).GetComponent<Image>().sprite = skill.SkillImage;
+
         if (Count < 2 && skill is ActiveSkill)
-            playerbase.Skills[Count] = skill;
+            playerbase.Skills[Count] = (Skill)skill.Clone();
         else
-            playerbase.SetPassiveSkill(Count - 2, skill);
+            playerbase.SetPassiveSkill(Count - 2, (Skill)skill.Clone());
           //  playerbase.PasiveSkills[Count-2] = skill;
     }
 }

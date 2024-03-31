@@ -61,7 +61,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     public List<Buff> _DeBuff = new List<Buff>();
     public void AddBuff(MonsterBase MB, MonsterBase PB,BuffType type,float _dur,float _tic)
     {
-        Buff buff = D_calcuate.i.bufflist[type];
+        Buff buff = (Buff)D_calcuate.i.bufflist[type].Clone();
 
         buff.SetData(PB, MB, _dur, _tic);
         StartCoroutine(buff.Tic());
@@ -74,7 +74,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     }
     public void AddDeBuff(MonsterBase MB, MonsterBase PB, BuffType type, float _dur, float _tic)
     {
-        Buff buff = D_calcuate.i.Debufflist[type];
+        Buff buff = (Buff)D_calcuate.i.Debufflist[type].Clone();
 
         buff.SetData(PB, MB, _dur, _tic);
         StartCoroutine(buff.Tic());
@@ -583,7 +583,6 @@ class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
 {
     public void Enter(MonsterBase e)
     {
-        Debug.Log("ªÁ∏¡ªÛ≈¬ ¡¯¿‘");
         e.State = AI_State.Die;
         e._animator.SetTrigger("Die");
         e._agent.enabled = false;
@@ -601,6 +600,7 @@ class Die : FSMSingleton<Die>, InterfaceFsmState<MonsterBase>
     public void Exit(MonsterBase e)
     {
         //e._agent.isStopped = false;
+        Debug.Log(e.name);
         Debug.Log("ªÁ∏¡ªÛ≈¬ ≈ª√‚");
     }
 }
