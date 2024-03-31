@@ -1,0 +1,112 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using csDelaunay;
+using System.Linq;
+
+
+public class MapDrawer
+{
+    public static Sprite DrawSprite(Vector2Int size,Color[] colorDatas)
+    {
+        Texture2D texture = new Texture2D(size.x, size.y);
+        texture.filterMode = FilterMode.Point;
+        texture.SetPixels(colorDatas);
+        texture.Apply();
+
+        Rect rect = new Rect(0, 0, size.x, size.y);
+        Sprite sprite = Sprite.Create(texture, rect, Vector2.one * 0.5f);
+        return sprite;
+    }
+
+    public static Sprite DrawVoronoiToSprite(Voronoi vo)
+    {
+        Rect rect = vo.PlotBounds;
+        int width = Mathf.RoundToInt(rect.width);
+        int height = Mathf.RoundToInt(rect.height);
+        Color[] pixelColors = Enumerable.Repeat(Color.white, height * height).ToArray();//맵 사이즈 만큼 픽셀 채워넣기
+        List<Vector2> SiteCoods = vo.SiteCoords();//점찍은거 
+
+        //시드 그리기
+        foreach(Vector2 coord in SiteCoods)
+        {
+            int x = Mathf.RoundToInt(coord.x);//반올림
+            int y = Mathf.RoundToInt(coord.y);
+
+            int index = x * width + y;
+            pixelColors[index] = Color.red; // 랜덤으로 점 찍은걸 빨간색으로 표기하겠음. 시드 찍는것임
+        }
+
+        Vector2Int size = new Vector2Int(width, height);
+
+        //모서리 그리기
+        //모든 점 정보를 얻어와서 모서리를 그리도록 한다.
+        foreach (Site site in vo.Sites)
+        {
+            //해당 점의 이웃 점들을 모두 얻어와서 
+            List<Site> neighbors = site.NeighborSites();//노드 구조인가...?
+            foreach(Site neighbor in neighbors)
+            {
+                
+                Edge edge = vo.FindEdgeFromAdjacentPolygons(site, neighbor);
+
+                if (edge.ClippedVertices is null)
+                    continue;
+
+                //모서리를 이루는 2개의 정점을 얻어옴
+                Vector2 corner1 = edge.ClippedVertices[LR.LEFT];
+                Vector2 corner2 = edge.ClippedVertices[LR.RIGHT];
+
+
+                DrawEdgeLine(pixelColors, site.Coord, corner1, size,Color.green);
+                DrawEdgeLine(pixelColors, site.Coord, corner2, size, Color.green);
+
+                DrawEdgeLine(pixelColors, site.Coord, neighbor.Coord, size, Color.blue);
+                //텍스쳐에 분할된 선을 그린다.
+                DrawEdgeLine(pixelColors, corner1, corner2, size,Color.black);
+            }
+        }
+        return DrawSprite(size, pixelColors);
+    }
+
+    static void DrawEdgeLine(Color[] pixelColors, Vector2 corner1, Vector2 corner2,Vector2Int size, Color color)
+    {
+        Vector2 targetPoint = corner1;
+        float delta = 1 / (corner2 - corner1).magnitude;
+        float lerpRatio = 0f;
+        while ((int)targetPoint.x != (int)corner2.x || (int)targetPoint.y != (int)corner2.y)
+        {
+            //선형 보간을 통해 corner1과 corner2사이를 lerpRatio만큼 나누는 점을 얻어온다.
+            targetPoint = Vector2.Lerp(corner1, corner2, lerpRatio);
+            lerpRatio += delta;
+            //텍스쳐의 좌표 영역은 (0~size.x -1)이지만 생성한 보로노이 다이어 그램의 좌표 영억은 (0~(float)size.x)이다.
+            int x = Mathf.Clamp((int)targetPoint.x, 0, size.x - 1);
+            int y = Mathf.Clamp((int)targetPoint.y, 0, size.y - 1);
+
+            int index = x * size.x + y;
+            pixelColors[index] = color;//선 그리기
+        }
+    }
+    /*
+    static void DrawCircle(Color[] pixelColors, Vector2 Coord, Vector2Int size, Color color)
+    {
+        for (int i = 0; i < 360; i++)
+        {
+            float radian = (float)i / 360 * Mathf.PI * 2;
+            float x = Mathf.Cos(radian) * radius;
+            float y = Mathf.Sin(radian) * radius;
+        }
+    }
+    float circumradius(Vector2Int A,Vector2Int B,Vector2Int C)
+    {
+        float ax = C.x - B.x, ay = C.y - B.y;
+        float bx = A.x - C.x, by = A.y - C.y;
+        float crossab = ax * by - ay * bx;
+
+        if(crossab != 0)
+        {
+            float a = Mathf.Sqrt(Mathf.)
+        }
+    }*/
+
+}
