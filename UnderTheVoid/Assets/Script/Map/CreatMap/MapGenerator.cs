@@ -217,6 +217,9 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         roomsdic[PlayerV2].GetComponent<Room>().SetFiled(false);
     }
 
+    /// <summary>
+    /// 방 클리어 체크
+    /// </summary>
     public void IsClearRoom()
     {
         if (roomsdic[PlayerV2].GetComponent<Room>().isClear == false)
@@ -233,6 +236,12 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
             }
         }
     }
+
+    public bool _ISCLEARROOMBOOL()
+    {
+        return roomsdic[PlayerV2].GetComponent<Room>().isClear;
+    }
+
     public void PlayerMoveToMap(int i)
     {
         Vector2Int v = PlayerV2;

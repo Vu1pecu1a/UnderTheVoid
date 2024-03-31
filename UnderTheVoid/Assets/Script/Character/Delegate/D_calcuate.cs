@@ -125,7 +125,7 @@ public class D_calcuate : MonoBehaviour
 
     public void BattleStart()
     {
-        if (!PlayerReady())
+        if (!PlayerReady() || MapGenerator.i._ISCLEARROOMBOOL())
         {
             isbattel = false;
             return;
@@ -137,6 +137,7 @@ public class D_calcuate : MonoBehaviour
         Debug.Log("전투 시작");
         isbattel = true;
         MapGenerator.i.Minimap(0);
+        Managers.instance._UI.BattelUIOn(true);
         SelectGrid.i.gameObject.SetActive(false);
     }
 
@@ -155,6 +156,7 @@ public class D_calcuate : MonoBehaviour
             roomClear();
             isbattel = false;
             MapGenerator.i.Minimap(true);
+            Managers.instance._UI.BattelUIOn(false);
         }
         else if(PlayerList.Count==0)
         {

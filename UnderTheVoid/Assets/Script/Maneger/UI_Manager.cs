@@ -8,6 +8,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject UI_Char;
     [SerializeField] GameObject UI_inven;
     [SerializeField] GameObject Char;
+    [SerializeField] GameObject BattelUI;
     [SerializeField] GameObject ButtonUI;
     [SerializeField] GameObject GameOver_UI;
     [SerializeField] GameObject[] Skill_button;
@@ -35,12 +36,12 @@ public class UI_Manager : MonoBehaviour
 
     public void UI_on()
     {
-        if (isOn)
+        if (isOn || D_calcuate.isbattel)
         {
             UI_Char.SetActive(true);
             UI_inven.transform.localPosition = new Vector2(1560, -475);
             Char.SetActive(true);
-            isOn= false;
+            isOn = false;
         }else
         {
             UI_Char.SetActive(false);
@@ -48,5 +49,10 @@ public class UI_Manager : MonoBehaviour
             Char.SetActive(false);
             isOn = true;
         }
+    }
+
+    public void BattelUIOn(bool isbattle)
+    {
+        BattelUI.SetActive(isbattle);
     }
 }

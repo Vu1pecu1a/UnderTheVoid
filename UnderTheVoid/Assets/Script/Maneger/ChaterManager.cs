@@ -17,11 +17,13 @@ public class ChaterManager : MonoBehaviour
     [SerializeField, Tooltip("플레이어 UI")] GameObject Player_UI;
     [SerializeField, Tooltip("장비 UI")] GameObject Player_EQ;
     [SerializeField, Tooltip("스탯 UI")] GameObject StatTextMeshPro;
+    [SerializeField, Tooltip("간략한 스탯 UI")] GameObject SimpleTMPro;
     [SerializeField, Tooltip("스킬 버튼")] GameObject SkillButton;
 
     [SerializeField, Tooltip("공용 인벤토리 위치")] Transform Inven;
     [SerializeField, Tooltip("스킬 선택 UI 위치")] Transform Skill;
     [SerializeField, Tooltip("스탯 UI위치")] Transform Stat;
+    [SerializeField, Tooltip("전투 UI 위치")] Transform BattelUI;
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +58,8 @@ public class ChaterManager : MonoBehaviour
 
         eQ.name = playerBase.name + eQ.name;
 
+        GameObject SimplePortait = Instantiate(SimpleTMPro, BattelUI);
+
         playerUI.GetComponent<Toggle>().onValueChanged.AddListener(eQ.SetActive);
         playerUI.GetComponent<Toggle>().onValueChanged.AddListener(SkillStatReSet);
         playerUI.GetComponent<Toggle>().group = Player.GetComponent<ToggleGroup>();
@@ -75,7 +79,7 @@ public class ChaterManager : MonoBehaviour
         playerUI.GetComponent<Toggle>().onValueChanged.AddListener(delegate { eQ.transform.GetChild(4).GetComponent<Toggle>().SetIsOnWithoutNotify(false); });
 
         StartCoroutine(CorStatPortrait(playerBase, playerUI));
-
+        StartCoroutine(SimplyCorStatPortrait(playerBase, SimplePortait));
         D_calcuate.i.PlayerData.Add(eQ.transform.GetComponentInChildren<InvenRender>(), new PlayerofData(playerBase,eQ.transform.GetComponentInChildren<InvenRender>(), eQ, playerUI));
         //  Debug.Log(eQ.transform.GetComponentInChildren<InvenRender>());
     }
@@ -95,13 +99,15 @@ public class ChaterManager : MonoBehaviour
     void PassiveSKillCreat(PlayerBase playerbase, Toggle playerUI)
     {
         Transform skill = Skill.transform.GetComponentInChildren<GridLayoutGroup>().transform;
-        foreach (Button tmp in skill.GetComponentsInChildren<Button>())
+        Button[] tmp = skill.GetComponentsInChildren<Button>();
+        //foreach (Button tmp in skill.GetComponentsInChildren<Button>())
+        for (int i = 0; i < D_calcuate.i.AllPassiveSkill.Count; i++)
         {
-            tmp.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = D_calcuate.i.AllPassiveSkill[0].ToString();
-            tmp.transform.GetChild(1).GetComponent<Image>().sprite = D_calcuate.i.AllPassiveSkill[0].SkillImage;
-            tmp.GetComponent<SKillbutton>().togglebu = playerUI;
-            tmp.GetComponent<SKillbutton>().skill = D_calcuate.i.AllPassiveSkill[0];
-            tmp.GetComponent<SKillbutton>().playerbase = playerbase;
+            tmp[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = D_calcuate.i.AllPassiveSkill[i].ToString();
+            tmp[i].transform.GetChild(1).GetComponent<Image>().sprite = D_calcuate.i.AllPassiveSkill[i].SkillImage;
+            tmp[i].GetComponent<SKillbutton>().togglebu = playerUI;
+            tmp[i].GetComponent<SKillbutton>().skill = D_calcuate.i.AllPassiveSkill[i];
+            tmp[i].GetComponent<SKillbutton>().playerbase = playerbase;
         }
     }
     /// <summary>
@@ -141,13 +147,13 @@ public class ChaterManager : MonoBehaviour
 
     IEnumerator CorStatPortrait(PlayerBase playerBase,GameObject PlayerUI)
     {
-        while(playerBase != null)
-        {
-            Transform Portrait = PlayerUI.transform.GetChild(0).GetChild(1); // 플레이어 초상화 관련
-            Transform Data = PlayerUI.transform.GetChild(0).GetChild(2); // 플레이어 데이터
+        Transform Portrait = PlayerUI.transform.GetChild(0).GetChild(1); // 플레이어 초상화 관련
+        Transform Data = PlayerUI.transform.GetChild(0).GetChild(2); // 플레이어 데이터
 
-            Portrait.GetChild(0).GetComponent<Image>().color = Color.white;
-            TextMeshProUGUI[] DataList = Data.GetComponentsInChildren<TextMeshProUGUI>();
+        Portrait.GetChild(0).GetComponent<Image>().color = Color.white;
+        TextMeshProUGUI[] DataList = Data.GetComponentsInChildren<TextMeshProUGUI>();
+        while (playerBase != null)
+        {
             DataList[0].text = playerBase.name;
             DataList[1].text = "체력 :"+ playerBase.HP.ToString();
             DataList[2].text = "공격력 :" + playerBase.ATK.ToString();
@@ -158,5 +164,23 @@ public class ChaterManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
+    IEnumerator SimplyCorStatPortrait(PlayerBase playerBase, GameObject SimplyPortrait)
+    {
+        Transform Portrait = SimplyPortrait.transform.GetChild(1); // 
+        Image HPBAR = SimplyPortrait.transform.GetChild(0).GetChild(0).GetComponent<Image>(); // 
+        Portrait.GetComponent<Image>().sprite = Resources.LoadAll<Sprite>("Hellcon")[4];
+        TextMeshProUGUI[] DataList = SimplyPortrait.GetComponentsInChildren<TextMeshProUGUI>();
 
+        while (playerBase != null)
+        {
+            HPBAR.fillAmount = playerBase.hpbarreturn();
+            DataList[0].text = "공격력 :" + playerBase.ATK.ToString();
+            DataList[1].text = "방어력 :" + playerBase.DEF.ToString();
+            DataList[2].text = "현재 상태 :" + playerBase.State.ToString();
+            DataList[3].text = "공격 속도 :" + playerBase.ATKSpeed.ToString();
+            DataList[4].text = "이동 속도 :" + playerBase.MoveSpeed.ToString();
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 }

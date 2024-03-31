@@ -20,6 +20,10 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         _HpBar.material.SetFloat("_FillAmount", (float)hp / MaxHp);
     }
+    public float hpbarreturn()
+    {
+        return ((float)hp / MaxHp);
+    }
 
     #endregion[UI]
     #region[¿Ã∫•∆Æ]
@@ -181,7 +185,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
             ChageState(IDEL.Instance);
         yield return new WaitForSeconds(1 / ATKSpeed);
 
-        if (D_calcuate.isbattel == false)
+        if (D_calcuate.isbattel == false || State == AI_State.OnSkill)
             ChageState(IDEL.Instance);
 
         if (State == AI_State.Attack)

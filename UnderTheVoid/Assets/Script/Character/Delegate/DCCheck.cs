@@ -32,7 +32,7 @@ public class DCCheck : MonoBehaviour
 
     void DebugDemage(GameObject gm)
     {
-        Debug.Log(DM.basedamage);
+        //Debug.Log(DM.basedamage);
     }
 
     public void TargetLockOn()
