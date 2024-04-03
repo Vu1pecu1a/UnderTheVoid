@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,11 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject ButtonUI;
     [SerializeField] GameObject GameOver_UI;
     [SerializeField] GameObject[] Skill_button;
+    [SerializeField, Tooltip("시간 배율")] TextMeshProUGUI TimeScale;
+
+    [SerializeField, Tooltip("스킬 설명 오브젝트")] GameObject SkillToolTip;
+    [SerializeField, Tooltip("미니맵 버튼")] Toggle _Minimap;
+    [SerializeField, Tooltip("인벤토리 버튼")] Toggle _inven;
 
     [SerializeField] Transform overButton;
 
@@ -26,6 +32,7 @@ public class UI_Manager : MonoBehaviour
         Skill_button[0].GetComponent<Button>().onClick.AddListener(delegate { D_calcuate.i.PlayerList[0].ActiveSkillOn(); });
         Skill_button[1].GetComponent<Button>().onClick.AddListener(delegate { D_calcuate.i.PlayerList[1].ActiveSkillOn(); });
         Skill_button[2].GetComponent<Button>().onClick.AddListener(delegate { D_calcuate.i.PlayerList[2].ActiveSkillOn(); });
+        SkillToolTip.SetActive(false);
     }
 
 
@@ -56,5 +63,24 @@ public class UI_Manager : MonoBehaviour
     public void BattelUIOn(bool isbattle)
     {
         BattelUI.SetActive(isbattle);
+    }
+
+    public GameObject SkilltoolTip()
+    {
+        return SkillToolTip;
+    }
+    public Toggle minimap()
+    {
+        _Minimap.SetIsOnWithoutNotify(true);
+        return _Minimap;
+    }
+    public Toggle Inventory()
+    {
+        return _inven;
+    }
+
+    public void SetTime()
+    {
+        TimeScale.text = Time.timeScale.ToString();
     }
 }

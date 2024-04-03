@@ -99,10 +99,14 @@ public class ChaterManager : MonoBehaviour
     void PassiveSKillCreat(PlayerBase playerbase, Toggle playerUI)
     {
         Transform skill = Skill.transform.GetComponentInChildren<GridLayoutGroup>().transform;
-        Button[] tmp = skill.GetComponentsInChildren<Button>();
-        //foreach (Button tmp in skill.GetComponentsInChildren<Button>())
+        Button[] tmp = skill.GetComponentsInChildren<Button>(true);
+        foreach (Button a in skill.GetComponentsInChildren<Button>())
+        {
+            a.gameObject.SetActive(false);
+        }
         for (int i = 0; i < D_calcuate.i.AllPassiveSkill.Count; i++)
         {
+            tmp[i].gameObject.SetActive(true);
             tmp[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = D_calcuate.i.AllPassiveSkill[i].ToString();
             tmp[i].transform.GetChild(1).GetComponent<Image>().sprite = D_calcuate.i.AllPassiveSkill[i].SkillImage;
             tmp[i].GetComponent<SKillbutton>().togglebu = playerUI;
@@ -118,10 +122,14 @@ public class ChaterManager : MonoBehaviour
     void ActiveSKillCreat(PlayerBase playerbase, Toggle playerUI)
     {
         Transform skill = Skill.transform.GetComponentInChildren<GridLayoutGroup>().transform;
-        Button[] tmp = skill.GetComponentsInChildren<Button>();
-        //foreach (Button tmp in skill.GetComponentsInChildren<Button>())
+        Button[] tmp = skill.GetComponentsInChildren<Button>(true);
+        foreach (Button a in skill.GetComponentsInChildren<Button>())
+        {
+            a.gameObject.SetActive(false);
+        }
         for(int i = 0; i < D_calcuate.i.AllActiveSKill.Count; i++)
         {
+            tmp[i].gameObject.SetActive(true);
             tmp[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = D_calcuate.i.AllActiveSKill[i].ToString();
             tmp[i].transform.GetChild(1).GetComponent<Image>().sprite = D_calcuate.i.AllActiveSKill[i].SkillImage;
             tmp[i].GetComponent<SKillbutton>().togglebu = playerUI;

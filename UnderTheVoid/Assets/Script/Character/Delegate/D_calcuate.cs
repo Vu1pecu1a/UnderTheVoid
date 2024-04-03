@@ -82,13 +82,13 @@ public class D_calcuate : MonoBehaviour
 
     void PassiveSKillSet()
     {
-        AllPassiveSkill.Add(new RapidFireReinforce(Resources.LoadAll<Sprite>("HellCon")[1]));
+        AllPassiveSkill.Add(new RapidFireReinforce(Resources.LoadAll<Sprite>("HellCon")[1],"미약한 바람의 축복","공격속도를 0.3만큼 추가 시켜 줍니다.","0.3"));
     }
 
     void ActiveSkillSet()
     {
-        AllActiveSKill.Add(new RapidFire(60f, Resources.LoadAll<Sprite>("HellCon")[0]));
-        AllActiveSKill.Add(new FireBall(1f, Resources.LoadAll<Sprite>("HellCon")[2]));
+        AllActiveSKill.Add(new RapidFire(60f, Resources.LoadAll<Sprite>("HellCon")[0],"속사","공격속도를 0.3만큼 증가 시켜줍니다","0.3"));
+        AllActiveSKill.Add(new FireBall(1f, Resources.LoadAll<Sprite>("HellCon")[2],"파이어 볼","화염구를 쏘아 맞은 위치에 폭발을 발생시킵니다","5"));
     }
     #endregion[버프/디버프/스킬]
 
@@ -157,6 +157,7 @@ public class D_calcuate : MonoBehaviour
             roomClear();
             isbattel = false;
             MapGenerator.i.Minimap(true);
+            Managers.instance._UI.minimap();
             Managers.instance._UI.BattelUIOn(false);
         }
         else if(PlayerList.Count==0)

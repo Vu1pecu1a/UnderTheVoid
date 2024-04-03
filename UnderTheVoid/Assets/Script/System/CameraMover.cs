@@ -14,13 +14,13 @@ public class CameraMover : MonoBehaviour
     {
         if(Time.timeScale <4)
         Time.timeScale += 1f;
-        Debug.Log(Time.timeScale);  
+        Managers.instance._UI.SetTime();
     }
     public void TimeScaleDown()
     {
         if (Time.timeScale > 0)
             Time.timeScale -= 1f;
-        Debug.Log(Time.timeScale);
+        Managers.instance._UI.SetTime();
     }
 
     public void Puase()

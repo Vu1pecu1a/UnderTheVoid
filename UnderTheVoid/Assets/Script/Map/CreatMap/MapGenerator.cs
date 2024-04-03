@@ -568,8 +568,8 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         }
         else
         {
-            Canvas.GetComponent<RectTransform>().transform.position = new Vector3(960, 540);
-            Canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(1820, 980);
+            Canvas.GetComponent<RectTransform>().transform.position = new Vector3(960, 600);
+            Canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(1900, 940);
             MapSacle = 1f;
             Canvas.GetComponent<RectTransform>().localScale = Vector3.one * MapSacle;
             Canvas.transform.GetChild(0).GetComponent<RectTransform>().localScale = Vector3.one * MapSacle;

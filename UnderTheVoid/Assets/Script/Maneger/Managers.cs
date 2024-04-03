@@ -52,4 +52,9 @@ public class Managers : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.R)) RkeyInput();
         if (Input.GetKeyUp(KeyCode.Tab)) Tab();
     }
+
+    public void InputTAB()
+    {
+        Tab();
+    }
 }
