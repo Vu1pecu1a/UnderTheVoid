@@ -124,6 +124,7 @@ public class InvenShape
                 return _shape[index];
         }
     }
+    
     public bool IsPartOfShape90(Vector2Int localPoint)
     {
         if (localPoint.x < 0 || localPoint.x >= _width || localPoint.y < 0 || localPoint.y >= _height)
@@ -133,7 +134,7 @@ public class InvenShape
 
         var index = GetIndex90(localPoint.x, localPoint.y);
         return _shape[index];
-    }
+    }//안쓰는 테스트 함수
 
 
     /*
@@ -155,7 +156,7 @@ public class InvenShape
 internal static class InventoryItemExtensions
 {
     /// <summary>
-    /// 인벤토리의 왼쪽 하단 모서리 위치를 반환합니다. 
+    /// 아이템의 왼쪽 하단 모서리 위치를 반환합니다. 
     /// </summary>
     internal static Vector2Int GetMinPoint(this IInventoryItem item)
     {
@@ -163,7 +164,7 @@ internal static class InventoryItemExtensions
     }
 
     /// <summary>
-    /// 인벤토리의 오른쪽 상단 모서리 위치를 반환합니다. 
+    /// 아이템의 오른쪽 상단 모서리 위치를 반환합니다. 
     /// </summary>
     internal static Vector2Int GetMaxPoint(this IInventoryItem item)
     {

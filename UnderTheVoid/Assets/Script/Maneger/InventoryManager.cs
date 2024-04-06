@@ -281,7 +281,7 @@ public class InventoryManager : IinvenManager
         HandleSizeChanged();
         onResized?.Invoke();
     }
-    private Vector2Int GetCenterPosition(IInventoryItem item)
+    public Vector2Int GetCenterPosition(IInventoryItem item)
     {
         return new Vector2Int(
             (_size.x - item.width) / 2,

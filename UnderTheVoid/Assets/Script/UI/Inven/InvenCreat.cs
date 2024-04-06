@@ -50,7 +50,7 @@ public class InvenCreat : MonoBehaviour
             {
                 if (D_calcuate.i.PlayerData.ContainsKey(GetComponent<InvenRender>()))
                 {
-                    D_calcuate.i.ab.ADPlus(D_calcuate.i.PlayerData[GetComponent<InvenRender>()]._pb);
+                    D_calcuate.i.ItemSkill[(item as ItemDefinition).itemData.itemEffect].SkillOn(D_calcuate.i.PlayerData[GetComponent<InvenRender>()]._pb);
                     Debug.Log((item as ItemDefinition).Name + "(을)를 인벤토리에 추가했다." + (item as ItemDefinition).Name +"의 효과가 발동했다");
                 }else
                     Debug.Log((item as ItemDefinition).Name + "(을)를 인벤토리에 추가했다.");
@@ -59,10 +59,12 @@ public class InvenCreat : MonoBehaviour
             {
                 if (D_calcuate.i.PlayerData.ContainsKey(GetComponent<InvenRender>()))
                 {
-                    D_calcuate.i.ab.ADPlus(D_calcuate.i.PlayerData[GetComponent<InvenRender>()]._pb);
-                    Debug.Log((item as ItemDefinition).Name + "(을)를 인벤토리에 추가했다." + (item as ItemDefinition).Name + "의 효과가 발동했다");
+                    D_calcuate.i.ItemSkill[(item as LoadItem).itemData.itemEffect].SkillOn(D_calcuate.i.PlayerData[GetComponent<InvenRender>()]._pb);
+                    Debug.Log((item as LoadItem).Name + "(을)를 인벤토리에 추가했다." + (item as LoadItem).Name + "의 효과가 발동했다");
                 }else
-                Debug.Log((item as LoadItem).Name + "(을)를 인벤토리에 추가했다.");
+                {
+                    Debug.Log((item as LoadItem).Name + "(을)를 인벤토리에 추가했다.");
+                }
             }
         };
 

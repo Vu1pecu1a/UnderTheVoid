@@ -27,7 +27,8 @@ public class SKillbutton : MonoBehaviour, IPointerEnterHandler , IPointerExitHan
             playerbase.Skills[Count] = (Skill)skill.Clone();
         else
             playerbase.SetPassiveSkill(Count - 2, (Skill)skill.Clone());
-          //  playerbase.PasiveSkills[Count-2] = skill;
+        //  playerbase.PasiveSkills[Count-2] = skill;
+        togglebu.SetIsOnWithoutNotify(false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

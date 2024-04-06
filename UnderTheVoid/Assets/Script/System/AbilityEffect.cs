@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 public enum BuffType
 {
     DotHeal,
@@ -35,16 +38,21 @@ public interface IAbility
 /// <summary>
 /// 효과 모음집
 /// </summary>
-public class AbilityEffect
+public class AbilityEffect 
 {
+
     public void ADPlus(MonsterBase pb)
     {
         pb.ATK += 1;
     }
+    public void ADPlus(MonsterBase pb,int atk)
+    {
+        pb.ATK += atk;
+    }
 
     public void ADPlus(MonsterBase pb, float BuffIntensity)
     {
-        pb.ATK += (int)(pb.ATK * BuffIntensity);
+        pb.buffatk += BuffIntensity;
     }
 
     public void ADMinus(MonsterBase pb)

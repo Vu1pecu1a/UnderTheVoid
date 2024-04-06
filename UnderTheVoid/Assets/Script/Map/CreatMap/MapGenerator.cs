@@ -558,7 +558,9 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
     {
         if (bol)
         {
-            Canvas.GetComponent<RectTransform>().transform.position = new Vector3(230, 950);
+            Canvas.GetComponent<RectTransform>().anchorMin =new Vector2(0, 1);
+            Canvas.GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
+            Canvas.GetComponent<RectTransform>().anchoredPosition = new Vector3(10, -10);
             Canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(900, 490);
             MapSacle = 1f;
             Canvas.GetComponent<RectTransform>().localScale = Vector3.one * 0.5f;
@@ -568,7 +570,9 @@ public class MapGenerator : MonoBehaviour // 방관련 함수는 전부 여기서 처리
         }
         else
         {
-            Canvas.GetComponent<RectTransform>().transform.position = new Vector3(960, 600);
+            Canvas.GetComponent<RectTransform>().anchorMin = new Vector2(0, 1);
+            Canvas.GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
+            Canvas.GetComponent<RectTransform>().anchoredPosition = new Vector3(10, -10);
             Canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(1900, 940);
             MapSacle = 1f;
             Canvas.GetComponent<RectTransform>().localScale = Vector3.one * MapSacle;

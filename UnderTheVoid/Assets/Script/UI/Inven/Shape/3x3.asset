@@ -18,6 +18,9 @@ MonoBehaviour:
     _height: 3
     _shape: 010101010101000000000100010101
     _rotate: 0
-  _type: 0
+  _type: 1
   _canDrop: 1
   _position: {x: 0, y: 0}
+  Tooltip: "\uC544\uC8FC \uD070 \uD14C\uC2A4\uD2B8\uC6A9 \uC720\uBB3C"
+  _ItemAbility: "\uACF5\uACA9\uB825\uC99D\uAC00(\uB300)"
+  _name: "\uD070 \uC720\uBB3C"

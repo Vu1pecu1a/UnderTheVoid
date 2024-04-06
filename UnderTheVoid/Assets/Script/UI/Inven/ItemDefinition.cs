@@ -13,12 +13,14 @@ public class ItemDefinition : ScriptableObject, IInventoryItem
     [SerializeField] private ItemType _type = ItemType.relic;
     [SerializeField] private bool _canDrop = true;
     [SerializeField, HideInInspector] private Vector2Int _position = Vector2Int.zero;
-    string _ItemAbility;
 
+    [SerializeField, Tooltip("아이템 설명")] string Tooltip;
+    [SerializeField, Tooltip("아이템 능력")] string _ItemAbility;
+    [SerializeField, Tooltip("아이템 이름")] string _name;
     /// <summary>
     /// 아이템 이름
     /// </summary>
-    public string Name => this.name;
+    public string Name => _name;
 
     public string Itemability
     {
@@ -73,7 +75,18 @@ public class ItemDefinition : ScriptableObject, IInventoryItem
     /// <inheritdoc />
     public bool canDrop => _canDrop;
 
-    itemRotae IInventoryItem.Rotate { get => _shape.rotate; set => _shape.rotate = value; }  
+    itemRotae IInventoryItem.Rotate { get => _shape.rotate; set => _shape.rotate = value; }
+
+    ItemData _itemdata(string a,string b,string c)
+    {
+        ItemData _itemdata = new ItemData();
+        _itemdata.name = a;
+        _itemdata.iteminfo = b;
+        _itemdata.itemEffect= c;
+        return _itemdata;
+    }
+    public ItemData itemData => _itemdata(_name, Tooltip, _ItemAbility);
+
     /// <summary>
     /// Creates a copy if this scriptable object
     /// </summary>
@@ -91,9 +104,9 @@ public class LoadItem : IInventoryItem
     [SerializeField] private ItemType _type = ItemType.relic;
     [SerializeField] private bool _canDrop = true;
     [SerializeField, HideInInspector] private Vector2Int _position = Vector2Int.zero;
-
-    string _ItemAbility;
-    string _name;
+    [SerializeField, Tooltip("아이템 설명")] string Tooltip;
+    [SerializeField, Tooltip("아이템 능력")] string _ItemAbility;
+    [SerializeField, Tooltip("아이템 설명")] string _name;
     /// <summary>
     /// 아이템 이름
     /// </summary>
@@ -151,6 +164,16 @@ public class LoadItem : IInventoryItem
     public bool canDrop => _canDrop;
 
     itemRotae IInventoryItem.Rotate { get => _shape.rotate; set => _shape.rotate = value; }
+
+    ItemData _itemdata(string a, string b, string c)
+    {
+        ItemData _itemdata = new ItemData();
+        _itemdata.name = a;
+        _itemdata.iteminfo = b;
+        _itemdata.itemEffect = c;
+        return _itemdata;
+    }
+    public ItemData itemData => _itemdata(_name, Tooltip, _ItemAbility);
 
     public LoadItem(PlayerData data)
     {

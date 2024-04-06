@@ -9,7 +9,6 @@ public class CameraMover : MonoBehaviour
     [SerializeField]
     float movespeed =1;
     bool Stop;
-
     public void TimeScaleUp()
     {
         if(Time.timeScale <4)
@@ -61,12 +60,12 @@ public class CameraMover : MonoBehaviour
         }
 
         float wheelInput = Input.GetAxis("Mouse ScrollWheel");
-        if (wheelInput > 0)
+        if (wheelInput > 0 && !Managers.instance._UI.isOn)
         {
             if (Camera.main.orthographicSize > 2)
                 Camera.main.orthographicSize--;
         }
-        else if (wheelInput < 0)
+        else if (wheelInput < 0 && !Managers.instance._UI.isOn)
         {
             Camera.main.orthographicSize++;
         }

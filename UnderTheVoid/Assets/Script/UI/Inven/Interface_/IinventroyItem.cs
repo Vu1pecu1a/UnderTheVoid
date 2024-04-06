@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 아이템 인터페이스
+/// </summary>
 public interface IInventoryItem
 {
     Sprite sprite { get; }
     Vector2Int position { get; set; }
     ItemType Type { get; }
     InvenShape shape { get; }
+    ItemData itemData { get; }
     int width { get; }
     int height { get; }
     bool canDrop { get; }
@@ -22,4 +26,11 @@ public interface IInventoryItem
     bool IsPartOfShape(Vector2Int localPosition);
     void RotateRight();
     void RotateOrigin(itemRotae ro);
+}
+
+public class ItemData
+{
+    public string name;
+    public string iteminfo;
+    public string itemEffect;
 }

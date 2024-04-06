@@ -13,7 +13,7 @@ public class SKillInfo : MonoBehaviour
     {
         _Name.text = skill._Name;
         _Info.text = skill._Info;
-        _Multiplier.text = skill._Multiplier;
+        _Multiplier.text = skill._Multiplier.ToString();
         _SKillSprite.sprite = skill.SkillImage;
     }
 }

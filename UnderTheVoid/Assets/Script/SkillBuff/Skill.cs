@@ -11,7 +11,7 @@ public class PassiveSkill : Skill
     [SerializeField, Tooltip("스킬 이미지")] protected Sprite _sprite;
     [SerializeField, Tooltip("스킬 이름")] protected string _name;
     [SerializeField, Tooltip("스킬 설명")] protected string _skillInfo;
-    [SerializeField, Tooltip("스킬 배율")] protected string _mutiple;
+    [SerializeField, Tooltip("스킬 배율")] protected float _mutiple;
     public override float CoolTIme { get => _coolTime; }
     public override Sprite SkillImage { get => _sprite; }
 
@@ -26,7 +26,7 @@ public class PassiveSkill : Skill
 
     public override string _Name { get=> _name; }
     public override string _Info { get => _skillInfo; }
-    public override string _Multiplier { get => _mutiple; }
+    public override float _Multiplier { get => _mutiple; }
 }
 public class ActiveSkill : Skill
 {
@@ -34,7 +34,7 @@ public class ActiveSkill : Skill
     [SerializeField, Tooltip("스킬 이미지")] protected Sprite _sprite;
     [SerializeField, Tooltip("스킬 이름")] protected string _name;
     [SerializeField, Tooltip("스킬 설명")] protected string _skillInfo;
-    [SerializeField, Tooltip("스킬 배율")] protected string _mutiple;
+    [SerializeField, Tooltip("스킬 배율")] protected float _mutiple;
     public bool isReady = true;
     public override float CoolTIme { get => _coolTime; }
     public override Sprite SkillImage { get => _sprite; }
@@ -48,7 +48,7 @@ public class ActiveSkill : Skill
     }
     public override string _Name { get => _name; }
     public override string _Info { get=> _skillInfo; }
-    public override string _Multiplier { get => _mutiple; }
+    public override float _Multiplier { get => _mutiple; }
 }
 public abstract class Skill:ICloneable
 {
@@ -60,7 +60,7 @@ public abstract class Skill:ICloneable
 
     public abstract string _Name { get; }
     public abstract string _Info { get; }
-    public abstract string _Multiplier { get; }
+    public abstract float _Multiplier { get; }
     public virtual object Clone()
     {
         throw new NotImplementedException();
@@ -71,7 +71,7 @@ public abstract class Skill:ICloneable
 #region[액티브 스킬]
 public class RapidFire : ActiveSkill,ICloneable
 {
-    public RapidFire(float coolTime, Sprite sprite,string name,string info,string multiple)
+    public RapidFire(float coolTime, Sprite sprite,string name,string info,float multiple)
     {
         _coolTime = coolTime;
         _sprite = sprite;
@@ -98,7 +98,7 @@ public class FireBall : ActiveSkill
 {
     MonsterBase _MB;
     DCCheck dc;
-    public FireBall(float coolTime, Sprite sprite, string name, string info, string multiple)
+    public FireBall(float coolTime, Sprite sprite, string name, string info,float multiple)
     {
         _coolTime = coolTime;
         _sprite = sprite;
@@ -142,7 +142,7 @@ public class FireBall : ActiveSkill
 #region[패시브 스킬]
 public class RapidFireReinforce : PassiveSkill
 {
-    public RapidFireReinforce(Sprite sprite, string name, string info, string multiple)
+    public RapidFireReinforce(Sprite sprite, string name, string info,float multiple)
     {
         _sprite = sprite;
         _name = name;
@@ -161,6 +161,30 @@ public class RapidFireReinforce : PassiveSkill
     public override object Clone()
     {
         RapidFireReinforce rp = new RapidFireReinforce(_sprite, _name, _skillInfo, _mutiple);
+        return rp;
+    }
+}
+
+public class ADPlus : PassiveSkill
+{
+    public ADPlus(Sprite sprite, string name, string info, float multiple)
+    {
+        _sprite = sprite;
+        _name = name;
+        _skillInfo = info;
+        _mutiple = multiple;
+    }
+    public override void SkillOn(MonsterBase pb)
+    {
+        D_calcuate.i.ab.ADPlus(pb, (int)_mutiple);
+    }
+    public override void SKillOff(MonsterBase pb)
+    {
+        D_calcuate.i.ab.ADPlus(pb, -(int)_mutiple);
+    }
+    public override object Clone()
+    {
+        ADPlus rp = new ADPlus(_sprite, _name, _skillInfo, _mutiple);
         return rp;
     }
 }

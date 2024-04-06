@@ -35,7 +35,7 @@ public interface IInventoryController
 public class InvenController : MonoBehaviour,
 IPointerDownHandler, IBeginDragHandler, IDragHandler,IPointerUpHandler,
 IEndDragHandler, IPointerExitHandler, IPointerEnterHandler,
-IInventoryController
+IInventoryController,IPointerClickHandler
 {
     // 드래그한 항목은 정적이며 모든 컨트롤러가 공유합니다.
     // 이렇게 하면 컨트롤러 간에 항목을 쉽게 이동할 수 있습니다.
@@ -86,6 +86,20 @@ IInventoryController
         Managers.instance.RkeyInput += R;
     }
 
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        var grid = ScreenToGrid(eventData.position);
+        if (inventory.GetAtPoint(grid) == null)
+        {Managers.instance._UI.ItemtoolTip().gameObject.SetActive(false);
+            return;
+        }
+        Managers.instance._UI.ItemtoolTip().gameObject.SetActive(true);
+        Managers.instance._UI.ItemtoolTip().GetComponent<ItemInfo>().SetInfo(inventory.GetAtPoint(grid));
+        Managers.instance._UI.ItemtoolTip().GetComponent<RectTransform>().position =
+            new Vector3(Mathf.Clamp(eventData.position.x, 0, Screen.width), Mathf.Clamp(eventData.position.y, 0, Screen.height));
+
+    }
     /*
      * Grid was clicked (IPointerDownHandler)
      */
@@ -95,6 +109,7 @@ IInventoryController
         // 드래그할 항목을 가져옵니다(항목이 없으면 null이 됩니다).
         var grid = ScreenToGrid(eventData.position);
         _itemToDrag = inventory.GetAtPoint(grid);
+        inventoryRenderer.ClearSelection();
     }
     public void OnPointerUp(PointerEventData eventData)
     {
@@ -140,6 +155,7 @@ IInventoryController
             // Update the items position
             //_draggedItem.Position = eventData.position;
         }
+        Managers.instance._UI.ItemtoolTip().gameObject.SetActive(false);
     }
 
     /*
@@ -225,7 +241,7 @@ IInventoryController
 
     public void R()
     {
-        if(_draggedItem.currentController == this)
+        if(_draggedItem.currentController == this && _draggedItem!=null)
         _draggedItem.currentController.RotateGetKeyDown();
     }
 
@@ -269,4 +285,5 @@ IInventoryController
         );
         return localPosition;
     }
+
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InvenRender : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class InvenRender : MonoBehaviour
 
     [SerializeField, Tooltip("차단된 셀에 사용할 스프라이트")]
     private Sprite _cellSpriteBlocked = null;
+
+   // [SerializeField, Tooltip("비어있는 셀의 스프라이트")]
+  //  private Sprite _cellSpriteOccupied = null;
 
     internal IinvenManager inventory;
     ItemSoltType _renderMode;
@@ -245,7 +249,7 @@ public class InvenRender : MonoBehaviour
                 //대상이 될 캐릭터
                 //발동해야할 효과 
                 Debug.Log("아이템 제거");
-                D_calcuate.i.ab.ADMinus(D_calcuate.i.PlayerData[this]._pb);
+                D_calcuate.i.ItemSkill[item.itemData.itemEffect].SKillOff((D_calcuate.i.PlayerData[this]._pb));
             }
         }
     }
@@ -324,9 +328,9 @@ public class InvenRender : MonoBehaviour
                 {
                     for (var y = 0; y < item.height; y++)//아이템 크기만큼 반복
                     {
-                        if (item.Rotate == itemRotae.right || item.Rotate == itemRotae.left)
-                            IsShapeRotate90(x, y, item, blocked, color);
-                        else
+                       // if (item.Rotate == itemRotae.right || item.Rotate == itemRotae.left)
+                           // IsShapeRotate90(x, y, item, blocked, color);
+                       // else
                             IsShapeRotate(x, y, item, blocked, color);
 
                     }
@@ -366,13 +370,60 @@ public class InvenRender : MonoBehaviour
     /// </summary>
     public void ClearSelection()
     {
+        
         for (var i = 0; i < _grids.Length; i++)
         {
             _grids[i].sprite = _cellSpriteEmpty;
             _grids[i].color = Color.white;
         }
+        itemshape();
     }
 
+    void itemshape()
+    {
+        IInventoryItem[] items = inventory.allItems;
+
+        foreach (var item in items)
+        {
+            for(int i= 0; i< item.width;i++)
+            {
+                for(int j =0;j<item.height;j++)
+                {
+                    var p = item.GetMinPoint() + new Vector2Int(i, j);
+
+                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
+                    {
+                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                        _grids[index].color = item.IsPartOfShape(new Vector2Int(i, j)) || _grids[index].color==Color.gray ? Color.gray : Color.white;
+                    }
+                }
+            }
+        }
+    }
+
+    public void SetSelection( Color color)
+    {
+        ClearSelection();
+        for (var i = 0; i < inventory.allItems.Length; i++)
+        {
+            IInventoryItem item = inventory.allItems[i];
+            for (var x = 0; x < item.width; x++)
+            {
+                for (var y = 0; y < item.height; y++)
+                {
+                    Debug.Log(item.GetMinPoint());
+                    if (item.IsPartOfShape(new Vector2Int(item.GetMinPoint().x, item.GetMinPoint().y)))
+                    {
+                        var p = item.GetMinPoint();
+                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                        //_grids[index].color = color;
+                        _grids[index].sprite = _cellSpriteSelected;
+                        Debug.Log(_grids[index]);
+                    }
+                }
+            }
+        }
+    }
     /*
     그리드에 잘 맞도록 항목의 적절한 오프셋을 반환합니다. 
     */
