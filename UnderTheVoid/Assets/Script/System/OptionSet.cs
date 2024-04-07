@@ -24,7 +24,7 @@ public class OptionSet : MonoBehaviour
         Set();
     }
 
-    void Set()
+    public void Set()
     {
         if (om == null)
             om = OptionManager.i;

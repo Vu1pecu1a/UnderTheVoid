@@ -94,12 +94,32 @@ public class PlayerBase : MonsterBase
 
         if (D_calcuate.i.PlayerList.Count == 0)
             return;
-        player.Clear();
-        player.Add(D_calcuate.i.PlayerList[0]);
+       //player.Clear();
+       // player.Add(D_calcuate.i.PlayerList[0]);
 
         if(aI == AI_TYPE.Heal)
         {
+            player.Clear();
+            for(int i =0; i< D_calcuate.i.PlayerList.Count;i++)
+            {
+                PlayerBase _player = D_calcuate.i.PlayerList[i];
+                player.Add(_player);
+                if(player.Count>1)
+                {
+                    for(int k = 0;k<player.Count;k++)
+                    {
+                        float p1hpvalue = player[i - 1].MAXHP / player[i - 1].HP;//첫번째 플레이어
+                        float p2hpvalue = player[i].MAXHP / player[i].HP;//2번째 플레이어
+                        if (p1hpvalue < p2hpvalue)
+                            break;
+                        PlayerBase pmp = player[i];
+                        player[i] = player[i - 1];
+                        player[i - 1] = pmp;
+                    }
+                }
+            }
             target = player[0];
+            Debug.Log(target);
         }
         else
         target = monsters[0];

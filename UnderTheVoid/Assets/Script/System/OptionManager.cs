@@ -14,6 +14,10 @@ public class OptionManager : MonoBehaviour
     [SerializeField, Tooltip("효과음")]
     public float _EffectSound = 0;
 
+    float _mastersound;
+    float _background;
+    float _effect;
+
     [SerializeField, Tooltip("해상도")]
     public Vector2Int _ScreenSize;
     [SerializeField]
@@ -33,7 +37,9 @@ public class OptionManager : MonoBehaviour
     public void ScreenSizeSet()
     {
         Screen.SetResolution(_ScreenSize.x, _ScreenSize.y, _FullScreen);
-
+        _MasterSound = _mastersound;
+        _BackGroundMusic = _background;
+        _EffectSound = _effect;
         SaveData.Save(new OptionData(_MasterSound,_BackGroundMusic,_EffectSound,_ScreenSize,_FullScreen), Application.streamingAssetsPath + "/Option.bin");
     }
 
@@ -49,20 +55,20 @@ public class OptionManager : MonoBehaviour
     public void Cancle()
     {
        _ScreenSize =new Vector2Int(Screen.width, Screen.height);
-        _FullScreen = Screen.fullScreen;
+       _FullScreen = Screen.fullScreen;
     }
 
     public void MasterSoundSet(float a)
     {
-        _MasterSound = a;
+       _mastersound = a;
     }
     public void BackGroundMusic(float a)
     {
-        _BackGroundMusic= a;
+        _background = a;
     }
     public void EffectSound(float a)
     {
-        _EffectSound= a;
+        _effect = a;
     }
     public void ScreenSizeSet(int a)
     {
@@ -136,8 +142,8 @@ public class OptionManager : MonoBehaviour
     public int rtfullScreen()
     {
         if (_FullScreen)
-            return 0;
-        else
             return 1;
+        else
+            return 0;
     }
 }

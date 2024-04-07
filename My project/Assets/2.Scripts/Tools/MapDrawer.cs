@@ -7,6 +7,29 @@ using System.Linq;
 
 public class MapDrawer
 {
+    public static float[] GetRadianGradientMask(Vector2Int size, int maskRadius)
+    {
+        float[] colorData = new float[size.x * size.y];
+
+        //맵의 중심
+        Vector2Int center = size / 2;
+        float radius = center.y;
+        int index = 0;
+        for (int y = 0; y < size.y; y++)
+        {
+            for (int x = 0; x < size.x; x++)
+            {
+                Vector2Int position = new Vector2Int(x, y);
+                //맵의 중점으로부터 거리에 따라 색을 결정한다. 물론 설정해둔 마스킹 범위를 고려한다.
+                float disFormcenter = Vector2Int.Distance(center, position) + (radius - maskRadius);
+                float colorFactor = disFormcenter / radius;
+                //거리가 멀 수록 색은 1에 가까워 지도록...
+                //하지만 중심이 내륙이니 색을 반전.
+                colorData[index++] = 1 - colorFactor;
+            }
+        }
+        return colorData;
+    }
     public static Sprite DrawSprite(Vector2Int size,Color[] colorDatas)
     {
         Texture2D texture = new Texture2D(size.x, size.y);

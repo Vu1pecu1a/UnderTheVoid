@@ -166,6 +166,7 @@ public class InvenRender : MonoBehaviour
         // 이는 사용자 지정 그래픽 요소를 허용하므로 유용합니다.
         // 인벤토리의 크기를 모방하는 테두리 등입니다.
         rectTransform.sizeDelta = containerSize;
+        ClearSelection();
     }
 
     /*
@@ -385,21 +386,43 @@ public class InvenRender : MonoBehaviour
 
         foreach (var item in items)
         {
-            for(int i= 0; i< item.width;i++)
+            itemcolor(item);
+        }
+    }
+    void itemcolor(IInventoryItem item)
+    {
+        for (int i = 0; i < item.width; i++)
+        {
+            for (int j = 0; j < item.height; j++)
             {
-                for(int j =0;j<item.height;j++)
-                {
-                    var p = item.GetMinPoint() + new Vector2Int(i, j);
+                var p = item.GetMinPoint() + new Vector2Int(i, j);
 
-                    if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
-                    {
-                        var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
-                        _grids[index].color = item.IsPartOfShape(new Vector2Int(i, j)) || _grids[index].color==Color.gray ? Color.gray : Color.white;
-                    }
+                if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
+                {
+                    var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                    _grids[index].color = item.IsPartOfShape(new Vector2Int(i, j)) || _grids[index].color == Color.gray ? Color.gray : Color.white;
                 }
             }
         }
     }
+
+    public void OnmouseEnteritemcolor(IInventoryItem item)
+    {
+        for (int i = 0; i < item.width; i++)
+        {
+            for (int j = 0; j < item.height; j++)
+            {
+                var p = item.GetMinPoint() + new Vector2Int(i, j);
+
+                if (p.x >= 0 && p.x < inventory.width && p.y >= 0 && p.y < inventory.height)
+                {
+                    var index = p.y * inventory.width + ((inventory.width - 1) - p.x);
+                    _grids[index].color = item.IsPartOfShape(new Vector2Int(i, j)) ? Color.black : _grids[index].color == Color.gray ? Color.gray : Color.white;
+                }
+            }
+        }
+    }
+
 
     public void SetSelection( Color color)
     {

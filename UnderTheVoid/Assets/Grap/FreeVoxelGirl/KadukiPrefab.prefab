@@ -459,6 +459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000012457338160}
   - component: {fileID: 95000014152591758}
+  - component: {fileID: 5809117926072989237}
   m_Layer: 0
   m_Name: KadukiPrefab
   m_TagString: Untagged
@@ -503,6 +504,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5809117926072989237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011941746954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8419ea2b202af614dba205c2ab222efa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 2b3a8b94d4a985040b1df183a81452be, type: 2}
+  outlineScaleFactor: 1
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1000012143871954
 GameObject:
   m_ObjectHideFlags: 0

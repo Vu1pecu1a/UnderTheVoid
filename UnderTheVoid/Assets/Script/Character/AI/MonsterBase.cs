@@ -199,6 +199,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         {
             if (aI == AI_TYPE.Heal)
                 ChageState(HealCast.Instance);
+            Debug.Log("Èú");
         }
     }
 
@@ -422,7 +423,7 @@ class IDEL : FSMSingleton<IDEL>, InterfaceFsmState<MonsterBase>
         if (D_calcuate.isbattel == false)
             return;
 
-        if (e.target == null)
+        if (e.target == null )
         {
             e.Search();
         }
@@ -543,6 +544,7 @@ class HealCast : FSMSingleton<HealCast>, InterfaceFsmState<MonsterBase>
 
     public void Enter(MonsterBase e)
     {
+        e.Search();
         e.State = AI_State.SpellCast;
         e._animator.SetTrigger("Cast");
         e.attackCoolTime();

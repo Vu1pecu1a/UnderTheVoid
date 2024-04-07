@@ -94,6 +94,10 @@ IInventoryController,IPointerClickHandler
         {Managers.instance._UI.ItemtoolTip().gameObject.SetActive(false);
             return;
         }
+        if (eventData.clickCount != 2)
+        {
+            return;
+        }
         Managers.instance._UI.ItemtoolTip().gameObject.SetActive(true);
         Managers.instance._UI.ItemtoolTip().GetComponent<ItemInfo>().SetInfo(inventory.GetAtPoint(grid));
         Managers.instance._UI.ItemtoolTip().GetComponent<RectTransform>().position =
@@ -228,7 +232,14 @@ IInventoryController,IPointerClickHandler
             // Detect hover
             var grid = ScreenToGrid(_currentEventData.position);
             var item = inventory.GetAtPoint(grid);
+            if(item!=null)
+            inventoryRenderer.OnmouseEnteritemcolor(item);
+            else
+            inventoryRenderer.ClearSelection();
+
             if (item == _lastHoveredItem) return;
+
+            inventoryRenderer.ClearSelection();
             onItemHovered?.Invoke(item);
             _lastHoveredItem = item;
         }

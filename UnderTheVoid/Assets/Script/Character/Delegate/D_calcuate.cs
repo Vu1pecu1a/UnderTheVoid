@@ -81,20 +81,20 @@ public class D_calcuate : MonoBehaviour
     }
     void ItemSkillSet()
     {
-        ItemSkill.Add("공격력증가(소)",new ADPlus(Resources.LoadAll<Sprite>("HellCon")[1], "공격력 증가(소)", "공격을 \f 만큼 추가 시켜 줍니다.", 1));
-        ItemSkill.Add("공격력증가(중)", new ADPlus(Resources.LoadAll<Sprite>("HellCon")[1], "공격력 증가(중)", "공격을 \f 만큼 추가 시켜 줍니다.", 3));
-        ItemSkill.Add("공격력증가(대)", new ADPlus(Resources.LoadAll<Sprite>("HellCon")[1], "공격력 증가(대)", "공격을 \f 만큼 추가 시켜 줍니다.", 5));
+        ItemSkill.Add("공격력증가(소)",new ADPlus(Resources.LoadAll<Sprite>("HellCon")[1], "공격력 증가(소)", "공격력을 1 만큼 추가 시켜 줍니다.", 1));
+        ItemSkill.Add("공격력증가(중)", new ADPlus(Resources.LoadAll<Sprite>("HellCon")[1], "공격력 증가(중)", "공격력을 3 만큼 추가 시켜 줍니다.", 3));
+        ItemSkill.Add("공격력증가(대)", new ADPlus(Resources.LoadAll<Sprite>("HellCon")[1], "공격력 증가(대)", "공격력을 5 만큼 추가 시켜 줍니다.", 5));
     }
 
     void PassiveSKillSet()
     {
-        AllPassiveSkill.Add(new RapidFireReinforce(Resources.LoadAll<Sprite>("HellCon")[1],"미약한 바람의 축복","공격속도를 \f 만큼 추가 시켜 줍니다.",0.3f));
+        AllPassiveSkill.Add(new RapidFireReinforce(Resources.LoadAll<Sprite>("HellCon")[1],"미약한 바람의 축복","공격속도를 0.3 만큼 추가 시켜 줍니다.",0.3f));
         
     }
 
     void ActiveSkillSet()
     {
-        AllActiveSKill.Add(new RapidFire(60f, Resources.LoadAll<Sprite>("HellCon")[0],"속사", "공격속도를 \f만큼 증가 시켜줍니다", 0.3f));
+        AllActiveSKill.Add(new RapidFire(60f, Resources.LoadAll<Sprite>("HellCon")[0],"속사", "공격속도를 30% 만큼 증가 시켜줍니다", 0.3f));
         AllActiveSKill.Add(new FireBall(1f, Resources.LoadAll<Sprite>("HellCon")[2],"파이어 볼","화염구를 쏘아 맞은 위치에 폭발을 발생시킵니다",5));
     }
     #endregion[버프/디버프/스킬]
