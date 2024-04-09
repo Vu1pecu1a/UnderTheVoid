@@ -8,14 +8,33 @@ public class SelecPos : MonoBehaviour
     Vector3 objectHitPostion;
     Vector3 newPos;
     Vector3 distance;
-    public Transform prevpos;//¸¶Áö¸·À§Ä¡
+    public Transform prevpos;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡
 
     [SerializeField]
     SelectGrid _Sg;
+    [SerializeField]
+    Renderer CH_Ma,WP_Ma,SubWP_Ma;
+    
 
     private void Awake()
     {
         
+    }
+
+    void OutLiine()
+    {
+        CH_Ma.material.SetFloat("_OutlineWidth", 0.01f);
+        WP_Ma.material.SetFloat("_OutlineWidth", 1f);
+        if(SubWP_Ma!=null)
+        SubWP_Ma.material.SetFloat("_OutlineWidth", 1f);
+    }
+
+    void RemoveOutLine()
+    {
+        CH_Ma.material.SetFloat("_OutlineWidth", 0);
+        WP_Ma.material.SetFloat("_OutlineWidth", 0);
+        if (SubWP_Ma != null)
+            SubWP_Ma.material.SetFloat("_OutlineWidth", 0);
     }
 
    public void OccupancyCheck(MapGrid alfa)
@@ -23,10 +42,11 @@ public class SelecPos : MonoBehaviour
         if(prevpos!=null)
         prevpos.GetComponent<MapGrid>().isoccupancy(false, null);
         alfa.isoccupancy(true, gameObject);
-    }//À§Ä¡·Î ÀÌµ¿
+    }//ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½
 
     private void OnMouseUp()
     {
+        RemoveOutLine();
         if (D_calcuate.isbattel == true)
             return;
 
@@ -40,12 +60,12 @@ public class SelecPos : MonoBehaviour
             Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green);
             MapGrid alfa = hitLayerMask.collider.gameObject.GetComponent<MapGrid>();
             gameObject.transform.position = hitLayerMask.collider.gameObject.transform.position;
-            if (alfa.occupanction()==false)//Á¡À¯ »óÅÂ°¡ ¾Æ´Ò¶§
+            if (alfa.occupanction()==false)//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Æ´Ò¶ï¿½
             {
                 OccupancyCheck(alfa);
                 prevpos = hitLayerMask.collider.gameObject.transform;
             }
-            else//Á¡À¯ »óÅÂÀÏ¶§
+            else//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½
             {
                 gameObject.transform.position = prevpos.position;
                 if (alfa.player == gameObject)
@@ -61,7 +81,7 @@ public class SelecPos : MonoBehaviour
         else
         {
             if(prevpos!=null)
-            gameObject.transform.position = prevpos.position;//¿Ã¹Ù¸¥ À§Ä¡°¡ ¾Æ´Ï¸é ÀÌÀü À§Ä¡·Î
+            gameObject.transform.position = prevpos.position;//ï¿½Ã¹Ù¸ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½
         }
         SelectGrid.i.Check();
     }
@@ -99,6 +119,7 @@ public class SelecPos : MonoBehaviour
                 = (hitLayerMask.point * (H - h) + Camera.main.transform.position * h) / H;
             gameObject.transform.position = hitLayerMask.point + distance;
         }
+        OutLiine();
     }
 
 }
