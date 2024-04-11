@@ -18,9 +18,13 @@ public class ExcelParsingSystem : MonoBehaviour
         strings.Add("±Ã¼ö");
         strings.Add("¼ºÁ÷ÀÚ");
 
-        sprites = Resources.LoadAll<Sprite>("HellCon");
+        sprites =new Sprite[3];
+        //sprites = Resources.LoadAll<Sprite>("CLASS");
+        sprites[0] = Resources.LoadAll<Sprite>("CLASS")[79];
+        sprites[1] = Resources.LoadAll<Sprite>("CLASS")[46];
+        sprites[2] = Resources.LoadAll<Sprite>("CLASS")[55];
 
-        Debug.Log(sprites.Length);
+       // Debug.Log(sprites.Length);
     }
 
     void SetData()

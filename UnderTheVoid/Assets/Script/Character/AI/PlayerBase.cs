@@ -108,8 +108,8 @@ public class PlayerBase : MonsterBase
                 {
                     for(int k = 0;k<player.Count;k++)
                     {
-                        float p1hpvalue = player[i - 1].MAXHP / player[i - 1].HP;//첫번째 플레이어
-                        float p2hpvalue = player[i].MAXHP / player[i].HP;//2번째 플레이어
+                        float p1hpvalue = (float)player[i - 1].HP / player[i - 1].MAXHP;//첫번째 플레이어
+                        float p2hpvalue = (float)player[i].HP / player[i].MAXHP;//2번째 플레이어
                         if (p1hpvalue < p2hpvalue)
                             break;
                         PlayerBase pmp = player[i];

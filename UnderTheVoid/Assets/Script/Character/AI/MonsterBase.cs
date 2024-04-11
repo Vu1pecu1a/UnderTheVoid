@@ -198,7 +198,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         else if (State == AI_State.SpellCast)
         {
             if (aI == AI_TYPE.Heal)
-                ChageState(HealCast.Instance);
+                ChageState(IDEL.Instance);
             Debug.Log("힐");
         }
     }
@@ -367,7 +367,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         GameObject effecti = ObjPoolManager.i.InstantiateAPS("bowShot", null);
         effectSetLine(effecti);
         effecti.GetComponent<LineRenderer>().material.color = Color.green;
-        DamageController.DealDamage(target.GetComponent<HitModel>(), D_calcuate.i.Heal(atk * 20000), target.transform);
+        DamageController.DealDamage(target.GetComponent<HitModel>(), D_calcuate.i.Heal(atk), target.transform);
     }
     #endregion[공격 타입 함수]
     protected void ResetState()

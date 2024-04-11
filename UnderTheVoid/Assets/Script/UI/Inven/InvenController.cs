@@ -169,6 +169,7 @@ IInventoryController,IPointerClickHandler
     {
         if (_draggedItem == null) return;
 
+        ClearHoveredItem();
         var mode = _draggedItem.Drop(eventData.position);
 
         switch (mode)
@@ -187,9 +188,9 @@ IInventoryController,IPointerClickHandler
                 ClearHoveredItem();
                 break;
         }
-
         _draggedItem = null;
         _currentEventData = null;
+        _currentEventData = eventData;
     }
 
     /*
@@ -235,7 +236,10 @@ IInventoryController,IPointerClickHandler
             if(item!=null)
             inventoryRenderer.OnmouseEnteritemcolor(item);
             else
-            inventoryRenderer.ClearSelection();
+            {
+                inventoryRenderer.ClearSelection();
+                ClearHoveredItem();
+            }
 
             if (item == _lastHoveredItem) return;
 
@@ -252,7 +256,9 @@ IInventoryController,IPointerClickHandler
 
     public void R()
     {
-        if(_draggedItem.currentController == this && _draggedItem!=null)
+        if(_draggedItem==null)
+        return;
+        if(_draggedItem.currentController == this)
         _draggedItem.currentController.RotateGetKeyDown();
     }
 
