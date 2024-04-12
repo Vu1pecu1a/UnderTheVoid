@@ -15,6 +15,13 @@ public class ClickDoor : MonoBehaviour
            Debug.Log("¿¡·¯");
             return;
         }
+        Managers.instance._fd.Fade();
+        StartCoroutine(PMTM());
+    }
+
+    IEnumerator PMTM()
+    {
+        yield return new WaitForSeconds(1f);
         MapGenerator.i.PlayerMoveToMap(i);
     }
 }

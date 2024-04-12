@@ -12,12 +12,15 @@ public class Managers : MonoBehaviour
     [SerializeField] D_calcuate D_calcuate;
     [SerializeField] ChaterManager ChaterManager;
     [SerializeField] UI_Manager UIManager;
+    [SerializeField] FadeInout FD;
 
     #region[참조용]
      public KeyInputManager _keyInputManager { get => KeyInputManager; set => KeyInputManager = value; }
      public D_calcuate _D { get => D_calcuate; set => D_calcuate = value; }
      public ChaterManager _C { get => ChaterManager; set => ChaterManager = value; }
     public UI_Manager _UI { get => UIManager; set => UIManager = value; }
+
+    public FadeInout _fd { get => FD; }
     #endregion[참조용]
 
 

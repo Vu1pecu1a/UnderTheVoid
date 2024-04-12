@@ -95,7 +95,7 @@ public class D_calcuate : MonoBehaviour
     void ActiveSkillSet()
     {
         AllActiveSKill.Add(new RapidFire(60f, Resources.LoadAll<Sprite>("HellCon")[0],"속사", "공격속도를 30% 만큼 증가 시켜줍니다", 0.3f));
-        AllActiveSKill.Add(new FireBall(1f, Resources.LoadAll<Sprite>("HellCon")[2],"파이어 볼","화염구를 쏘아 맞은 위치에 폭발을 발생시킵니다",5));
+        AllActiveSKill.Add(new FireBall(10f, Resources.LoadAll<Sprite>("HellCon")[2],"파이어 볼","화염구를 쏘아 맞은 위치에 폭발을 발생시킵니다",5));
     }
     #endregion[버프/디버프/스킬]
 
@@ -183,6 +183,8 @@ public class D_calcuate : MonoBehaviour
             p.target = null;
             p.HP = p.MAXHP;
             p.SetHpBar();
+            p.SKillCoolTimeReset();
+            p._animator.SetTrigger("Stop");
         }
     }//전투 종료 이후로 호출할 함수
 

@@ -28,6 +28,9 @@ public class SKillbutton : MonoBehaviour, IPointerEnterHandler , IPointerExitHan
         else
             playerbase.SetPassiveSkill(Count - 2, (Skill)skill.Clone());
         //  playerbase.PasiveSkills[Count-2] = skill;
+
+        Managers.instance._UI.Skill_button[D_calcuate.i.PlayerList.FindIndex(s => s == playerbase)].transform.GetChild(1).GetComponent<Image>().sprite = skill.SkillImage;
+
         togglebu.SetIsOnWithoutNotify(false);
     }
 

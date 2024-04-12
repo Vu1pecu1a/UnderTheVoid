@@ -34,6 +34,8 @@ public class ScenecManeger : Tsingleton<ScenecManeger>
 
     public void SetUP(ChoseYourChar sh)
     {
+        FadeInout fade = this.GetComponent<FadeInout>();
+        fade.Fade();
         List<int> index = new List<int>();
         foreach(GameObject a in sh.EmpltChar)
         {
@@ -54,7 +56,7 @@ public class ScenecManeger : Tsingleton<ScenecManeger>
 
     public void GoScene(int Alfa)
     {
-        SceneManager.LoadScene(Alfa);
+        SceneManager.LoadSceneAsync(Alfa);
         Time.timeScale = 1;
     }
 

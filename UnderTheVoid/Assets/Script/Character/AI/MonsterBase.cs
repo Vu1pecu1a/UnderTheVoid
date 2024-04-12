@@ -212,6 +212,11 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         StartCoroutine(CoolTime(skill));
     }
+    public void StopCoolTiem(ActiveSkill skill)
+    {
+        StopCoroutine(CoolTime(skill));
+    }
+
     public IEnumerator CoolTime(ActiveSkill skill)
     {
         skill.isReady = false;
@@ -219,6 +224,7 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         while(skill.CoolTIme > i )
         {
             i += 0.1f;
+            Managers.instance._UI.FIllSkillCoolTiem(this, i/skill.CoolTIme);
             yield return new WaitForSeconds(0.1f);
         }
         skill.isReady = true;

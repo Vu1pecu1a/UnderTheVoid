@@ -46,6 +46,7 @@ public class ChaterManager : MonoBehaviour
         {
             UI_Set(D_calcuate.i.PlayerList[i]);
         }
+        Managers.instance._UI.SkillSet();
     }
     
     void UI_Set(PlayerBase playerBase)

@@ -15,6 +15,7 @@ public class PassiveSkill : Skill
     public override float CoolTIme { get => _coolTime; }
     public override Sprite SkillImage { get => _sprite; }
 
+    public bool isReady = true;
     public override void SkillOn(MonsterBase pb)
     {
 
@@ -55,7 +56,6 @@ public abstract class Skill:ICloneable
     public abstract float CoolTIme { get; }
     public abstract Sprite SkillImage { get; }
     public abstract void SkillOn(MonsterBase pb);//스킬 사용 효과
-
     public abstract void SKillOff(MonsterBase pb);//스킬 종료 효과
 
     public abstract string _Name { get; }

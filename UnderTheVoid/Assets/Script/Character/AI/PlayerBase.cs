@@ -19,16 +19,32 @@ public class PlayerBase : MonsterBase
     private void OnEnable()
     {
         D_calcuate.i.PlayerList.Add(this);
+        Managers.instance._UI.LISTEN(this);
         this.DieEvent += RemoveListthis;
        if(this._agent!=null)
         this.agent.enabled = true;
+    }
+
+    public void SKillCoolTimeReset()
+    {
+        foreach(ActiveSkill a in Skills)
+        {
+            if (a == null) continue;
+            a.isReady = true;
+            StopCoolTiem(a);
+            Managers.instance._UI.FIllSkillCoolTiem(this, 1);
+        }
+        foreach (PassiveSkill a in PasiveSkills)
+        {
+            if (a == null) continue;
+            a.isReady = true;
+        }
     }
 
     public void ActiveSkillOn()
     {
         if (!D_calcuate.isbattel || Skills[0] is not ActiveSkill)
             return;
-
         Skills[0].SkillOn(this);
     }
     public void SkillON() // 버프 스킬
@@ -138,6 +154,8 @@ public class PlayerBase : MonsterBase
     }
     void RemoveListthis()
     {
+        Managers.instance._UI.RemoveLISTEN(this);
+        SKillCoolTimeReset();
         D_calcuate.i.PlayerList.Remove(this);
         this.agent.enabled = false;
     }
