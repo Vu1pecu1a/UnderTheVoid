@@ -54,6 +54,8 @@ public class D_calcuate : MonoBehaviour
     List<EnemyBase> list = new List<EnemyBase>();
     [SerializeField]
     List<PlayerBase> _playerList = new List<PlayerBase>();
+
+    public PlayerBase[] _Playerarray { get; private set; } = null;
     public List<EnemyBase> MonsterList { get { return list; } set { list = value; } }
     public List<PlayerBase> PlayerList { get { return _playerList; } set { _playerList = value; } }
 
@@ -143,6 +145,8 @@ public class D_calcuate : MonoBehaviour
         MapGenerator.i.Minimap(0);
         Managers.instance._UI.BattelUIOn(true);
         SelectGrid.i.gameObject.SetActive(false);
+        CameraMover.SetTimeScale();
+        //버프 돌리는 시간
         foreach (PlayerBase pb in PlayerList)
         {
             pb.SkillON();
@@ -166,6 +170,7 @@ public class D_calcuate : MonoBehaviour
             MapGenerator.i.Minimap(true);
             Managers.instance._UI.minimap();
             Managers.instance._UI.BattelUIOn(false);
+            Time.timeScale = 1;
         }
         else if(PlayerList.Count==0)
         {
@@ -218,12 +223,15 @@ public class D_calcuate : MonoBehaviour
         
         Managers.instance._C.playerSpawn();
 
+        _Playerarray = new PlayerBase[PlayerList.Count]; 
+
         for(int i=0; i < PlayerList.Count; i++)
         {
             if(PlayerList[i].GetComponent<SelecPos>().prevpos == null)
             PlayerList[i].GetComponent<SelecPos>().prevpos = SelectGrid.i._grids[i,i].transform;//최초 위치 체크
             PlayerList[i].gameObject.transform.position = PlayerList[i].GetComponent<SelecPos>().prevpos.position;
             SelectGrid.i.Check();
+            _Playerarray[i] = PlayerList[i];
         }//최초 위치 배정
     }
 

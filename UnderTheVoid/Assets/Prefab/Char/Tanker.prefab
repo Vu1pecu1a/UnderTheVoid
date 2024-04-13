@@ -179,6 +179,7 @@ MonoBehaviour:
   aI: 0
   state: 0
   _HpBar: {fileID: 2580938642188836490}
+  ClassName: "\uC804\uC0AC"
   monsters: []
   player: []
 --- !u!208 &2580938642137524352

@@ -20,7 +20,7 @@ public class FadeInout : MonoBehaviour
         Color alpha = Panel.color;
         while(alpha.a < 1f)
         {
-            time += Time.deltaTime / F_time;
+            time += 4*Time.unscaledDeltaTime / F_time;
             alpha.a = Mathf.Lerp(0, 1, time);
             Panel.color = alpha;
             yield return null;
@@ -31,7 +31,7 @@ public class FadeInout : MonoBehaviour
 
         while (alpha.a >0)
         {
-            time += Time.unscaledDeltaTime / F_time;
+            time += 4 * Time.unscaledDeltaTime / F_time;
             alpha.a = Mathf.Lerp(1, 0, time);
             Panel.color = alpha;
             yield return null;

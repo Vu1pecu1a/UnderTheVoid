@@ -9,17 +9,25 @@ public class CameraMover : MonoBehaviour
     [SerializeField]
     float movespeed =1;
     bool Stop;
+    static float _timeScale = 1;
     public void TimeScaleUp()
     {
-        if(Time.timeScale <4)
-        Time.timeScale += 1f;
+        if (Time.timeScale < 4)
+            _timeScale += 1f;
+        SetTimeScale();
         Managers.instance._UI.SetTime();
     }
     public void TimeScaleDown()
     {
         if (Time.timeScale > 0)
-            Time.timeScale -= 1f;
+            _timeScale -= 1f;
+        SetTimeScale();
         Managers.instance._UI.SetTime();
+    }
+
+    public static void SetTimeScale()
+    {
+        Time.timeScale = _timeScale;
     }
 
     public void Puase()

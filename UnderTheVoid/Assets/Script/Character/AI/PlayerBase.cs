@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class PlayerBase : MonsterBase
 {
+    public string ClassName;
 
     public List<MonsterBase> monsters = new List<MonsterBase>();
     public List<PlayerBase> player = new List<PlayerBase>();
@@ -18,7 +19,7 @@ public class PlayerBase : MonsterBase
     }
     private void OnEnable()
     {
-        D_calcuate.i.PlayerList.Add(this);
+        D_calcuate.i.PlayerList.Add(this);//
         Managers.instance._UI.LISTEN(this);
         this.DieEvent += RemoveListthis;
        if(this._agent!=null)
@@ -135,7 +136,6 @@ public class PlayerBase : MonsterBase
                 }
             }
             target = player[0];
-            Debug.Log(target);
         }
         else
         target = monsters[0];

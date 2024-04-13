@@ -26,8 +26,10 @@ public class Managers : MonoBehaviour
 
     public delegate void Rkey();
     public delegate void Tap();
+    public delegate void ESCAPE();
     public event Rkey RkeyInput;
     public event Tap Tab;
+    public event ESCAPE E_Escape;
 
     // Start is called before the first frame update
     void Awake()
@@ -54,6 +56,12 @@ public class Managers : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.R)) RkeyInput();
         if (Input.GetKeyUp(KeyCode.Tab)) Tab();
+        if (Input.GetKeyUp(KeyCode.Escape)) E_Escape();
+    }
+
+    public void InputEscape()
+    {
+        E_Escape();
     }
 
     public void InputTAB()

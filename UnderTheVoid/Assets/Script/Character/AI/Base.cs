@@ -34,6 +34,8 @@ public abstract class Base : MonoBehaviour
     public int HP { get { return hp; } set { hp = value; } }
     public int ATK { get { return atk + (int)(atk * buffatk); } set { atk = value; } }
 
+    public AI_TYPE AI { get { return aI; }  }
+
     public int DEF { get { return def + (int)(def * buffdef); } set { def= value; } }
     public int Agi { get { return agi; } set { agi = value; } }
 

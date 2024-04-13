@@ -21,7 +21,7 @@ public class ClickDoor : MonoBehaviour
 
     IEnumerator PMTM()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         MapGenerator.i.PlayerMoveToMap(i);
     }
 }

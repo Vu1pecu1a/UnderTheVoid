@@ -74,16 +74,24 @@ IInventoryController,IPointerClickHandler
     {
         inventoryRenderer = GetComponent<InvenRender>();
         if (inventoryRenderer == null) { throw new NullReferenceException("인벤토리 랜더러가 없음"); }
+       // FindCanvas();
+    }
 
-        // Find the canvas
+    public void FindCanvas()
+    {
         var canvases = GetComponentsInParent<Canvas>();
-        if (canvases.Length == 0) { throw new NullReferenceException("캔버스를 찾을 수 없음"); }
+        if (canvases.Length == 0)
+        {
+            throw new NullReferenceException("캔버스를 찾을 수 없음");
+        }
         _canvas = canvases[canvases.Length - 1];
     }
 
     void Start()
     {
         Managers.instance.RkeyInput += R;
+        if(_canvas==null)
+        FindCanvas();
     }
 
 

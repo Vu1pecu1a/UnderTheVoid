@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class ExcelParsingSystem : MonoBehaviour
 {
-    
-
     public List<string> strings= new List<string>();
     public Sprite[] sprites = null;
 
@@ -25,6 +23,21 @@ public class ExcelParsingSystem : MonoBehaviour
         sprites[2] = Resources.LoadAll<Sprite>("CLASS")[55];
 
        // Debug.Log(sprites.Length);
+    }
+
+    public static Sprite ClassSprite(AI_TYPE ai)
+    {
+        switch(ai)
+        {
+            case AI_TYPE.Melee:
+                return Resources.LoadAll<Sprite>("CLASS")[79];
+            case AI_TYPE.Range:
+                return Resources.LoadAll<Sprite>("CLASS")[46];
+            case AI_TYPE.Heal:
+                return Resources.LoadAll<Sprite>("CLASS")[55];
+            default:
+                return Resources.LoadAll<Sprite>("CLASS")[79];
+        }
     }
 
     void SetData()

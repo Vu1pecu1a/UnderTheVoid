@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,10 +16,13 @@ public class UI_Manager : MonoBehaviour
     public GameObject[] Skill_button;
     [SerializeField, Tooltip("시간 배율")] TextMeshProUGUI TimeScale;
 
+    public Transform RewardPanel;
+
     [SerializeField, Tooltip("스킬 설명 오브젝트")] GameObject SkillToolTip;
     [SerializeField, Tooltip("아이템 설명 오브젝트")] GameObject ItemToolTip;
     [SerializeField, Tooltip("미니맵 버튼")] Toggle _Minimap;
     [SerializeField, Tooltip("인벤토리 버튼")] Toggle _inven;
+    
 
     [SerializeField] Transform overButton;
 
@@ -35,6 +39,9 @@ public class UI_Manager : MonoBehaviour
         ItemToolTip.SetActive(false);
     }
 
+    /// <summary>
+    /// 버튼 게임 오브젝트 활성화
+    /// </summary>
     public void SkillSet()
     {
         for (int i = 0; i < D_calcuate.i.PlayerList.Count; i++)
@@ -42,25 +49,43 @@ public class UI_Manager : MonoBehaviour
             Skill_button[i].SetActive(true);
         }
     }
+    /// <summary>
+    /// 게임오버 UI 띄우기
+    /// </summary>
     public void UIManager_GameOver()
     {
         GameOver_UI.SetActive(true);
     }
-
+    /// <summary>
+    /// 스킬버튼 연동
+    /// </summary>
+    /// <param name="player"></param>
     public void LISTEN(PlayerBase player)
     {
         int alfa = D_calcuate.i.PlayerList.FindIndex(s => s == player);
-        Skill_button[alfa].GetComponent<Button>().onClick.AddListener(delegate { D_calcuate.i.PlayerList[alfa].ActiveSkillOn(); });
+        Skill_button[alfa].GetComponent<Button>().onClick.AddListener(delegate { D_calcuate.i._Playerarray[alfa].ActiveSkillOn(); });
     }
 
+    /// <summary>
+    /// 스킬버튼 연동 지우기
+    /// </summary>
+    /// <param name="player"></param>
     public void RemoveLISTEN(PlayerBase player)
     {
         int alfa = D_calcuate.i.PlayerList.FindIndex(s => s == player);
         Skill_button[alfa].GetComponent<Button>().onClick.RemoveAllListeners();
     }
+
+    /// <summary>
+    /// 이미지 FillAmount 조절: 쿨타임 
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="a"></param>
     public void FIllSkillCoolTiem(MonsterBase player,float a)
     {
-        Managers.instance._UI.Skill_button[D_calcuate.i.PlayerList.FindIndex(s => s == player)].transform.GetChild(1).GetComponent<Image>().fillAmount = a;
+        //int s = D_calcuate.i.PlayerList.FindIndex(s => s == player);
+        int s = Array.FindIndex(D_calcuate.i._Playerarray,s => s == player as PlayerBase);
+        Managers.instance._UI.Skill_button[s].transform.GetChild(1).GetComponent<Image>().fillAmount = a;
     }
 
     public void UI_on()
