@@ -162,13 +162,11 @@ public class ChaterManager : MonoBehaviour
 
         stat.GetChild(0).gameObject.SetActive(true);
         stat.GetChild(0).GetComponent<TextMeshProUGUI>().text =
-            " HP :" + playerBase.HP.ToString()
-            + "\n 공격력 :" + playerBase.ATK.ToString()
-            + "\n 방어력 :" + playerBase.DEF.ToString()
-            + "\n 공격 속도 :" + playerBase.ATKSpeed.ToString()
-            + "\n 이동 속도 :" + playerBase.MoveSpeed.ToString();
-       // stat.GetChild(1).gameObject.SetActive(true);
-       // stat.GetChild(1).GetComponent<TextMeshProUGUI>().text = "공격력 :" + playerBase.ATK.ToString();
+        " HP :" + playerBase.HP.ToString()
+        + "\n 공격력 :" + playerBase.ATK.ToString()
+        + "\n 방어력 :" + playerBase.DEF.ToString()
+        + "\n 공격 속도 :" + playerBase.ATKSpeed.ToString()
+        + "\n 이동 속도 :" + playerBase.MoveSpeed.ToString();
     }
 
     IEnumerator CorStatPortrait(PlayerBase playerBase,GameObject PlayerUI)

@@ -112,7 +112,7 @@ public class FireBall : ActiveSkill
 
         _MB = pb;
         pb.ChageState(OnSkill.Instance);
-        Debug.Log(OnSkill.Instance + D_calcuate.isbattel.ToString());
+       // Debug.Log(OnSkill.Instance + D_calcuate.isbattel.ToString());
         pb.SkillCoolTime(this);
         GameObject effecti = ObjPoolManager.i.InstantiateAPS("FireBall", null);
         pb.Throwprojectile(effecti, D_calcuate.i.FireBallHit(pb.ATK));

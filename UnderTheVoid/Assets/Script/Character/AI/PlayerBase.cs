@@ -32,8 +32,6 @@ public class PlayerBase : MonsterBase
         {
             if (a == null) continue;
             a.isReady = true;
-            StopCoolTiem(a);
-            Managers.instance._UI.FIllSkillCoolTiem(this, 1);
         }
         foreach (PassiveSkill a in PasiveSkills)
         {

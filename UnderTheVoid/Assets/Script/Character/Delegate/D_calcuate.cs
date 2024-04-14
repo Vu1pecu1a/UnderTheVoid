@@ -150,6 +150,7 @@ public class D_calcuate : MonoBehaviour
         foreach (PlayerBase pb in PlayerList)
         {
             pb.SkillON();
+            pb._animator.SetBool("Isbattel", isbattel);
         }
     }
 
@@ -165,8 +166,8 @@ public class D_calcuate : MonoBehaviour
         if(MonsterList.Count == 0)
         {
             MapGenerator.i.RoomClearTrue();
-            roomClear();
             isbattel = false;
+            roomClear();
             MapGenerator.i.Minimap(true);
             Managers.instance._UI.minimap();
             Managers.instance._UI.BattelUIOn(false);
@@ -190,6 +191,11 @@ public class D_calcuate : MonoBehaviour
             p.SetHpBar();
             p.SKillCoolTimeReset();
             p._animator.SetTrigger("Stop");
+            p._animator.ResetTrigger("Shot");
+            p._animator.ResetTrigger("Attack");
+            p._animator.ResetTrigger("Cast");
+            p._animator.ResetTrigger("CastEnd");
+            p._animator.SetBool("Isbattel", isbattel);
         }
     }//전투 종료 이후로 호출할 함수
 

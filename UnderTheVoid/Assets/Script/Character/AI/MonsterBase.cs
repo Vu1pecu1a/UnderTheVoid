@@ -183,6 +183,13 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
     {
         if (target == null || target.State == AI_State.Die)
             ChageState(IDEL.Instance);
+
+        if (D_calcuate.isbattel == false)
+        {
+            ChageState(IDEL.Instance);
+            yield return null;
+        }
+
         yield return new WaitForSeconds(1 / ATKSpeed);
 
         if (D_calcuate.isbattel == false || State == AI_State.OnSkill)
@@ -225,6 +232,11 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         {
             i += 0.1f;
             Managers.instance._UI.FIllSkillCoolTiem(this, i/skill.CoolTIme);
+            if (skill.isReady == true)
+            {
+                Managers.instance._UI.FIllSkillCoolTiem(this, 1);
+                break;
+            }
             yield return new WaitForSeconds(0.1f);
         }
         skill.isReady = true;
@@ -483,8 +495,10 @@ class OnSkill : FSMSingleton<OnSkill>, InterfaceFsmState<MonsterBase>
 {
     public void Enter(MonsterBase e)
     {
+        if (D_calcuate.isbattel == false)
+            return;
         e.State = AI_State.OnSkill;
-        e._animator.SetTrigger("Cast");
+        e._animator.SetTrigger("Attack");
         e.attackCoolTime();
     }
 
@@ -498,6 +512,9 @@ class OnSkill : FSMSingleton<OnSkill>, InterfaceFsmState<MonsterBase>
         if(e.State == AI_State.OnSkill && e is PlayerBase)
         {
             
+        }else if(D_calcuate.isbattel == false)
+        {
+            e._animator.SetTrigger("Stop");
         }
     }
 }
@@ -508,6 +525,8 @@ class Attack : FSMSingleton<Attack>, InterfaceFsmState<MonsterBase>
 
     public void Enter(MonsterBase e)
     {
+        if (D_calcuate.isbattel == false)
+            return;
         e.State = AI_State.Attack;
         e._animator.SetTrigger("Attack");
         e._animator.SetFloat("AttackSpeed", e.ATKSpeed);
@@ -529,6 +548,8 @@ class RangeAttack : FSMSingleton<RangeAttack>, InterfaceFsmState<MonsterBase>
 {
     public void Enter(MonsterBase e)
     {
+        if (D_calcuate.isbattel == false)
+            return;
         e.State = AI_State.Attack;
         e._animator.SetTrigger("Shot");
         e.attackCoolTime();
@@ -550,6 +571,8 @@ class HealCast : FSMSingleton<HealCast>, InterfaceFsmState<MonsterBase>
 
     public void Enter(MonsterBase e)
     {
+        if (D_calcuate.isbattel == false)
+            return;
         e.Search();
         e.State = AI_State.SpellCast;
         e._animator.SetTrigger("Cast");

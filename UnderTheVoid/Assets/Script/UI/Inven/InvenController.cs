@@ -212,7 +212,9 @@ IInventoryController,IPointerClickHandler
             _draggedItem.currentController = null;
             inventoryRenderer.ClearSelection();
         }
-        else { ClearHoveredItem(); }
+        else {
+            inventoryRenderer.ClearSelection();
+            ClearHoveredItem(); }
         _currentEventData = null;
     }
 
@@ -234,8 +236,11 @@ IInventoryController,IPointerClickHandler
      */
     void Update()
     {
-        if (_currentEventData == null) return;
-
+        if (_currentEventData == null)
+        {
+            return;
+        }
+            
         if (_draggedItem == null)
         {
             // Detect hover

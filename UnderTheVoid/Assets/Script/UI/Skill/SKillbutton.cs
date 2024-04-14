@@ -29,6 +29,7 @@ public class SKillbutton : MonoBehaviour, IPointerEnterHandler , IPointerExitHan
             playerbase.SetPassiveSkill(Count - 2, (Skill)skill.Clone());
         //  playerbase.PasiveSkills[Count-2] = skill;
 
+        if(Count==0)
         Managers.instance._UI.Skill_button[D_calcuate.i.PlayerList.FindIndex(s => s == playerbase)].transform.GetChild(1).GetComponent<Image>().sprite = skill.SkillImage;
 
         togglebu.SetIsOnWithoutNotify(false);
@@ -36,7 +37,7 @@ public class SKillbutton : MonoBehaviour, IPointerEnterHandler , IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("마우스 오버");
+        //Debug.Log("마우스 오버");
         SkillInfo.SetActive(true);
         SkillInfo.GetComponent<RectTransform>().position = new Vector3(Mathf.Clamp(this.transform.position.x, 0, Screen.width), Mathf.Clamp(this.transform.position.y, 0, Screen.height));
         SkillInfo.GetComponent<SKillInfo>().SkillSet(skill);
@@ -44,7 +45,7 @@ public class SKillbutton : MonoBehaviour, IPointerEnterHandler , IPointerExitHan
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("마우스 탈출");
+        //Debug.Log("마우스 탈출");
         SkillInfo.SetActive(false);
     }
 }

@@ -21,6 +21,8 @@ public class EnemyBase : MonsterBase
         this.DieEvent += RemoveListthis;
         if (this._agent != null)
             this.agent.enabled = true;
+
+        this._animator.SetBool("Isbattel",true);
     }
 
     protected override void Update()

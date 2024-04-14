@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using csDelaunay;
 using System.Linq;
+using System.IO;
+using UtilityHelper;
 
-
-public class MapDrawer
+public static class MapDrawer
 {
+    public const int _stageOfDividCount = 12;//c#에선const도 static이랑 똑같은 방식으로 사용 가능 
+    public static Color[] _SpecialResources;
+
     public static float[] GetRadianGradientMask(Vector2Int size, int maskRadius)
     {
         float[] colorData = new float[size.x * size.y];
@@ -42,13 +46,14 @@ public class MapDrawer
         return sprite;
     }
 
-    public static Sprite DrawVoronoiToSprite(Voronoi vo)
+    public static Sprite DrawVoronoiToSprite(Voronoi vo,Map map)
     {
         Rect rect = vo.PlotBounds;
         int width = Mathf.RoundToInt(rect.width);
         int height = Mathf.RoundToInt(rect.height);
         Color[] pixelColors = Enumerable.Repeat(Color.white, height * height).ToArray();//맵 사이즈 만큼 픽셀 채워넣기
         List<Vector2> SiteCoods = vo.SiteCoords();//점찍은거 
+        List<SeedInfoDEC> _seeds = new List<SeedInfoDEC>();
 
         //시드 그리기
         foreach(Vector2 coord in SiteCoods)
@@ -57,7 +62,10 @@ public class MapDrawer
             int y = Mathf.RoundToInt(coord.y);
 
             int index = x * width + y;
-            pixelColors[index] = Color.red; // 랜덤으로 점 찍은걸 빨간색으로 표기하겠음. 시드 찍는것임
+            int resourceIndex = Random.Range(0, (int)ResourceType.Soil);
+            SeedInfoDEC info = new SeedInfoDEC(new Vector2Int(x, y),map[resourceIndex]);
+            pixelColors[index] = info._resourceColor ; // 랜덤으로 점 찍은걸 빨간색으로 표기하겠음. 시드 찍는것임 
+            //이젠 색상에 따라 다른 점이 찍히게
         }
 
         Vector2Int size = new Vector2Int(width, height);
@@ -81,14 +89,21 @@ public class MapDrawer
                 Vector2 corner2 = edge.ClippedVertices[LR.RIGHT];
 
 
-                DrawEdgeLine(pixelColors, site.Coord, corner1, size,Color.green);
-                DrawEdgeLine(pixelColors, site.Coord, corner2, size, Color.green);
+               // DrawEdgeLine(pixelColors, site.Coord, corner1, size,Color.green);
+               // DrawEdgeLine(pixelColors, site.Coord, corner2, size, Color.green);
 
-                DrawEdgeLine(pixelColors, site.Coord, neighbor.Coord, size, Color.blue);
+               // DrawEdgeLine(pixelColors, site.Coord, neighbor.Coord, size, Color.blue);
                 //텍스쳐에 분할된 선을 그린다.
                 DrawEdgeLine(pixelColors, corner1, corner2, size,Color.black);
             }
         }
+
+        //색 채우기 
+        for(int n=0;n<_seeds.Count; n++)
+        {
+            FillColor_DFS(_seeds[n]._centerPos.x, _seeds[n]._centerPos.y, size.x,pixelColors);
+        }
+
         return DrawSprite(size, pixelColors);
     }
 
@@ -131,5 +146,34 @@ public class MapDrawer
             float a = Mathf.Sqrt(Mathf.)
         }
     }*/
+    public static void CreatImageToFile(string fileName,Sprite image)
+    {
+        Texture2D img = new Texture2D(image.texture.width, image.texture.height);
+        for(int y= 0; y<img.height;y++)
+        {
+            for(int x =0; x<img.width;x++)
+            {
+                img.SetPixel(x, y, image.texture.GetPixel(x, y));
+            }
+        }
 
+        img.Apply();
+        byte[] by = img.EncodeToPNG();
+        FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+        BinaryWriter bw = new BinaryWriter(fs);
+
+        bw.Write(by);
+
+        bw.Close();
+        fs.Close();
+
+    }
+
+    static void FillColor_DFS(int PosX,int PosY,int width,Color[] SourceColor)
+    {
+        int index = PosX * width + PosY;
+        if (SourceColor[index] == Color.black)
+            return;
+        //재귀로 채운다
+    }
 }

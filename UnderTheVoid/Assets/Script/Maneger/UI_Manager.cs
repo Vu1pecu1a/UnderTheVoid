@@ -13,6 +13,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject BattelUI;
     [SerializeField] GameObject ButtonUI;
     [SerializeField] GameObject GameOver_UI;
+    [SerializeField] GameObject GameWin_UI;
     public GameObject[] Skill_button;
     [SerializeField, Tooltip("시간 배율")] TextMeshProUGUI TimeScale;
 
@@ -25,6 +26,7 @@ public class UI_Manager : MonoBehaviour
     
 
     [SerializeField] Transform overButton;
+    [SerializeField] Transform WinButton;
 
     public bool isOn { get; private set; }
 
@@ -35,6 +37,7 @@ public class UI_Manager : MonoBehaviour
         Managers.instance.Tab += UI_on;
         MapGenerator.i.mapInstanceEvent += UI_on;//맵 생성 종료 이벤트(로딩 종료시)
         overButton.GetComponent<Button>().onClick.AddListener(delegate { ScenecManeger.i.GoScene(0); });
+        WinButton.GetComponent<Button>().onClick.AddListener(delegate { ScenecManeger.i.GoScene(0); });
         SkillToolTip.SetActive(false);
         ItemToolTip.SetActive(false);
     }
@@ -56,6 +59,14 @@ public class UI_Manager : MonoBehaviour
     {
         GameOver_UI.SetActive(true);
     }
+    /// <summary>
+    /// 게임 승리 UI 띄우기
+    /// </summary>
+    public void UIManager_GameWin()
+    {
+       GameWin_UI.SetActive(true);
+    }
+
     /// <summary>
     /// 스킬버튼 연동
     /// </summary>

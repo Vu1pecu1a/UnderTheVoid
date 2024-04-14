@@ -13,6 +13,7 @@ public class GoNextLevel : MonoBehaviour
             Debug.Log("¿¡·¯");
             return;
         }
-        ScenecManeger.i.GoScene(i);
+        // ScenecManeger.i.GoScene(i);
+        Managers.instance._UI.UIManager_GameWin();
     }
 }
