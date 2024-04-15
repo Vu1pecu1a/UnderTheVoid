@@ -168,8 +168,8 @@ MonoBehaviour:
   buffmoveSpeed: 0
   MaxHp: 100
   hp: 10
-  atk: 1
-  def: 0
+  atk: 2
+  def: 2
   agi: 0
   buffMaxHp: 0
   buffhp: 0
@@ -180,6 +180,8 @@ MonoBehaviour:
   state: 0
   _HpBar: {fileID: 2580938642188836490}
   ClassName: "\uC804\uC0AC"
+  _ItemDef:
+  - {fileID: 11400000, guid: ca8968f31144d9f4ba92e4f7bf6da94e, type: 2}
   monsters: []
   player: []
 --- !u!208 &2580938642137524352

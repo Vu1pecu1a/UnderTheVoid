@@ -319,13 +319,19 @@ public class InventoryManager : IinvenManager
     /// <returns></returns>
     private bool DoesItemFit(IInventoryItem item) => item.width <= width && item.height <= height;
 
+    /// <summary>
+    /// 인벤토리의 가장 하단부터 계산
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="point"></param>
+    /// <returns></returns>
     private bool GetFirstPointThatFitsItem(IInventoryItem item, out Vector2Int point)
     {
         if (DoesItemFit(item))
         {
-            for (var x = 0; x < width - (item.width - 1); x++)
+            for (var y = height - (item.height - 1); y > 0 ; y--)//위에서부터 넣기
             {
-                for (var y = 0; y < height - (item.height - 1); y++)
+                for (var x = 0; x < width - (item.width - 1); x++)
                 {
                     point = new Vector2Int(x, y);
                     if (CanAddAt(item, point)) return true;

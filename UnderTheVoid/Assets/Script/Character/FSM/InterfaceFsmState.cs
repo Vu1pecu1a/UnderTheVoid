@@ -9,7 +9,7 @@ public interface InterfaceFsmState<T>
 
 public interface HitModel
 {
-    void TakeDamege(DemageModel damageModel);
+    int TakeDamege(DemageModel damageModel);
 }
 
 public struct DemageModel

@@ -8,6 +8,12 @@ public class PlayerBase : MonsterBase
 {
     public string ClassName;
 
+    [SerializeField]
+    private ItemDefinition[] _ItemDef;
+    public ItemDefinition[] _definitions { get => _ItemDef; } // 시작 아이템
+
+    public InvenRender EquipMent; // 장비창
+
     public List<MonsterBase> monsters = new List<MonsterBase>();
     public List<PlayerBase> player = new List<PlayerBase>();
     public Skill[] Skills = new Skill[2];
@@ -16,9 +22,11 @@ public class PlayerBase : MonsterBase
     {
         base.Start();
         Debug.Log("플레이어 등장");
+        Managers.instance._C.EQSET(this);
     }
     private void OnEnable()
     {
+        Debug.Log("플레이어 활성화");
         D_calcuate.i.PlayerList.Add(this);//
         Managers.instance._UI.LISTEN(this);
         this.DieEvent += RemoveListthis;
@@ -140,9 +148,9 @@ public class PlayerBase : MonsterBase
          // Debug.Log(target.name);
     }
 
-    public override void TakeDamege(DemageModel damageModel)
+    public override int TakeDamege(DemageModel damageModel)
     {
-        base.TakeDamege(damageModel);
+       return base.TakeDamege(damageModel);
     }
 
     private void OnDisable()

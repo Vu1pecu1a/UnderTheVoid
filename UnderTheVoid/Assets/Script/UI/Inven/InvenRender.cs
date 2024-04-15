@@ -119,7 +119,7 @@ public class InvenRender : MonoBehaviour
             for (var i = 0; i < _grids.Length; i++)
             {
                 _grids[i].gameObject.SetActive(false);
-                //RecycleImage(_grids[i].gameObject);
+                RecycleImage(_grids[i].gameObject);
                 _grids[i].transform.SetSiblingIndex(i);
             }
         }
@@ -132,7 +132,7 @@ public class InvenRender : MonoBehaviour
         switch (_renderMode)
         {
             case ItemSoltType.Single:    
-                grid = CreateImage(_cellSpriteEmpty, true).GetComponent<Image>();
+                grid = CreateImageAPS(_cellSpriteEmpty, true).GetComponent<Image>();
                 grid.rectTransform.SetAsFirstSibling();
                 grid.type = Image.Type.Sliced;
                 grid.rectTransform.localPosition = Vector3.zero;
@@ -149,7 +149,7 @@ public class InvenRender : MonoBehaviour
                 {
                     for (int x = 0; x < inventory.width; x++)
                     {
-                        grid = CreateImage(_cellSpriteEmpty, true).GetComponent<Image>();
+                        grid = CreateImageAPS(_cellSpriteEmpty, true).GetComponent<Image>();
                         grid.gameObject.name = "Grid " + c;
                         grid.rectTransform.SetAsFirstSibling();
                         grid.type = Image.Type.Sliced;
@@ -220,7 +220,7 @@ public class InvenRender : MonoBehaviour
         }
         else
         {
-            var img = CreateImageAPS(item.sprite, false);
+            var img = CreateImage(item.sprite, false);
             if (_renderMode == ItemSoltType.Single)
             {
                 img.GetComponent<Image>().rectTransform.localPosition = rectTransform.rect.center;
@@ -231,6 +231,7 @@ public class InvenRender : MonoBehaviour
                 img.transform.rotation = Quaternion.Euler(0, 0, (float)item.Rotate);
             }
             _items.Add(item, img);
+            ClearSelection();
         }
     }
 

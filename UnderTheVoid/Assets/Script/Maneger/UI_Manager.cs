@@ -9,22 +9,23 @@ public class UI_Manager : MonoBehaviour
 {
     [SerializeField] GameObject UI_Char;
     [SerializeField] GameObject UI_inven;
+    [SerializeField] Transform _Maininven;
     [SerializeField] GameObject Char;
     [SerializeField] GameObject BattelUI;
     [SerializeField] GameObject ButtonUI;
     [SerializeField] GameObject GameOver_UI;
     [SerializeField] GameObject GameWin_UI;
-    public GameObject[] Skill_button;
     [SerializeField, Tooltip("시간 배율")] TextMeshProUGUI TimeScale;
 
     public Transform RewardPanel;
 
+
+    [Header("버튼")]
     [SerializeField, Tooltip("스킬 설명 오브젝트")] GameObject SkillToolTip;
     [SerializeField, Tooltip("아이템 설명 오브젝트")] GameObject ItemToolTip;
     [SerializeField, Tooltip("미니맵 버튼")] Toggle _Minimap;
     [SerializeField, Tooltip("인벤토리 버튼")] Toggle _inven;
-    
-
+    public GameObject[] Skill_button;
     [SerializeField] Transform overButton;
     [SerializeField] Transform WinButton;
 
@@ -65,6 +66,11 @@ public class UI_Manager : MonoBehaviour
     public void UIManager_GameWin()
     {
        GameWin_UI.SetActive(true);
+    }
+
+    public Transform MainInven()
+    {
+        return this._Maininven;
     }
 
     /// <summary>

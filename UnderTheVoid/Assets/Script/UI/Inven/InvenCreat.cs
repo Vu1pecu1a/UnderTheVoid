@@ -16,6 +16,8 @@ public class InvenCreat : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("인벤토리 생성 시작");
+
         var provider = new InventoryProvider(_slotType, _maximumAlowedItemCount, _allowedItem);
 
         // 인벤토리 생성
@@ -77,6 +79,14 @@ public class InvenCreat : MonoBehaviour
             Debug.Log((item as LoadItem).Name + "(을)를 땅에 버렸다.");
         };
 
+        inventory.onItemRemoved += (item) =>
+         {
+             if (item is ItemDefinition)
+                 Debug.Log((item as ItemDefinition).Name + "(을)를 제거했다.");
+             else
+                 Debug.Log((item as LoadItem).Name + "(을)를 를 제거했다.");
+         };
+
         // 아이템을 바닥에 놓을 수 없는 경우(드랍 불가 체크되어있을 경우) 기록.
         inventory.onItemDroppedFailed += (item) =>
         {
@@ -95,8 +105,24 @@ public class InvenCreat : MonoBehaviour
             else
             Debug.Log($"이 아이템{(item as LoadItem).Name} + 는 인벤토리에 들어 갈 수 없습니다.");
         };
-    }
 
+        if(D_calcuate.i.PlayerData.ContainsKey(gameObject.GetComponent<InvenRender>()))
+        {
+            InvenRender R = gameObject.GetComponent<InvenRender>();
+            AddStartItem(R, D_calcuate.i.PlayerData[R]._pb);
+            gameObject.transform.parent.parent.gameObject.SetActive(false);
+        }
+    }
+    void AddStartItem(InvenRender eqren0, PlayerBase pb)
+    {
+        //eqren0.transform.parent.parent.gameObject.SetActive(true);
+        if (pb._definitions.Length != 0)
+            eqren0.gameObject.GetComponent<InvenCreat>().ItemADD(pb._definitions[0]);
+    }
+    public void ItemADD(ItemDefinition _def)
+    {
+        inventory.TryAdd(_def.CreateInstance());
+    }
 
     public void DropAll()
     {

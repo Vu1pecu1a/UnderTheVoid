@@ -325,13 +325,15 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
         effecti.GetComponent<DCCheck>().DM = DM;
         StartCoroutine(gotoPool(1f, effecti));
     }
-    public virtual void TakeDamege(DemageModel damageModel) // 대미지 계산 파츠
+    public virtual int TakeDamege(DemageModel damageModel) // 대미지 계산 파츠
     {
         if (state == AI_State.Die)
-            return;
+            return 0;
 
-        if (hp > 0)
-            hp -= damageModel.basedamage;
+        int D = DamageCheck.returnDamege(damageModel, this);
+
+        if (hp > 0)//대미지 계산식 이관
+            hp -= D;
 
         if (hp >= MaxHp)//힐을 받아서 오버할 경우
             hp = MaxHp;
@@ -339,6 +341,8 @@ public class MonsterBase : FSM<MonsterBase> ,HitModel
 
         if (hp <= 0)
             DIe();
+
+        return D;
     }
     #endregion[동작 기반 함수]
     #region[공격 타입 함수]

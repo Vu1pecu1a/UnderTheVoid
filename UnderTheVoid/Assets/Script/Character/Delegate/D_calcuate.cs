@@ -29,12 +29,40 @@ public class DamageController
     public static void DealDamage(HitModel damageable, DemageModel damageModel,Transform targetPosition)
     {
         damageable.TakeDamege(damageModel);
-        if(damageModel.basedamage < 0)
-            TextRendererParticleSystem.i.SpawnParticle(targetPosition.position+Vector3.up*2,(damageModel.basedamage*-1).ToString(),damageModel.damageType);
+        if (damageModel.basedamage < 0)
+            TextRendererParticleSystem.i.SpawnParticle(targetPosition.position+Vector3.up*2,(damageable.TakeDamege(damageModel) * -1).ToString(),damageModel.damageType);
         else
-            TextRendererParticleSystem.i.SpawnParticle(targetPosition.position + Vector3.up * 2, damageModel.basedamage.ToString(), damageModel.damageType);
+            TextRendererParticleSystem.i.SpawnParticle(targetPosition.position + Vector3.up * 2, damageable.TakeDamege(damageModel).ToString(), damageModel.damageType);
     }
 }
+
+public static class DamageCheck
+{
+    public static int returnDamege(DemageModel D,MonsterBase M)
+    {
+        DamageType a = D.damageType;
+        switch (a)
+        {
+            case DamageType.Slash:
+                return Math.Clamp(D.basedamage - M.DEF,0,9999); // 받은 공격력 - 방어력
+            case DamageType.Bash:
+                return Math.Clamp(D.basedamage - M.DEF, 0, 9999);
+            case DamageType.Stab:
+                return Math.Clamp(D.basedamage - M.DEF, 0, 9999);
+            case DamageType.Fire:
+                return Math.Clamp(D.basedamage - M.DEF, 0, 9999);
+            case DamageType.Freeze:
+                return Math.Clamp(D.basedamage - M.DEF, 0, 9999);
+            case DamageType.Ligthning:
+                return Math.Clamp(D.basedamage - M.DEF, 0, 9999);
+            case DamageType.Heal:
+                return D.basedamage;
+            default:
+                return 0;
+        }
+    }
+}
+
 public class D_calcuate : MonoBehaviour
 {
     public GameObject UI_Canvas;
@@ -226,10 +254,11 @@ public class D_calcuate : MonoBehaviour
         {
             Instantiate(p);
         }
-        
+
+        _Playerarray = new PlayerBase[PlayerList.Count];
+
         Managers.instance._C.playerSpawn();
 
-        _Playerarray = new PlayerBase[PlayerList.Count]; 
 
         for(int i=0; i < PlayerList.Count; i++)
         {

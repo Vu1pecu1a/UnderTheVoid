@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class SandBag : MonoBehaviour,HitModel
 {
-    public void TakeDamege(DemageModel damageModel)
+    public int TakeDamege(DemageModel damageModel)
     {
         Debug.Log(damageModel.basedamage);
+        return damageModel.basedamage;
     }
 
 

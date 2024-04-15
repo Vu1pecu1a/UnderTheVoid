@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ChaterManager : MonoBehaviour
@@ -11,6 +12,7 @@ public class ChaterManager : MonoBehaviour
     [SerializeField] GameObject invenPrefab;
 
     [SerializeField, Tooltip("플레이어 UI가 위치해야할 곳")] Transform Player;
+    [SerializeField, Tooltip("플레이어 초상화 토글 버튼")] List<Toggle> _PlayerToggle = new List<Toggle>();
     [SerializeField, Tooltip("장비 UI가 위치해야할 곳")] Transform EQ;
 
     [SerializeField, Tooltip("플레이어 UI")] GameObject Player_UI;
@@ -23,6 +25,8 @@ public class ChaterManager : MonoBehaviour
     [SerializeField, Tooltip("스킬 선택 UI 위치")] Transform Skill;
     [SerializeField, Tooltip("스탯 UI위치")] Transform Stat;
     [SerializeField, Tooltip("전투 UI 위치")] Transform BattelUI;
+
+    public Dictionary<PlayerBase, InvenRender> Player_inven = new Dictionary<PlayerBase, InvenRender>();
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +44,8 @@ public class ChaterManager : MonoBehaviour
             Transform skill = Skill.transform.GetComponentInChildren<GridLayoutGroup>().transform;
             Instantiate(SkillButton, skill);    
         }
+
+        //플레이어 생성 이후
 
         for (int i = 0; i < D_calcuate.i.PlayerList.Count; i++)
         {
@@ -69,6 +75,8 @@ public class ChaterManager : MonoBehaviour
 
         GameObject eQ = Instantiate(Player_EQ, EQ);
 
+        eQ.SetActive(true);
+
         eQ.name = playerBase.ClassName + eQ.name;
         //간이 정보창
         GameObject SimplePortait = Instantiate(SimpleTMPro, BattelUI);
@@ -76,6 +84,7 @@ public class ChaterManager : MonoBehaviour
         playerUI.GetComponent<Toggle>().onValueChanged.AddListener(eQ.SetActive);
         playerUI.GetComponent<Toggle>().onValueChanged.AddListener(SkillStatReSet);
         playerUI.GetComponent<Toggle>().group = Player.GetComponent<ToggleGroup>();
+        _PlayerToggle.Add(playerUI.GetComponent<Toggle>());
 
         Toggle[] a = eQ.transform.GetChild(1).GetComponentsInChildren<Toggle>();
         foreach(Toggle b in a)
@@ -92,12 +101,31 @@ public class ChaterManager : MonoBehaviour
         playerUI.GetComponent<Toggle>().onValueChanged.AddListener(delegate { eQ.transform.GetChild(4).GetComponent<Toggle>().SetIsOnWithoutNotify(false); });
 
         StartCoroutine(CorStatPortrait(playerBase, playerUI));
-        StartCoroutine(SimplyCorStatPortrait(playerBase, SimplePortait));
-        D_calcuate.i.PlayerData.Add(eQ.transform.GetComponentInChildren<InvenRender>(), new PlayerofData(playerBase,eQ.transform.GetComponentInChildren<InvenRender>(), eQ, playerUI));
-        //  Debug.Log(eQ.transform.GetComponentInChildren<InvenRender>());
+        StartCoroutine(SimplyCorStatPortrait(playerBase, SimplePortait));//초상화 관련...
+
+        InvenRender eqren0 = eQ.transform.GetComponentInChildren<InvenRender>();
+        D_calcuate.i.PlayerData.Add(eqren0, new PlayerofData(playerBase,eQ.transform.GetComponentInChildren<InvenRender>(), eQ, playerUI));
+        Player_inven.Add(playerBase, eqren0);
     }
 
-    
+    /// <summary>
+    /// 시작 아이템 추가 함수
+    /// </summary>
+    /// <param name="eQ"></param>
+    /// <param name="pb"></param>
+    public void AddStartItem(InvenRender eqren0, PlayerBase pb)
+    {
+        //eqren0.transform.parent.parent.gameObject.SetActive(true);
+        if (pb._definitions.Length != 0)
+            eqren0.gameObject.GetComponent<InvenCreat>().ItemADD(pb._definitions[0]);
+    }
+
+    public void EQSET(PlayerBase player)
+    {
+        Debug.Log(Player_inven.Count);
+        player.EquipMent = Player_inven[player];
+        player.EquipMent.transform.parent.parent.gameObject.SetActive(true);
+    }
 
     void SkillStatReSet(bool ina)
     {

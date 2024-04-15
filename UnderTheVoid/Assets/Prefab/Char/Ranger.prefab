@@ -294,6 +294,8 @@ MonoBehaviour:
   state: 0
   _HpBar: {fileID: 146136393308290196}
   ClassName: "\uAD81\uC218"
+  _ItemDef:
+  - {fileID: 11400000, guid: 1c207db3493f3624886ac0337b863fcd, type: 2}
   monsters: []
   player: []
 --- !u!64 &146136394073508712

@@ -48,6 +48,10 @@ public class DCCheck : MonoBehaviour
         StopAllCoroutines();
         Hit -= DebugDemage;
         tartr = null;
+        if (GetComponent<TrailRenderer>() != null)
+        {
+            GetComponent<TrailRenderer>().Clear();
+        }
     }
 
     private void Update()

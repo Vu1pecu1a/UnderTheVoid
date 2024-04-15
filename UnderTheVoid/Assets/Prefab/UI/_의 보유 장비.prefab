@@ -1567,7 +1567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2758170415681780083
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3803,7 +3803,6 @@ MonoBehaviour:
   _cellSpriteSelected: {fileID: 21300104, guid: 1e627bcafe9e32d40ad554880f36b5eb,
     type: 3}
   _cellSpriteBlocked: {fileID: 21300130, guid: 1e627bcafe9e32d40ad554880f36b5eb, type: 3}
-  _cellSpriteOccupied: {fileID: 0}
   _imagePool: {fileID: 696770151257961391, guid: a36b9402c07d0ea44b2d35ec64f71ce1,
     type: 3}
 --- !u!114 &2758170416927573646
@@ -3911,7 +3910,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2758170417006710901
 RectTransform:
   m_ObjectHideFlags: 0

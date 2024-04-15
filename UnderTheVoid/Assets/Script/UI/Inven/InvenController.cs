@@ -99,17 +99,24 @@ IInventoryController,IPointerClickHandler
     {
         var grid = ScreenToGrid(eventData.position);
         if (inventory.GetAtPoint(grid) == null)
-        {Managers.instance._UI.ItemtoolTip().gameObject.SetActive(false);
+        {Managers.instance._UI.ItemtoolTip().gameObject.SetActive(false);//빈 공간을 클릭하면 아이템 설명창이 사라지게
             return;
         }
-        if (eventData.clickCount != 2)
+        if (eventData.clickCount == 2)
         {
+            Managers.instance._UI.ItemtoolTip().gameObject.SetActive(true);
+            Managers.instance._UI.ItemtoolTip().GetComponent<ItemInfo>().SetInfo(inventory.GetAtPoint(grid));
+            Managers.instance._UI.ItemtoolTip().GetComponent<RectTransform>().position =
+                new Vector3(Mathf.Clamp(eventData.position.x, 0, Screen.width), Mathf.Clamp(eventData.position.y, 0, Screen.height));
             return;
+        }else if(eventData.clickCount == 1 && Input.GetKey(KeyCode.LeftControl))
+        {
+            Debug.Log(inventory.GetAtPoint(grid));
+            InvenController Main = Managers.instance._UI.MainInven().GetComponent<InvenController>();
+            IInventoryItem item = inventory.GetAtPoint(grid);
+            inventory.TryRemove(item);
+            Main.inventory.TryAdd(item);
         }
-        Managers.instance._UI.ItemtoolTip().gameObject.SetActive(true);
-        Managers.instance._UI.ItemtoolTip().GetComponent<ItemInfo>().SetInfo(inventory.GetAtPoint(grid));
-        Managers.instance._UI.ItemtoolTip().GetComponent<RectTransform>().position =
-            new Vector3(Mathf.Clamp(eventData.position.x, 0, Screen.width), Mathf.Clamp(eventData.position.y, 0, Screen.height));
 
     }
     /*
