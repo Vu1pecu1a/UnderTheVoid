@@ -8,6 +8,7 @@ public class SetChar : MonoBehaviour
 {
     public Image sprite;
     public TextMeshProUGUI text;
+    public TextMeshProUGUI _info;
 
     public int _index { get; private set; }
 
@@ -22,6 +23,7 @@ public class SetChar : MonoBehaviour
        text.text = ScenecManeger.i.excleSystem.strings[a];
         _index = a;
         sprite.sprite = ScenecManeger.i.excleSystem.sprites[a];
+        _info.text = ScenecManeger.i.excleSystem.classInfo[a];
     }
 
     public void SetImage(bool PM)

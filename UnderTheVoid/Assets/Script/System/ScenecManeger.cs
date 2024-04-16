@@ -7,7 +7,7 @@ public class ScenecManeger : Tsingleton<ScenecManeger>
 {
     public ExcelParsingSystem excleSystem { get; set; }
 
-    public static ScenecManeger i;
+    public static ScenecManeger i; 
 
     [SerializeField]
     GameObject[] Char;
@@ -48,6 +48,15 @@ public class ScenecManeger : Tsingleton<ScenecManeger>
         GoScene(1);
     }//남은 캐릭터 리스트
     
+    public ItemDefinition PlayerstartItem(int i)
+    {
+        return Char[i].GetComponent<PlayerBase>()._definitions[0];//첫번째 아이템만 리턴
+    }
+    public int PlayerstartSkill(int i)
+    {
+        int s = Char[i].GetComponent<PlayerBase>()._StartSkill;
+        return s;//스킬 번호 리턴
+    }
 
     public void SetChar(int a)
     {

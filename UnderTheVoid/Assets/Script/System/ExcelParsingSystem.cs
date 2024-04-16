@@ -7,6 +7,7 @@ using UnityEngine;
 public class ExcelParsingSystem : MonoBehaviour
 {
     public List<string> strings= new List<string>();
+    public List<string> classInfo = new List<string>();
     public Sprite[] sprites = null;
 
     void Awake()
@@ -15,6 +16,10 @@ public class ExcelParsingSystem : MonoBehaviour
         strings.Add("전사");
         strings.Add("궁수");
         strings.Add("성직자");
+        
+        classInfo.Add("시작아이템 : \n" + ScenecManeger.i.PlayerstartItem(0).Name + "\n시작 스킬 : \n" + CCC(ScenecManeger.i.PlayerstartSkill(0)));
+        classInfo.Add("시작아이템 : \n" + ScenecManeger.i.PlayerstartItem(1).Name + "\n시작 스킬 : \n" + CCC(ScenecManeger.i.PlayerstartSkill(1)));
+        classInfo.Add("시작아이템 : \n" + ScenecManeger.i.PlayerstartItem(2).Name + "\n시작 스킬 : \n" + CCC(ScenecManeger.i.PlayerstartSkill(2)));
 
         sprites =new Sprite[3];
         //sprites = Resources.LoadAll<Sprite>("CLASS");
@@ -23,6 +28,22 @@ public class ExcelParsingSystem : MonoBehaviour
         sprites[2] = Resources.LoadAll<Sprite>("CLASS")[55];
 
        // Debug.Log(sprites.Length);
+    }
+
+    string CCC(int a)
+    {
+        switch (a)
+        {
+            case 0:
+                return "미약한 바람의 축복";
+            case 1:
+                return "미약한 바람의 축복";
+            case 2:
+                return "미약한 바람의 축복";
+            default:
+                return "없음";
+        }
+
     }
 
     public static Sprite ClassSprite(AI_TYPE ai)

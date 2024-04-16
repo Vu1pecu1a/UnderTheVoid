@@ -11,6 +11,7 @@ public class PlayerBase : MonsterBase
     [SerializeField]
     private ItemDefinition[] _ItemDef;
     public ItemDefinition[] _definitions { get => _ItemDef; } // 시작 아이템
+    public int _StartSkill = 0;
 
     public InvenRender EquipMent; // 장비창
 

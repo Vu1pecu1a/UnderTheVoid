@@ -111,6 +111,7 @@ public class InvenCreat : MonoBehaviour
             InvenRender R = gameObject.GetComponent<InvenRender>();
             AddStartItem(R, D_calcuate.i.PlayerData[R]._pb);
             gameObject.transform.parent.parent.gameObject.SetActive(false);
+            Managers.instance._C.PlayerStartSkillAdd(D_calcuate.i.PlayerData[R]._pb, 2, D_calcuate.i.AllPassiveSkill[D_calcuate.i.PlayerData[R]._pb._StartSkill]);
         }
     }
     void AddStartItem(InvenRender eqren0, PlayerBase pb)
@@ -118,6 +119,7 @@ public class InvenCreat : MonoBehaviour
         //eqren0.transform.parent.parent.gameObject.SetActive(true);
         if (pb._definitions.Length != 0)
             eqren0.gameObject.GetComponent<InvenCreat>().ItemADD(pb._definitions[0]);
+
     }
     public void ItemADD(ItemDefinition _def)
     {

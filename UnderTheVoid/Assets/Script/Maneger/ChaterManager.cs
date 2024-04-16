@@ -127,6 +127,29 @@ public class ChaterManager : MonoBehaviour
         player.EquipMent.transform.parent.parent.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// 스킬 추가 함수
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="i"></param>
+    /// <param name="skill"></param>
+    public void PlayerStartSkillAdd(PlayerBase player,int i,Skill skill)
+    {
+        Transform TargetSkill = player.EquipMent.transform.parent.parent.GetChild(1).GetChild(i).GetChild(0);
+        if (i > 7)
+            return;
+        if(skill is PassiveSkill && i>1)
+        {
+            player.SetPassiveSkill(i, (Skill)skill.Clone());
+            TargetSkill.GetComponent<Image>().sprite = skill.SkillImage;
+        }
+        else
+        {
+            player.Skills[i] = (Skill)skill.Clone();
+            TargetSkill.GetComponent<Image>().sprite = skill.SkillImage;
+        }
+    }
+
     void SkillStatReSet(bool ina)
     {
         Skill.gameObject.SetActive(false);
@@ -179,7 +202,7 @@ public class ChaterManager : MonoBehaviour
         }
     }
 
-    void StatView(PlayerBase playerBase)
+    void StatView(PlayerBase playerBase)//>눌러서 나오는 스탯 상세표기
     {
         Transform stat = Stat.transform.GetComponentInChildren<GridLayoutGroup>().transform;
 
