@@ -19,6 +19,8 @@ public class OptionSet : MonoBehaviour
 
     [SerializeField, Tooltip("可记 芒")]
     OptionManager om;
+    [SerializeField, Tooltip("可记 芒")]
+    SoundManager Sm;
     void Start()
     {
         Set();
@@ -33,5 +35,6 @@ public class OptionSet : MonoBehaviour
         _EffectSound.value = om._EffectSound;
         _ScreenSize.value = om.rtValue(om._ScreenSize);
         _FullScreenMode.value = om.rtfullScreen();
+        Sm.VolumeSet();
     }
 }
